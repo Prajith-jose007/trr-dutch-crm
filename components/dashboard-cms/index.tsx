@@ -9,6 +9,7 @@ import RecentComments from "./recent-comments"
 import PublishingSchedule from "./publishing-schedule"
 import UserActivity from "./user-activity"
 import SystemHistory from "./system-history"
+import { Button } from "@/components/ui/button"
 
 export default function CMSDashboardContent() {
   return (
@@ -22,12 +23,8 @@ export default function CMSDashboardContent() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
-            New Lead
-          </button>
-          <button className="px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium">
-            Add New Bookings.
-          </button>
+          <Button>New Lead</Button>
+          <Button variant="outline">Add New Bookings</Button>
         </div>
       </div>
 

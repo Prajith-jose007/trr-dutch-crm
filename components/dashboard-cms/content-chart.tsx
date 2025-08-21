@@ -11,6 +11,7 @@ import {
   BarElement,
 } from "chart.js"
 import { Line, Bar } from "react-chartjs-2"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement)
 
@@ -155,33 +156,39 @@ const mobileChartOptions = {
 }
 
 export default function ContentChart() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <div className="grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2">
       {/* Content Performance Chart */}
-      <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-3 sm:p-6 border border-gray-200 dark:border-[#1F1F23] w-full min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Content Performance</h3>
-          <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full sm:w-auto">
-            <option>Last 12 months</option>
-            <option>Last 6 months</option>
-            <option>Last 3 months</option>
-          </select>
-        </div>
-        <div className="h-64 sm:h-80 w-full">
-          <Line data={contentData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Content Performance</CardTitle>
+          <CardDescription>Published articles vs. page views over time</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 sm:h-80 w-full">
+            {isClient && <Line data={contentData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Content by Category Chart */}
-      <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-3 sm:p-6 border border-gray-200 dark:border-[#1F1F23] w-full min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Content by Category</h3>
-          <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">This year</span>
-        </div>
-        <div className="h-48 sm:h-64 w-full">
-          <Bar data={categoryData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Content by Category</CardTitle>
+          <CardDescription>Number of articles per category</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 sm:h-80 w-full">
+            {isClient && <Bar data={categoryData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
