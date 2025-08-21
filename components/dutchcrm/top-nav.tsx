@@ -52,7 +52,7 @@ export default function TopNav() {
 
         {/* Breadcrumbs */}
         <nav className="hidden sm:flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-          <Link href="/dashboard-crm" className="flex items-center hover:text-gray-900 dark:hover:text-white">
+          <Link href="/" className="flex items-center hover:text-gray-900 dark:hover:text-white">
             <Home className="h-4 w-4 mr-1" />
             Dashboard
           </Link>

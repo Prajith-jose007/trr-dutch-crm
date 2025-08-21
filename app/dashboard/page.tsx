@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import Content from "@/components/cmsfullform/content"
-import Layout from "@/components/cmsfullform/layout"
+import Content from "@/components/dashboard-cms/content"
+import Layout from "@/components/dutchcrm/layout"
 
 export const metadata: Metadata = {
   title: "Dutch CRM Dashboard - Customer Relationship Management",

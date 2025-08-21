@@ -72,7 +72,7 @@ const Sidebar = () => {
         {
           id: "dashboard",
           label: "Dashboard",
-          href: "/dashboard-crm",
+          href: "/",
           icon: Home,
           badge: "3",
           children: [
