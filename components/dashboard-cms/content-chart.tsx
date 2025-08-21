@@ -9,12 +9,13 @@ import {
   Tooltip,
   Legend,
   BarElement,
+  ArcElement,
 } from "chart.js"
 import { Line, Bar } from "react-chartjs-2"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useEffect, useState } from "react"
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement)
 
 const contentData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -173,8 +174,16 @@ export default function ContentChart() {
       {/* Content Performance Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Content Performance</CardTitle>
-          <CardDescription>Published articles vs. page views over time</CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Content Performance</CardTitle>
+            </div>
+            <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
+              <option>Last 12 months</option>
+              <option>Last 6 months</option>
+              <option>Last 3 months</option>
+            </select>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
@@ -186,8 +195,16 @@ export default function ContentChart() {
       {/* Content by Category Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Content by Category</CardTitle>
-          <CardDescription>Number of articles per category</CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Content by Category</CardTitle>
+            </div>
+            <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
+              <option>This year</option>
+              <option>Last year</option>
+              <option>All time</option>
+            </select>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
