@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { FileText, Eye, MessageSquare, Users, TrendingUp, TrendingDown, Calendar, ImageIcon } from "lucide-react"
+import { FileText, Eye, MessageSquare, Users, TrendingUp, TrendingDown, Calendar, ImageIcon, DollarSign, Bell } from "lucide-react"
 
 interface StatCard {
   title: string
@@ -15,51 +15,51 @@ interface StatCard {
 
 const stats: StatCard[] = [
   {
-    title: "Total Articles",
+    title: "Total Revenue",
     value: "1,247",
     change: "+12.5%",
     changeType: "increase",
-    icon: <FileText className="h-4 w-4" />,
+    icon: <DollarSign className="h-4 w-4" />,
     description: "Published articles",
   },
   {
-    title: "Page Views",
+    title: "This Month Revenue",
     value: "89.2K",
     change: "+23.1%",
     changeType: "increase",
-    icon: <Eye className="h-4 w-4" />,
+    icon: <DollarSign className="h-4 w-4" />,
     description: "This month",
   },
   {
-    title: "Comments",
+    title: "Total Average Revenue",
     value: "2,847",
     change: "+8.2%",
     changeType: "increase",
-    icon: <MessageSquare className="h-4 w-4" />,
+    icon: <DollarSign className="h-4 w-4" />,
     description: "User engagement",
   },
   {
-    title: "Authors",
+    title: "Balance Amount",
     value: "24",
     change: "-2.1%",
     changeType: "decrease",
-    icon: <Users className="h-4 w-4" />,
+    icon: <DollarSign className="h-4 w-4" />,
     description: "Active writers",
   },
   {
-    title: "Scheduled Posts",
+    title: "Total Agents",
     value: "18",
     change: "+5.3%",
     changeType: "increase",
-    icon: <Calendar className="h-4 w-4" />,
+    icon: <Users className="h-4 w-4" />,
     description: "Upcoming content",
   },
   {
-    title: "Media Files",
+    title: "Notification Alert",
     value: "3,456",
     change: "+15.7%",
     changeType: "increase",
-    icon: <ImageIcon className="h-4 w-4" />,
+    icon: <Bell className="h-4 w-4" />,
     description: "Images & videos",
   },
 ]
