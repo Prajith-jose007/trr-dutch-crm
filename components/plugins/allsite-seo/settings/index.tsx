@@ -1,4 +1,4 @@
-import Layout from "@/components/cmsfullform/layout"
+import Layout from "@/components/dutchcrm/layout"
 import { AllSiteSEOSettingsContent } from "./content"
 
 export function AllSiteSEOSettings() {

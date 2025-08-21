@@ -57,7 +57,7 @@ export default function TopNav() {
             Dashboard
           </Link>
           <span>/</span>
-          <span className="text-gray-900 dark:text-white font-medium">Dutch CRM</span>
+          <span className="text-gray-900 dark:text-white font-medium">CRM</span>
         </nav>
       </div>
 
@@ -92,8 +92,10 @@ export default function TopNav() {
         </Button>
 
         {/* Settings */}
-        <Button variant="ghost" size="sm" className="p-2">
-          <Settings className="h-4 w-4" />
+        <Button asChild variant="ghost" size="sm" className="p-2">
+          <Link href="/settings">
+            <Settings className="h-4 w-4" />
+          </Link>
         </Button>
 
         {/* Profile Dropdown */}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import Content from "@/components/dashboard-cms/content"
+import Content from "@/components/dashboard-crm/content"
 import Layout from "@/components/dutchcrm/layout"
 
 export const metadata: Metadata = {

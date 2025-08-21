@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import Layout from "@/components/cmsfullform/layout"
+import Layout from "@/components/dutchcrm/layout"
 import Content from "@/components/plugins/content"
 
 export const metadata: Metadata = {

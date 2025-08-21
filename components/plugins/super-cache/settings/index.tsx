@@ -1,4 +1,4 @@
-import Layout from "@/components/cmsfullform/layout"
+import Layout from "@/components/dutchcrm/layout"
 import { SuperCacheSettingsContent } from "./content"
 
 export function SuperCacheSettings() {

@@ -1,48 +1,95 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import type React from "react"
 import {
-  Home,
   BarChart2,
-  Users2,
-  Building2,
   Receipt,
+  Building2,
   CreditCard,
-  FileText,
+  Folder,
+  Wallet,
+  Users2,
+  Shield,
+  MessagesSquare,
   Video,
-  Layers,
-  Database,
+  Settings,
+  HelpCircle,
   ChevronDown,
-  Target,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  Activity,
-  PieChart,
-  Clock,
-  Check,
-  Star,
-  Filter,
-  UserPlus,
-  UserX,
-  MessageSquare,
+  Home,
+  ShoppingCart,
+  Package,
+  FileText,
+  Database,
   Globe,
   Mail,
   Calendar,
+  ImageIcon,
   Zap,
+  Code,
+  Layers,
+  Monitor,
+  PieChart,
+  TrendingUp,
+  Activity,
+  Target,
+  UserPlus,
+  UserX,
+  Lock,
+  Key,
+  Eye,
+  Bell,
+  MessageSquare as ChatIcon,
+  Camera,
+  Headphones,
+  Play,
+  Bookmark,
+  Tag,
+  Search,
+  Filter,
   Download,
   Upload,
-  Phone,
-  Award,
-  Users,
-  UserCheck,
+  Edit,
+  Plus,
+  Minus,
+  Check,
+  Star,
+  Map,
+  Truck,
+  Clock,
+  Timer,
+  DollarSign,
+  TrendingDown,
+  Puzzle,
   Handshake,
-  ScalingIcon as Growth,
-  InfoIcon as Analytics,
+  UserCheck,
+  Award,
+  Phone,
 } from "lucide-react"
+import Link from "next/link"
+import { useState, useEffect } from "react"
+import { cn } from "@/lib/utils"
+
+type MenuState = "full" | "collapsed" | "hidden"
+
+interface SubMenuItem {
+  id: string
+  label: string
+  href: string
+  icon?: React.ComponentType<any>
+  badge?: string
+  isNew?: boolean
+  children?: SubMenuItem[]
+}
+
+interface MenuItem {
+  id: string
+  label: string
+  href?: string
+  icon: React.ComponentType<any>
+  badge?: string
+  isNew?: boolean
+  children?: SubMenuItem[]
+}
 
 interface MenuSection {
   id: string
@@ -50,550 +97,468 @@ interface MenuSection {
   items: MenuItem[]
 }
 
-interface MenuItem {
-  id: string
-  label: string
-  href: string
-  icon: any
-  badge?: string
-  isNew?: boolean
-  children?: MenuItem[]
-}
+const menuData: MenuSection[] = [
+  {
+    id: "overview",
+    label: "Overview",
+    items: [
+      {
+        id: "dashboard",
+        label: "Dashboard",
+        href: "/",
+        icon: Home,
+      },
+      {
+        id: "analytics",
+        label: "Analytics",
+        href: "/analytics",
+        icon: BarChart2,
+        children: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/analytics/overview",
+            icon: PieChart,
+          },
+          {
+            id: "performance",
+            label: "Performance",
+            href: "/analytics/performance",
+            icon: TrendingUp,
+          },
+          {
+            id: "audience",
+            label: "Audience",
+            href: "/analytics/audience",
+            icon: Target,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "management",
+    label: "Management",
+    items: [
+      {
+        id: "customers",
+        label: "Customers",
+        href: "/customers",
+        icon: Users2,
+        children: [
+          {
+            id: "all-customers",
+            label: "All Customers",
+            href: "/customers/all",
+            icon: Users2,
+          },
+          {
+            id: "segments",
+            label: "Segments",
+            href: "/customers/segments",
+            icon: Filter,
+          },
+        ],
+      },
+      {
+        id: "deals",
+        label: "Deals",
+        href: "/deals",
+        icon: Handshake,
+        badge: "8",
+        children: [
+          {
+            id: "pipeline",
+            label: "Sales Pipeline",
+            href: "/deals/pipeline",
+            icon: TrendingUp,
+          },
+          {
+            id: "won",
+            label: "Won Deals",
+            href: "/deals/won",
+            icon: Award,
+          },
+          {
+            id: "lost",
+            label: "Lost Deals",
+            href: "/deals/lost",
+            icon: TrendingDown,
+          },
+        ],
+      },
+      {
+        id: "opportunities",
+        label: "Opportunities",
+        href: "/opportunities",
+        icon: Target,
+      },
+      {
+        id: "invoices",
+        label: "Invoices",
+        href: "/invoices",
+        icon: Receipt,
+        badge: "2",
+      },
+      {
+        id: "payments",
+        label: "Payments",
+        href: "/payments",
+        icon: CreditCard,
+      },
+    ],
+  },
 
-const Sidebar = () => {
-  const pathname = usePathname()
-  const [showText, setShowText] = useState(true)
+  {
+    id: "tools",
+    label: "Tools & Utilities",
+    items: [
+      {
+        id: "plugins",
+        label: "Plugins",
+        href: "/plugins",
+        icon: Puzzle,
+        badge: "8",
+      },
+      {
+        id: "backup",
+        label: "Backup & Restore",
+        href: "/backup",
+        icon: Database,
+      },
+    ],
+  },
+]
 
-  const menuData: MenuSection[] = [
-    {
-      id: "overview",
-      label: "Dashboard",
-      items: [
-        {
-          id: "dashboard",
-          label: "Dashboard",
-          href: "/",
-          icon: Home,
-          badge: "3",
-          children: [
-            {
-              id: "analytics",
-              label: "Analytics",
-              href: "/dashboard/analytics",
-              icon: BarChart2,
-            },
-            {
-              id: "reports",
-              label: "Reports",
-              href: "/dashboard/reports",
-              icon: FileText,
-              children: [
-                {
-                  id: "sales-reports",
-                  label: "Sales Reports",
-                  href: "/dashboard/reports/sales",
-                  icon: TrendingUp,
-                },
-                {
-                  id: "customer-reports",
-                  label: "Customer Reports",
-                  href: "/dashboard/reports/customers",
-                  icon: Users2,
-                },
-                {
-                  id: "revenue-reports",
-                  label: "Revenue Reports",
-                  href: "/dashboard/reports/revenue",
-                  icon: DollarSign,
-                },
-              ],
-            },
-            {
-              id: "real-time",
-              label: "Real-time",
-              href: "/dashboard/realtime",
-              icon: Activity,
-              isNew: true,
-            },
-          ],
-        },
-        {
-          id: "analytics",
-          label: "Analytics",
-          href: "/analytics",
-          icon: BarChart2,
-          children: [
-            {
-              id: "overview",
-              label: "Overview",
-              href: "/analytics/overview",
-              icon: PieChart,
-            },
-            {
-              id: "performance",
-              label: "Performance",
-              href: "/analytics/performance",
-              icon: TrendingUp,
-            },
-            {
-              id: "forecasting",
-              label: "Forecasting",
-              href: "/analytics/forecasting",
-              icon: Target,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "customers",
-      label: "Customer Management",
-      items: [
-        {
-          id: "customers",
-          label: "Customers",
-          href: "/customers",
-          icon: Users2,
-          children: [
-            {
-              id: "all-customers",
-              label: "All Customers",
-              href: "/customers/all",
-              icon: Users2,
-            },
-            {
-              id: "segments",
-              label: "Segments",
-              href: "/customers/segments",
-              icon: Filter,
-              children: [
-                {
-                  id: "vip",
-                  label: "VIP Customers",
-                  href: "/customers/segments/vip",
-                  icon: Star,
-                },
-                {
-                  id: "new",
-                  label: "New Customers",
-                  href: "/customers/segments/new",
-                  icon: UserPlus,
-                },
-                {
-                  id: "inactive",
-                  label: "Inactive",
-                  href: "/customers/segments/inactive",
-                  icon: UserX,
-                },
-              ],
-            },
-            {
-              id: "interactions",
-              label: "Interactions",
-              href: "/customers/interactions",
-              icon: MessageSquare,
-            },
-          ],
-        },
-        {
-          id: "leads",
-          label: "Leads",
-          href: "/leads",
-          icon: Target,
-          badge: "12",
-          children: [
-            {
-              id: "all-leads",
-              label: "All Leads",
-              href: "/leads/all",
-              icon: Target,
-            },
-            {
-              id: "qualified",
-              label: "Qualified",
-              href: "/leads/qualified",
-              icon: UserCheck,
-            },
-            {
-              id: "sources",
-              label: "Lead Sources",
-              href: "/leads/sources",
-              icon: Globe,
-            },
-          ],
-        },
-        {
-          id: "contacts",
-          label: "Contacts",
-          href: "/contacts",
-          icon: Phone,
-          children: [
-            {
-              id: "all-contacts",
-              label: "All Contacts",
-              href: "/contacts/all",
-              icon: Phone,
-            },
-            {
-              id: "companies",
-              label: "Companies",
-              href: "/contacts/companies",
-              icon: Building2,
-            },
-            {
-              id: "import",
-              label: "Import Contacts",
-              href: "/contacts/import",
-              icon: Upload,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "sales",
-      label: "Sales Management",
-      items: [
-        {
-          id: "deals",
-          label: "Deals",
-          href: "/deals",
-          icon: Handshake,
-          badge: "8",
-          children: [
-            {
-              id: "pipeline",
-              label: "Sales Pipeline",
-              href: "/deals/pipeline",
-              icon: TrendingUp,
-            },
-            {
-              id: "won",
-              label: "Won Deals",
-              href: "/deals/won",
-              icon: Award,
-            },
-            {
-              id: "lost",
-              label: "Lost Deals",
-              href: "/deals/lost",
-              icon: TrendingDown,
-            },
-          ],
-        },
-        {
-          id: "opportunities",
-          label: "Opportunities",
-          href: "/opportunities",
-          icon: Growth,
-          children: [
-            {
-              id: "active",
-              label: "Active",
-              href: "/opportunities/active",
-              icon: Activity,
-            },
-            {
-              id: "forecasting",
-              label: "Forecasting",
-              href: "/opportunities/forecasting",
-              icon: Analytics,
-            },
-          ],
-        },
-        {
-          id: "quotes",
-          label: "Quotes",
-          href: "/quotes",
-          icon: Receipt,
-          badge: "3",
-        },
-      ],
-    },
-    {
-      id: "finance",
-      label: "Finance",
-      items: [
-        {
-          id: "invoices",
-          label: "Invoices",
-          href: "/invoices",
-          icon: Receipt,
-          badge: "2",
-          children: [
-            {
-              id: "all-invoices",
-              label: "All Invoices",
-              href: "/invoices/all",
-              icon: Receipt,
-            },
-            {
-              id: "pending",
-              label: "Pending",
-              href: "/invoices/pending",
-              icon: Clock,
-            },
-            {
-              id: "paid",
-              label: "Paid",
-              href: "/invoices/paid",
-              icon: Check,
-            },
-          ],
-        },
-        {
-          id: "payments",
-          label: "Payments",
-          href: "/payments",
-          icon: CreditCard,
-          children: [
-            {
-              id: "payment-methods",
-              label: "Payment Methods",
-              href: "/payments/methods",
-              icon: CreditCard,
-            },
-            {
-              id: "payment-history",
-              label: "Payment History",
-              href: "/payments/history",
-              icon: Clock,
-            },
-          ],
-        },
-        {
-          id: "revenue",
-          label: "Revenue",
-          href: "/revenue",
-          icon: DollarSign,
-          children: [
-            {
-              id: "tracking",
-              label: "Revenue Tracking",
-              href: "/revenue/tracking",
-              icon: TrendingUp,
-            },
-            {
-              id: "forecasting",
-              label: "Forecasting",
-              href: "/revenue/forecasting",
-              icon: Target,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "team",
-      label: "Team & Communication",
-      items: [
-        {
-          id: "team",
-          label: "Team",
-          href: "/team",
-          icon: Users,
-          children: [
-            {
-              id: "members",
-              label: "Team Members",
-              href: "/team/members",
-              icon: Users,
-            },
-            {
-              id: "performance",
-              label: "Performance",
-              href: "/team/performance",
-              icon: Award,
-            },
-            {
-              id: "targets",
-              label: "Sales Targets",
-              href: "/team/targets",
-              icon: Target,
-            },
-          ],
-        },
-        {
-          id: "activities",
-          label: "Activities",
-          href: "/activities",
-          icon: Activity,
-          children: [
-            {
-              id: "tasks",
-              label: "Tasks",
-              href: "/activities/tasks",
-              icon: Check,
-            },
-            {
-              id: "meetings",
-              label: "Meetings",
-              href: "/activities/meetings",
-              icon: Video,
-            },
-            {
-              id: "calls",
-              label: "Calls",
-              href: "/activities/calls",
-              icon: Phone,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "tools",
-      label: "Tools & Settings",
-      items: [
-        {
-          id: "integrations",
-          label: "Integrations",
-          href: "/integrations",
-          icon: Layers,
-          children: [
-            {
-              id: "email",
-              label: "Email Integration",
-              href: "/integrations/email",
-              icon: Mail,
-            },
-            {
-              id: "calendar",
-              label: "Calendar",
-              href: "/integrations/calendar",
-              icon: Calendar,
-            },
-            {
-              id: "third-party",
-              label: "Third Party",
-              href: "/integrations/third-party",
-              icon: Globe,
-            },
-          ],
-        },
-        {
-          id: "automation",
-          label: "Automation",
-          href: "/automation",
-          icon: Zap,
-          isNew: true,
-          children: [
-            {
-              id: "workflows",
-              label: "Workflows",
-              href: "/automation/workflows",
-              icon: Zap,
-            },
-            {
-              id: "triggers",
-              label: "Triggers",
-              href: "/automation/triggers",
-              icon: Activity,
-            },
-          ],
-        },
-        {
-          id: "backup",
-          label: "Backup & Export",
-          href: "/backup",
-          icon: Database,
-          children: [
-            {
-              id: "backup",
-              label: "Create Backup",
-              href: "/backup/create",
-              icon: Download,
-            },
-            {
-              id: "export",
-              label: "Export Data",
-              href: "/backup/export",
-              icon: Upload,
-            },
-          ],
-        },
-      ],
-    },
-  ]
+export default function Sidebar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [menuState, setMenuState] = useState<MenuState>("full")
+  const [isHovered, setIsHovered] = useState(false)
+  const [previousDesktopState, setPreviousDesktopState] = useState<MenuState>("full")
+  const [isMobile, setIsMobile] = useState(false)
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
 
+  // Cycle through menu states: full -> collapsed -> hidden -> full
+  const toggleMenuState = () => {
+    setMenuState((prev) => {
+      switch (prev) {
+        case "full":
+          return "collapsed"
+        case "collapsed":
+          return "hidden"
+        case "hidden":
+          return "full"
+        default:
+          return "full"
+      }
+    })
+  }
+
+  // Function to set menu state from theme customizer
+  const setMenuStateFromCustomizer = (state: MenuState) => {
+    if (!isMobile) {
+      setMenuState(state)
+    }
+  }
+
+  // Handle responsive behavior
   useEffect(() => {
-    // Logic to determine if text should be shown based on pathname or other conditions
-    setShowText(pathname !== "/some-collapsed-path")
-  }, [pathname])
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 1024 // lg breakpoint
+      setIsMobile(!isDesktop)
 
-  return (
-    <div className="flex flex-col h-screen bg-white dark:bg-[#1F1F23]">
-      {/* Header */}
-      <div className="h-16 px-3 flex items-center border-b border-gray-200 dark:border-[#1F1F23]">
-        <div className="flex items-center gap-3 w-full">
-          {/* Updated logo and branding for Dutch CRM */}
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">DC</span>
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white">Dutch CRM</span>
-        </div>
-      </div>
+      if (!isDesktop) {
+        // On mobile/tablet, save current desktop state and set to hidden
+        if (menuState !== "hidden") {
+          setPreviousDesktopState(menuState)
+          setMenuState("hidden")
+        }
+      } else {
+        // On desktop, restore previous state if coming from mobile
+        if (menuState === "hidden" && previousDesktopState !== "hidden") {
+          setMenuState(previousDesktopState)
+        }
+      }
+    }
 
-      {/* Main Menu */}
-      <div className="flex flex-col flex-1">
-        {menuData.map((section) => (
-          <div key={section.id} className="px-3 py-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{section.label}</span>
-              <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            </div>
-            <div className="mt-2 space-y-1">
-              {section.items.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center p-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1F1F23]",
-                    pathname === item.href && "bg-gray-100 dark:bg-[#1F1F23]",
-                  )}
-                >
-                  {item.icon && <item.icon className="w-4 h-4 mr-2" />}
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                  {item.isNew && (
-                    <span className="ml-auto px-2 py-0.5 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                      New
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+    // Check on mount
+    handleResize()
 
-      {/* Collapsed Header */}
-      <div className="h-16 px-3 flex items-center justify-center border-t border-gray-200 dark:border-[#1F1F23]">
-        {showText ? (
-          <div className="flex items-center gap-3 w-full">
-            {/* Updated logo and branding for Dutch CRM */}
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">DC</span>
+    // Add event listener
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [menuState, previousDesktopState])
+
+  // Export functions to window for TopNav and ThemeCustomizer to access
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      ;(window as any).toggleMenuState = toggleMenuState
+      ;(window as any).menuState = menuState
+      ;(window as any).isHovered = isHovered
+      ;(window as any).isMobile = isMobile
+      ;(window as any).setIsMobileMenuOpen = setIsMobileMenuOpen
+      ;(window as any).isMobileMenuOpen = isMobileMenuOpen
+      ;(window as any).setMenuStateFromCustomizer = setMenuStateFromCustomizer
+    }
+  }, [menuState, isHovered, isMobile, isMobileMenuOpen])
+
+  function handleNavigation() {
+    if (isMobile) {
+      setIsMobileMenuOpen(false)
+    }
+  }
+
+  const toggleExpanded = (itemId: string) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId)
+      } else {
+        newSet.add(itemId)
+      }
+      return newSet
+    })
+  }
+
+  function NavItem({
+    item,
+    level = 0,
+    parentId = "",
+  }: {
+    item: MenuItem | SubMenuItem
+    level?: number
+    parentId?: string
+  }) {
+    const itemId = `${parentId}-${item.id}`
+    const isExpanded = expandedItems.has(itemId)
+    const hasChildren = item.children && item.children.length > 0
+    const showText = menuState === "full" || (menuState === "collapsed" && isHovered) || (isMobile && isMobileMenuOpen)
+    const showExpandIcon = hasChildren && showText
+
+    const paddingLeft = level === 0 ? "px-3" : level === 1 ? "pl-8 pr-3" : "pl-12 pr-3"
+
+    const content = (
+      <div
+        className={cn(
+          "flex items-center py-2 text-sm rounded-md transition-colors sidebar-menu-item hover:bg-gray-50 dark:hover:bg-[#1F1F23] relative group cursor-pointer",
+          paddingLeft,
+        )}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (hasChildren) {
+            toggleExpanded(itemId)
+          } else if (item.href) {
+            window.location.href = item.href
+            handleNavigation()
+          }
+        }}
+        title={menuState === "collapsed" && !isHovered && !isMobile ? item.label : undefined}
+      >
+        <item.icon className="h-4 w-4 flex-shrink-0 sidebar-menu-icon" />
+
+        {showText && (
+          <>
+            <span className="ml-3 flex-1 transition-opacity duration-200 sidebar-menu-text">{item.label}</span>
+
+            {/* Badges and indicators */}
+            <div className="flex items-center space-x-1">
+              {item.isNew && (
+                <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 rounded-full">
+                  New
+                </span>
+              )}
+              {item.badge && (
+                <span className="px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                  {item.badge}
+                </span>
+              )}
+              {showExpandIcon && (
+                <ChevronDown
+                  className={cn("h-3 w-3 transition-transform duration-200", isExpanded ? "rotate-180" : "rotate-0")}
+                />
+              )}
             </div>
-            <span className="text-lg font-semibold text-gray-900 dark:text-white transition-opacity duration-200">
-              Dutch CRM
-            </span>
-          </div>
-        ) : (
-          <div className="flex justify-center w-full">
-            {/* Updated collapsed logo for Dutch CRM */}
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">DC</span>
-            </div>
+          </>
+        )}
+
+        {/* Tooltip for collapsed state when not hovered and not mobile */}
+        {menuState === "collapsed" && !isHovered && !isMobile && (
+          <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+            {item.label}
+            {item.badge && <span className="ml-1 text-blue-300">({item.badge})</span>}
           </div>
         )}
       </div>
-    </div>
+    )
+
+    return (
+      <div>
+        {item.href && !hasChildren ? (
+          <Link href={item.href} onClick={(e) => e.stopPropagation()}>
+            {content}
+          </Link>
+        ) : (
+          content
+        )}
+        {hasChildren && isExpanded && showText && (
+          <div className="mt-1 space-y-1">
+            {item.children!.map((child) => (
+              <NavItem key={child.id} item={child} level={level + 1} parentId={itemId} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Calculate sidebar width - expand when collapsed and hovered, or full width on mobile
+  const getSidebarWidth = () => {
+    if (isMobile) {
+      return "w-64" // Always full width on mobile
+    }
+    if (menuState === "collapsed" && isHovered) {
+      return "w-64" // Expand to full width when hovered
+    }
+    return menuState === "collapsed" ? "w-16" : "w-64"
+  }
+
+  // Show text if menu is full OR if collapsed and hovered OR on mobile
+  const showText = menuState === "full" || (menuState === "collapsed" && isHovered) || (isMobile && isMobileMenuOpen)
+
+  // On mobile, show sidebar as overlay when isMobileMenuOpen is true
+  if (isMobile) {
+    return (
+      <>
+        {/* Mobile sidebar overlay */}
+        <nav
+          className={`
+            fixed inset-y-0 left-0 z-[70] w-64 bg-white dark:bg-[#0F0F12] 
+            border-r border-gray-200 dark:border-[#1F1F23] 
+            transform transition-transform duration-300 ease-in-out
+            ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+          `}
+        >
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <div className="h-16 px-3 flex items-center border-b border-gray-200 dark:border-[#1F1F23]">
+              <Link href="/" className="flex items-center gap-3 w-full">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-sm">DC</span>
+                </div>
+                <span className="text-lg font-semibold text-gray-900 dark:text-white">Dutch CRM</span>
+              </Link>
+            </div>
+
+            <div
+              className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 scrollbar-none"
+              style={{
+                scrollbarWidth: "none" /* Firefox */,
+                msOverflowStyle: "none" /* IE and Edge */,
+              }}
+            >
+              <div className="space-y-6">
+                {menuData.map((section) => (
+                  <div key={section.id}>
+                    <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider sidebar-section-label">
+                      {section.label}
+                    </div>
+                    <div className="space-y-1">
+                      {section.items.map((item) => (
+                        <NavItem key={item.id} item={item} parentId={section.id} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
+              <div className="space-y-1">
+                <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
+                <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {/* Mobile overlay backdrop */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[65]" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
+      </>
+    )
+  }
+
+  // Desktop sidebar
+  return (
+    <nav
+      className={`
+        fixed inset-y-0 left-0 z-[60] bg-white dark:bg-[#0F0F12] 
+        border-r border-gray-200 dark:border-[#1F1F23] transition-all duration-300 ease-in-out
+        ${menuState === "hidden" ? "w-0 border-r-0" : getSidebarWidth()}
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        overflow: menuState === "hidden" ? "hidden" : "visible",
+      }}
+    >
+      {menuState !== "hidden" && (
+        <div className="h-full flex flex-col">
+          {/* Header */}
+          <div className="h-16 px-3 flex items-center border-b border-gray-200 dark:border-[#1F1F23]">
+            {showText ? (
+              <Link href="/" className="flex items-center gap-3 w-full">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-sm">DC</span>
+                </div>
+                <span className="text-lg font-semibold text-gray-900 dark:text-white transition-opacity duration-200">
+                  Dutch CRM
+                </span>
+              </Link>
+            ) : (
+              <div className="flex justify-center w-full">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-sm">DC</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 scrollbar-none"
+            style={{
+              scrollbarWidth: "none" /* Firefox */,
+              msOverflowStyle: "none" /* IE and Edge */,
+            }}
+          >
+            <div className="space-y-6">
+              {menuData.map((section) => (
+                <div key={section.id}>
+                  {showText && (
+                    <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider sidebar-section-label transition-opacity duration-200">
+                      {section.label}
+                    </div>
+                  )}
+                  <div className="space-y-1">
+                    {section.items.map((item) => (
+                      <NavItem key={item.id} item={item} parentId={section.id} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
+            <div className="space-y-1">
+              <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
+              <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   )
 }
-
-export default Sidebar
