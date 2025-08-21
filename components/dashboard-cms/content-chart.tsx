@@ -21,14 +21,14 @@ const contentData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
-      label: "Articles Published",
+      label: "Private",
       data: [45, 52, 48, 61, 55, 67, 73, 69, 76, 82, 78, 85],
       borderColor: "rgb(59, 130, 246)",
       backgroundColor: "rgba(59, 130, 246, 0.1)",
       tension: 0.4,
     },
     {
-      label: "Page Views (K)",
+      label: "Shared",
       data: [12, 15, 13, 18, 16, 22, 25, 23, 28, 32, 29, 35],
       borderColor: "rgb(16, 185, 129)",
       backgroundColor: "rgba(16, 185, 129, 0.1)",
@@ -176,7 +176,7 @@ export default function ContentChart() {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Content Performance</CardTitle>
+              <CardTitle>Performance</CardTitle>
             </div>
             <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
               <option>Last 12 months</option>
