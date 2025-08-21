@@ -26,7 +26,7 @@ export default function CMSDashboardContent() {
             New Lead
           </button>
           <button className="px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium">
-            Add New Bookings
+            Add New Bookings.
           </button>
         </div>
       </div>
