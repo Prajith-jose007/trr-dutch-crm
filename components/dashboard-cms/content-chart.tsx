@@ -12,6 +12,7 @@ import {
 } from "chart.js"
 import { Line, Bar } from "react-chartjs-2"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect, useState } from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement)
 
@@ -157,9 +158,14 @@ const mobileChartOptions = {
 
 export default function ContentChart() {
   const [isClient, setIsClient] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
+    const checkMobile = () => setIsMobile(window.innerWidth < 640)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   return (
@@ -172,7 +178,7 @@ export default function ContentChart() {
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
-            {isClient && <Line data={contentData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />}
+            {isClient && <Line data={contentData} options={isMobile ? mobileChartOptions : chartOptions} />}
           </div>
         </CardContent>
       </Card>
@@ -185,7 +191,7 @@ export default function ContentChart() {
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
-            {isClient && <Bar data={categoryData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />}
+            {isClient && <Bar data={categoryData} options={isMobile ? mobileChartOptions : chartOptions} />}
           </div>
         </CardContent>
       </Card>
