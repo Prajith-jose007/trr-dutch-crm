@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import Content from "@/components/dashboard-crm/content"
+import Content from "@/components/dashboard-cms/content"
 import Layout from "@/components/dutchcrm/layout"
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Dutch CRM dashboard built with Next.js and Tailwind CSS for managing customers, sales, and business relationships",
 }
 
-export default function DashboardCRMPage() {
+export default function DashboardPage() {
   return (
     <Layout>
       <Content />
