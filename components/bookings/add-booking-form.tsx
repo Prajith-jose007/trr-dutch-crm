@@ -65,7 +65,11 @@ export function AddBookingForm() {
     const calculateCommission = useCallback(() => {
         const net = totalAmount - (totalAmount * (discount / 100));
         setNetAmount(net);
-        setCommission(net * 0.10); // Assuming 10% commission on net amount
+        if (discount === 0) {
+            setCommission(0);
+        } else {
+            setCommission(net * 0.10); // Assuming 10% commission on net amount
+        }
     }, [totalAmount, discount]);
 
     useEffect(() => {
