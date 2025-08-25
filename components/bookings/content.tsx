@@ -58,6 +58,10 @@ const bookingsData = [
   // Add more sample data as needed
 ];
 
+function AED() {
+  return <span style={{fontFamily: 'UAEDirham'}}>&#x00EA;</span>
+}
+
 export default function BookingsContent() {
   const [searchTerm, setSearchTerm] = useState("")
 
@@ -232,13 +236,13 @@ export default function BookingsContent() {
                     <TableCell className="whitespace-nowrap">{booking.hrChtrQty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.totalCount}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.addonPack}</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.totalAmt.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.rate.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.totalAmt.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.rate.toLocaleString()}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.discount}%</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.commission.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.netAmt.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.paid.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap">AED {booking.balance.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.commission.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.netAmt.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.paid.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.balance.toLocaleString()}</TableCell>
                     <TableCell className="whitespace-nowrap max-w-xs truncate">{booking.note}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.createdBy}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.modifiedBy}</TableCell>
