@@ -9,6 +9,10 @@ import {
   ArrowRight,
 } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface Transaction {
   id: string
   title: string
@@ -29,7 +33,7 @@ const TRANSACTIONS: Transaction[] = [
   {
     id: "1",
     title: "Apple Store Purchase",
-    amount: "$999.00",
+    amount: "999.00",
     type: "outgoing",
     category: "shopping",
     icon: ShoppingCart,
@@ -39,7 +43,7 @@ const TRANSACTIONS: Transaction[] = [
   {
     id: "2",
     title: "Salary Deposit",
-    amount: "$4,500.00",
+    amount: "4,500.00",
     type: "incoming",
     category: "transport",
     icon: Wallet,
@@ -49,7 +53,7 @@ const TRANSACTIONS: Transaction[] = [
   {
     id: "3",
     title: "Netflix Subscription",
-    amount: "$15.99",
+    amount: "15.99",
     type: "outgoing",
     category: "entertainment",
     icon: CreditCard,
@@ -59,7 +63,7 @@ const TRANSACTIONS: Transaction[] = [
   {
     id: "4",
     title: "Supabase Subscription",
-    amount: "$15.99",
+    amount: "15.99",
     type: "outgoing",
     category: "entertainment",
     icon: CreditCard,
@@ -69,7 +73,7 @@ const TRANSACTIONS: Transaction[] = [
   {
     id: "5",
     title: "Vercel Subscription",
-    amount: "$15.99",
+    amount: "15.99",
     type: "outgoing",
     category: "entertainment",
     icon: CreditCard,
@@ -135,6 +139,7 @@ export default function List02({ transactions = TRANSACTIONS, className }: List0
                     )}
                   >
                     {transaction.type === "incoming" ? "+" : "-"}
+                    <AED />
                     {transaction.amount}
                   </span>
                   {transaction.type === "incoming" ? (

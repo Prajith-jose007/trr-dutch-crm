@@ -3,6 +3,10 @@
 import Image from "next/image"
 import { TrendingUp, TrendingDown } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface Product {
   id: string
   name: string
@@ -19,7 +23,7 @@ const products: Product[] = [
     name: "iPhone 15 Pro",
     category: "Smartphones",
     sales: 1234,
-    revenue: "$1,234,000",
+    revenue: "1,234,000",
     change: 12.5,
     image: "/placeholder.svg?height=48&width=48",
   },
@@ -28,7 +32,7 @@ const products: Product[] = [
     name: "MacBook Air M2",
     category: "Laptops",
     sales: 856,
-    revenue: "$856,000",
+    revenue: "856,000",
     change: 8.2,
     image: "/placeholder.svg?height=48&width=48",
   },
@@ -37,7 +41,7 @@ const products: Product[] = [
     name: "AirPods Pro",
     category: "Audio",
     sales: 2341,
-    revenue: "$468,200",
+    revenue: "468,200",
     change: -2.1,
     image: "/placeholder.svg?height=48&width=48",
   },
@@ -46,7 +50,7 @@ const products: Product[] = [
     name: "iPad Pro 12.9",
     category: "Tablets",
     sales: 567,
-    revenue: "$567,000",
+    revenue: "567,000",
     change: 15.3,
     image: "/placeholder.svg?height=48&width=48",
   },
@@ -55,7 +59,7 @@ const products: Product[] = [
     name: "Apple Watch Ultra",
     category: "Wearables",
     sales: 432,
-    revenue: "$345,600",
+    revenue: "345,600",
     change: 5.7,
     image: "/placeholder.svg?height=48&width=48",
   },
@@ -95,7 +99,9 @@ export default function TopProducts() {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900 dark:text-white">{product.revenue}</p>
+              <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <AED /> {product.revenue}
+              </p>
               <div className="flex items-center justify-end space-x-1">
                 <span className="text-xs text-gray-500 dark:text-gray-400">{product.sales} sold</span>
                 <div className="flex items-center">

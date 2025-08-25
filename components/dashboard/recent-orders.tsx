@@ -3,6 +3,10 @@
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface Order {
   id: string
   customer: {
@@ -25,7 +29,7 @@ const orders: Order[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     product: "iPhone 15 Pro",
-    amount: "$1,299.00",
+    amount: "1,299.00",
     status: "delivered",
     date: "2 hours ago",
   },
@@ -37,7 +41,7 @@ const orders: Order[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     product: "MacBook Air M2",
-    amount: "$1,199.00",
+    amount: "1,199.00",
     status: "processing",
     date: "4 hours ago",
   },
@@ -49,7 +53,7 @@ const orders: Order[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     product: "AirPods Pro",
-    amount: "$249.00",
+    amount: "249.00",
     status: "shipped",
     date: "6 hours ago",
   },
@@ -61,7 +65,7 @@ const orders: Order[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     product: "iPad Pro 12.9",
-    amount: "$1,099.00",
+    amount: "1,099.00",
     status: "pending",
     date: "8 hours ago",
   },
@@ -73,7 +77,7 @@ const orders: Order[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     product: "Apple Watch Ultra",
-    amount: "$799.00",
+    amount: "799.00",
     status: "cancelled",
     date: "1 day ago",
   },
@@ -121,7 +125,9 @@ export default function RecentOrders() {
             <div className="flex items-center space-x-4">
               <Badge className={`${statusColors[order.status]} border-0`}>{order.status}</Badge>
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{order.amount}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <AED /> {order.amount}
+                </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{order.date}</p>
               </div>
             </div>

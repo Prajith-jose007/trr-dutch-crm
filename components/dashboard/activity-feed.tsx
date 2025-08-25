@@ -4,6 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingCart, User, Package, CreditCard, Star } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface Activity {
   id: string
   type: "order" | "user" | "product" | "payment" | "review"
@@ -33,7 +37,7 @@ const activities: Activity[] = [
       avatar: "/placeholder.svg?height=32&width=32",
     },
     metadata: {
-      amount: "$1,299.00",
+      amount: "1,299.00",
     },
   },
   {
@@ -68,7 +72,7 @@ const activities: Activity[] = [
     description: "Payment for order #3208 completed",
     time: "2 hours ago",
     metadata: {
-      amount: "$249.00",
+      amount: "249.00",
       status: "success",
     },
   },
@@ -165,7 +169,7 @@ export default function ActivityFeed() {
                 <div className="flex items-center space-x-2">
                   {activity.metadata?.amount && (
                     <Badge variant="outline" className="text-xs">
-                      {activity.metadata.amount}
+                      <AED /> {activity.metadata.amount}
                     </Badge>
                   )}
                   {activity.metadata?.rating && (

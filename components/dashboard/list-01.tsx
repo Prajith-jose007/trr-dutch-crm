@@ -1,6 +1,10 @@
 import { cn } from "@/lib/utils"
 import { ArrowUpRight, ArrowDownLeft, Wallet, SendHorizontal, QrCode, Plus, ArrowRight, CreditCard } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface AccountItem {
   id: string
   title: string
@@ -20,33 +24,33 @@ const ACCOUNTS: AccountItem[] = [
     id: "1",
     title: "Main Savings",
     description: "Personal savings",
-    balance: "$8,459.45",
+    balance: "8,459.45",
     type: "savings",
   },
   {
     id: "2",
     title: "Checking Account",
     description: "Daily expenses",
-    balance: "$2,850.00",
+    balance: "2,850.00",
     type: "checking",
   },
   {
     id: "3",
     title: "Investment Portfolio",
     description: "Stock & ETFs",
-    balance: "$15,230.80",
+    balance: "15,230.80",
     type: "investment",
   },
   {
     id: "4",
     title: "Credit Card",
     description: "Pending charges",
-    balance: "$1,200.00",
+    balance: "1,200.00",
     type: "debt",
   },
 ]
 
-export default function List01({ totalBalance = "$26,540.25", accounts = ACCOUNTS, className }: List01Props) {
+export default function List01({ totalBalance = "26,540.25", accounts = ACCOUNTS, className }: List01Props) {
   return (
     <div
       className={cn(
@@ -60,7 +64,9 @@ export default function List01({ totalBalance = "$26,540.25", accounts = ACCOUNT
       {/* Total Balance Section */}
       <div className="p-3 sm:p-4 border-b border-zinc-100 dark:border-zinc-800">
         <p className="text-xs text-zinc-600 dark:text-zinc-400">Total Balance</p>
-        <h1 className="text-xl sm:text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{totalBalance}</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <AED /> {totalBalance}
+        </h1>
       </div>
 
       {/* Accounts List */}
@@ -107,7 +113,9 @@ export default function List01({ totalBalance = "$26,540.25", accounts = ACCOUNT
               </div>
 
               <div className="text-right flex-shrink-0">
-                <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">{account.balance}</span>
+                <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
+                  <AED /> {account.balance}
+                </span>
               </div>
             </div>
           ))}
