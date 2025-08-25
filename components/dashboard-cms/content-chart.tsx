@@ -177,9 +177,10 @@ export default function ContentChart() {
               <CardTitle>Performance</CardTitle>
             </div>
             <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
-              <option>Last 12 months</option>
-              <option>Last 6 months</option>
-              <option>Last 3 months</option>
+              <option>This Month</option>
+              <option>Last 6 Months</option>
+              <option>This Year</option>
+              <option>Last Year</option>
             </select>
           </div>
         </CardHeader>
@@ -199,9 +200,10 @@ export default function ContentChart() {
               <CardDescription>Booking performance by vendor</CardDescription>
             </div>
             <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
-              <option>This year</option>
-              <option>Last year</option>
-              <option>All time</option>
+              <option>This Month</option>
+              <option>Last 6 Months</option>
+              <option>This Year</option>
+              <option>Last Year</option>
             </select>
           </div>
         </CardHeader>
