@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Line, LineChart } from "recharts"
-import { TrendingUp, Euro, Target, Calendar, Plus, Activity } from "lucide-react"
+import { TrendingUp, Target, Calendar, Plus, Activity, DollarSign } from "lucide-react"
 import Link from "next/link"
 
 const opportunityStats = [
@@ -25,10 +25,10 @@ const opportunityStats = [
   },
   {
     title: "Expected Revenue",
-    value: "€1.8M",
+    value: "AED 1.8M",
     change: "+15.3%",
     changeType: "increase" as const,
-    icon: Euro,
+    icon: DollarSign,
   },
   {
     title: "Avg. Close Time",
@@ -243,7 +243,7 @@ export default function OpportunitiesContent() {
                   </div>
                 </div>
                 <div className="text-right space-y-1">
-                  <div className="font-semibold">€{opportunity.value.toLocaleString()}</div>
+                  <div className="font-semibold">AED {opportunity.value.toLocaleString()}</div>
                   <Badge className={getStageColor(opportunity.stage)}>{opportunity.stage}</Badge>
                   <div className="text-xs text-gray-500">{opportunity.probability}% probability</div>
                   <div className="text-xs text-gray-500">{opportunity.createdDate}</div>

@@ -15,16 +15,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, Filter, MoreHorizontal, Plus, Euro, Calendar, Eye, Edit, Trash2, TrendingUp } from "lucide-react"
+import { Search, Filter, MoreHorizontal, Plus, Calendar, Eye, Edit, Trash2, TrendingUp, DollarSign } from "lucide-react"
 import Link from "next/link"
 
 const dealStats = [
   {
     title: "Total Pipeline Value",
-    value: "€2.4M",
+    value: "AED 2.4M",
     change: "+15.3%",
     changeType: "increase" as const,
-    icon: Euro,
+    icon: DollarSign,
   },
   {
     title: "Active Deals",
@@ -42,10 +42,10 @@ const dealStats = [
   },
   {
     title: "Average Deal Size",
-    value: "€27K",
+    value: "AED 27K",
     change: "+5.1%",
     changeType: "increase" as const,
-    icon: Euro,
+    icon: DollarSign,
   },
 ]
 
@@ -302,7 +302,7 @@ export default function DealsContent() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="font-semibold">€{deal.value.toLocaleString()}</div>
+                    <div className="font-semibold">AED {deal.value.toLocaleString()}</div>
                   </TableCell>
                   <TableCell>
                     <Badge className={getStageColor(deal.stage)}>{deal.stage}</Badge>

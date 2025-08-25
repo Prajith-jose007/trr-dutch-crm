@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Target, TrendingUp, TrendingDown, Calendar, Euro } from "lucide-react"
+import { Target, TrendingUp, TrendingDown, Calendar, DollarSign } from "lucide-react"
 
 const salesTargets = [
   {
@@ -132,7 +132,7 @@ export default function SalesTargets() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>
-                        €{target.achieved.toLocaleString()} / €{target.target.toLocaleString()}
+                        AED {target.achieved.toLocaleString()} / AED {target.target.toLocaleString()}
                       </span>
                       <span className="font-medium">{target.percentage}%</span>
                     </div>
@@ -143,8 +143,8 @@ export default function SalesTargets() {
                         <span>{target.daysLeft} days left</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <Euro className="h-3 w-3" />
-                        <span>€{(target.target - target.achieved).toLocaleString()} remaining</span>
+                        <DollarSign className="h-3 w-3" />
+                        <span>AED {(target.target - target.achieved).toLocaleString()} remaining</span>
                       </div>
                     </div>
                   </div>
@@ -172,8 +172,8 @@ export default function SalesTargets() {
                     <div className="space-y-1">
                       <Progress value={member.percentage} className="h-1.5" />
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>€{member.achieved.toLocaleString()}</span>
-                        <span>€{member.target.toLocaleString()}</span>
+                        <span>AED {member.achieved.toLocaleString()}</span>
+                        <span>AED {member.target.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>

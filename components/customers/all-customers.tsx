@@ -281,7 +281,7 @@ export default function AllCustomersContent() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="font-semibold">€{customer.revenue.toLocaleString()}</div>
+                    <div className="font-semibold">AED {customer.revenue.toLocaleString()}</div>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{customer.deals} deals</Badge>

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Plus, Euro, Calendar, Building2, TrendingUp } from "lucide-react"
+import { Plus, Calendar, Building2, TrendingUp, DollarSign } from "lucide-react"
 import Link from "next/link"
 
 const pipelineStages = [
@@ -193,9 +193,9 @@ export default function PipelineContent() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between space-y-0 pb-2">
               <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Pipeline Value</h3>
-              <Euro className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <DollarSign className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">€{totalValue.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">AED {totalValue.toLocaleString()}</div>
           </CardContent>
         </Card>
         <Card>
@@ -211,10 +211,10 @@ export default function PipelineContent() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between space-y-0 pb-2">
               <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Average Deal Size</h3>
-              <Euro className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <DollarSign className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              €{Math.round(totalValue / totalDeals).toLocaleString()}
+              AED {Math.round(totalValue / totalDeals).toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -238,7 +238,7 @@ export default function PipelineContent() {
                 <CardTitle className="text-sm font-medium">{stage.name}</CardTitle>
                 <Badge className={stage.color}>{stage.count}</Badge>
               </div>
-              <CardDescription className="text-xs">€{stage.value.toLocaleString()}</CardDescription>
+              <CardDescription className="text-xs">AED {stage.value.toLocaleString()}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {dealsByStage[stage.id as keyof typeof dealsByStage]?.map((deal) => (
@@ -256,7 +256,7 @@ export default function PipelineContent() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <div className="text-sm font-semibold text-green-600">€{deal.value.toLocaleString()}</div>
+                      <div className="text-sm font-semibold text-green-600">AED {deal.value.toLocaleString()}</div>
                       <span className={`text-xs font-medium ${getProbabilityColor(deal.probability)}`}>
                         {deal.probability}%
                       </span>

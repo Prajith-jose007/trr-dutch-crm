@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { TrendingUp, TrendingDown, Users, Target, DollarSign, Phone } from "lucide-react"
+import { TrendingUp, TrendingDown, Users, Target, Phone, DollarSign } from "lucide-react"
 
 interface StatCard {
   title: string
@@ -28,7 +28,7 @@ const crmStats: StatCard[] = [
   },
   {
     title: "Revenue Pipeline",
-    value: "€284,500",
+    value: "AED 284,500",
     change: "+15.3%",
     changeType: "increase",
     icon: <DollarSign className="h-4 w-4" />,

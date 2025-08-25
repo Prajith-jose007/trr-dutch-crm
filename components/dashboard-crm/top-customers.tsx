@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Building2, Euro, TrendingUp, Star } from "lucide-react"
+import { Building2, TrendingUp, Star, DollarSign } from "lucide-react"
 
 const topCustomers = [
   {
@@ -106,8 +106,8 @@ export default function TopCustomers() {
               </div>
               <div className="text-right space-y-1">
                 <div className="flex items-center space-x-2">
-                  <Euro className="h-4 w-4 text-green-600" />
-                  <span className="font-semibold">€{customer.revenue.toLocaleString()}</span>
+                  <DollarSign className="h-4 w-4 text-green-600" />
+                  <span className="font-semibold">AED {customer.revenue.toLocaleString()}</span>
                 </div>
                 <div
                   className={`flex items-center space-x-1 text-sm ${
