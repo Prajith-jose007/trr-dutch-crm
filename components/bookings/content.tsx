@@ -109,7 +109,7 @@ export default function BookingsContent() {
           <Button asChild>
             <Link href="/shared/bookings/add">
               <Plus className="h-4 w-4 mr-2" />
-              Add Shared Booking
+              Add Booking
             </Link>
           </Button>
         </div>
@@ -275,3 +275,5 @@ export default function BookingsContent() {
     </div>
   )
 }
+
+    
