@@ -55,10 +55,10 @@ const packages = [
 ];
 
 const agents = [
-  { id: "AGT-001", name: "John Doe" },
-  { id: "AGT-002", name: "Jane Smith" },
-  { id: "AGT-003", name: "Peter Jones" },
-  { id: "AGT-004", name: "Aminoff" },
+    { id: "AGT-001", name: "John Doe" },
+    { id: "AGT-002", name: "Jane Smith" },
+    { id: "AGT-003", name: "Peter Jones" },
+    { id: "AGT-004", name: "Aminoff" },
 ];
 
 
@@ -364,3 +364,5 @@ export function AddBookingForm() {
         </div>
     );
 }
+
+    
