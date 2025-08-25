@@ -3,15 +3,20 @@
 import { TrendingUp, TrendingDown, DollarSign, ShoppingCart, Users, Package } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 export function OverviewStats() {
   const stats = [
     {
       title: "Total Revenue",
-      value: "$847,392",
+      value: "847,392",
       change: "+12.5%",
       trend: "up",
       icon: DollarSign,
       description: "vs last month",
+      isCurrency: true,
     },
     {
       title: "Total Orders",
@@ -48,7 +53,9 @@ export function OverviewStats() {
             <stat.icon className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              {stat.isCurrency && <AED />} {stat.value}
+            </div>
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
               {stat.trend === "up" ? (
                 <TrendingUp className="mr-1 h-3 w-3 text-green-500" />

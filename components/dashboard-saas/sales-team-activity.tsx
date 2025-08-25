@@ -4,16 +4,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Users, MessageSquare, Phone, Mail } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 export function SalesTeamActivity() {
   const activities = [
     {
       user: "Sarah Johnson",
       avatar: "/placeholder.svg?height=32&width=32",
       action: "Closed deal with TechCorp",
-      value: "$15,000",
+      value: "15,000",
       time: "5 min ago",
       icon: MessageSquare,
       color: "text-green-600",
+      isCurrency: true,
     },
     {
       user: "Mike Chen",
@@ -28,10 +33,11 @@ export function SalesTeamActivity() {
       user: "Emma Wilson",
       avatar: "/placeholder.svg?height=32&width=32",
       action: "Sent proposal",
-      value: "$8,500 potential",
+      value: "8,500 potential",
       time: "25 min ago",
       icon: Mail,
       color: "text-purple-600",
+      isCurrency: true,
     },
     {
       user: "David Brown",
@@ -87,7 +93,9 @@ export function SalesTeamActivity() {
                   <activity.icon className={`mr-2 h-3 w-3 ${activity.color}`} />
                   <span className="text-sm text-gray-600 dark:text-gray-300">{activity.action}</span>
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activity.value}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  {activity.isCurrency && <AED />} {activity.value}
+                </div>
               </div>
             </div>
           ))}

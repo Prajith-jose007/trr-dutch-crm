@@ -4,13 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingCart } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 export function RecentOrders() {
   const orders = [
     {
       id: "#ORD-001",
       customer: "John Smith",
       channel: "Website",
-      amount: "$124.99",
+      amount: "124.99",
       status: "completed",
       time: "2 min ago",
     },
@@ -18,7 +22,7 @@ export function RecentOrders() {
       id: "#ORD-002",
       customer: "Sarah Johnson",
       channel: "Amazon",
-      amount: "$89.50",
+      amount: "89.50",
       status: "processing",
       time: "5 min ago",
     },
@@ -26,7 +30,7 @@ export function RecentOrders() {
       id: "#ORD-003",
       customer: "Mike Chen",
       channel: "eBay",
-      amount: "$234.00",
+      amount: "234.00",
       status: "shipped",
       time: "12 min ago",
     },
@@ -34,7 +38,7 @@ export function RecentOrders() {
       id: "#ORD-004",
       customer: "Emma Wilson",
       channel: "Shopify",
-      amount: "$67.25",
+      amount: "67.25",
       status: "pending",
       time: "18 min ago",
     },
@@ -42,7 +46,7 @@ export function RecentOrders() {
       id: "#ORD-005",
       customer: "David Brown",
       channel: "Facebook",
-      amount: "$156.80",
+      amount: "156.80",
       status: "completed",
       time: "25 min ago",
     },
@@ -82,7 +86,9 @@ export function RecentOrders() {
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-medium text-gray-900 dark:text-white">{order.id}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">{order.amount}</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    <AED /> {order.amount}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600 dark:text-gray-300">{order.customer}</span>
