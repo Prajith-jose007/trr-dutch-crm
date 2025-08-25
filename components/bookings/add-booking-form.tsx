@@ -54,6 +54,14 @@ const packages = [
     }
 ];
 
+const agents = [
+  { id: "AGT-001", name: "John Doe" },
+  { id: "AGT-002", name: "Jane Smith" },
+  { id: "AGT-003", name: "Peter Jones" },
+  { id: "AGT-004", name: "Aminoff" },
+];
+
+
 const initialQuantities = {
     dinner_child: 0,
     dinner_adult: 0,
@@ -215,10 +223,18 @@ export function AddBookingForm() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="agent-name">Agent Name</Label>
-                                 <div className="relative">
-                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="agent-name" placeholder="e.g., Jane Smith" className="pl-10" />
-                                </div>
+                                 <Select>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select an agent" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {agents.map(agent => (
+                                            <SelectItem key={agent.id} value={agent.id}>
+                                                {agent.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
 

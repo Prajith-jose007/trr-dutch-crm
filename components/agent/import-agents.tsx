@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload, FileText, Download, UserPlus, FileUp, Users } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "../ui/badge";
@@ -21,6 +21,8 @@ export function ImportAgents() {
   const [dragActive, setDragActive] = useState(false);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
+  const { toast: showToast } = useToast();
+
 
   const resetState = () => {
     setFile(null);
@@ -57,7 +59,7 @@ export function ImportAgents() {
         setFile(selectedFile);
         parseCSV(selectedFile);
       } else {
-        toast({
+        showToast({
           title: "Invalid file type",
           description: "Please upload a CSV file.",
           variant: "destructive",
@@ -86,7 +88,7 @@ export function ImportAgents() {
       setFile(droppedFile);
       parseCSV(droppedFile);
     } else {
-      toast({
+      showToast({
         title: "Invalid file type",
         description: "Please upload a CSV file.",
         variant: "destructive",
@@ -103,7 +105,7 @@ export function ImportAgents() {
     // Simulate API call for upload
     setTimeout(() => {
       setIsUploading(false);
-      toast({
+      showToast({
         title: "Import Successful",
         description: `${agents.length} agents from ${file.name} have been added.`,
       });
