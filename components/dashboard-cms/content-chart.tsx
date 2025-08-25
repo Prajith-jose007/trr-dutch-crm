@@ -37,21 +37,28 @@ const contentData = {
   ],
 }
 
-const growthData = {
-  labels: ["January", "February", "March", "April", "May", "June"],
+const vendorBookingData = {
+  labels: ["Vendor A", "Vendor B", "Vendor C", "Vendor D", "Vendor E", "Vendor F"],
   datasets: [
     {
-      label: "Private",
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: "rgba(59, 130, 246, 0.8)",
-      borderColor: "rgb(59, 130, 246)",
-      borderWidth: 1,
-    },
-    {
-      label: "Shared",
-      data: [8, 15, 5, 8, 4, 6],
-      backgroundColor: "rgba(16, 185, 129, 0.8)",
-      borderColor: "rgb(16, 185, 129)",
+      label: "Bookings",
+      data: [65, 59, 80, 81, 56, 55],
+      backgroundColor: [
+        "rgba(255, 99, 132, 0.8)",
+        "rgba(54, 162, 235, 0.8)",
+        "rgba(255, 206, 86, 0.8)",
+        "rgba(75, 192, 192, 0.8)",
+        "rgba(153, 102, 255, 0.8)",
+        "rgba(255, 159, 64, 0.8)",
+      ],
+      borderColor: [
+        "rgba(255, 99, 132, 1)",
+        "rgba(54, 162, 235, 1)",
+        "rgba(255, 206, 86, 1)",
+        "rgba(75, 192, 192, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 159, 64, 1)",
+      ],
       borderWidth: 1,
     },
   ],
@@ -183,13 +190,13 @@ export default function ContentChart() {
         </CardContent>
       </Card>
 
-      {/* Growth Chart */}
+      {/* Vendor Booking Chart */}
       <Card>
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Growth</CardTitle>
-              <CardDescription>Booking growth over the last months</CardDescription>
+              <CardTitle>Vendor Bookings</CardTitle>
+              <CardDescription>Booking performance by vendor</CardDescription>
             </div>
             <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
               <option>This year</option>
@@ -200,7 +207,7 @@ export default function ContentChart() {
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
-            {isClient && <Bar data={growthData} options={isMobile ? mobileChartOptions : chartOptions} />}
+            {isClient && <Bar data={vendorBookingData} options={isMobile ? mobileChartOptions : chartOptions} />}
           </div>
         </CardContent>
       </Card>
