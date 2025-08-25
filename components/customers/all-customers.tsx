@@ -161,6 +161,10 @@ const getStatusColor = (status: string) => {
   }
 }
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 export default function AllCustomersContent() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterTier, setFilterTier] = useState("all")
@@ -281,7 +285,9 @@ export default function AllCustomersContent() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="font-semibold">AED {customer.revenue.toLocaleString()}</div>
+                    <div className="font-semibold">
+                      <AED /> {customer.revenue.toLocaleString()}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{customer.deals} deals</Badge>

@@ -5,6 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Building2, TrendingUp, Star, DollarSign } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const topCustomers = [
   {
     id: 1,
@@ -107,7 +111,9 @@ export default function TopCustomers() {
               <div className="text-right space-y-1">
                 <div className="flex items-center space-x-2">
                   <DollarSign className="h-4 w-4 text-green-600" />
-                  <span className="font-semibold">AED {customer.revenue.toLocaleString()}</span>
+                  <span className="font-semibold">
+                    <AED /> {customer.revenue.toLocaleString()}
+                  </span>
                 </div>
                 <div
                   className={`flex items-center space-x-1 text-sm ${

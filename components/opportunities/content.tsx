@@ -8,6 +8,10 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Line, LineChart } fro
 import { TrendingUp, Target, Calendar, Plus, Activity, DollarSign } from "lucide-react"
 import Link from "next/link"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const opportunityStats = [
   {
     title: "Open Opportunities",
@@ -25,7 +29,8 @@ const opportunityStats = [
   },
   {
     title: "Expected Revenue",
-    value: "AED 1.8M",
+    value: "1.8M",
+    isCurrency: true,
     change: "+15.3%",
     changeType: "increase" as const,
     icon: DollarSign,
@@ -148,7 +153,9 @@ export default function OpportunitiesContent() {
                 <stat.icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
               </div>
               <div className="space-y-1">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {stat.isCurrency && <AED />} {stat.value}
+                </div>
                 <div className="flex items-center text-xs">
                   <TrendingUp
                     className={`h-3 w-3 mr-1 ${stat.changeType === "increase" ? "text-green-500" : "text-red-500 rotate-180"}`}
@@ -243,7 +250,9 @@ export default function OpportunitiesContent() {
                   </div>
                 </div>
                 <div className="text-right space-y-1">
-                  <div className="font-semibold">AED {opportunity.value.toLocaleString()}</div>
+                  <div className="font-semibold">
+                    <AED /> {opportunity.value.toLocaleString()}
+                  </div>
                   <Badge className={getStageColor(opportunity.stage)}>{opportunity.stage}</Badge>
                   <div className="text-xs text-gray-500">{opportunity.probability}% probability</div>
                   <div className="text-xs text-gray-500">{opportunity.createdDate}</div>

@@ -3,12 +3,17 @@
 import type React from "react"
 import { TrendingUp, TrendingDown, Users, Target, Phone, DollarSign } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface StatCard {
   title: string
   value: string
   change: string
   changeType: "increase" | "decrease"
   icon: React.ReactNode
+  isCurrency?: boolean
 }
 
 const crmStats: StatCard[] = [
@@ -28,10 +33,11 @@ const crmStats: StatCard[] = [
   },
   {
     title: "Revenue Pipeline",
-    value: "AED 284,500",
+    value: "284,500",
     change: "+15.3%",
     changeType: "increase",
     icon: <DollarSign className="h-4 w-4" />,
+    isCurrency: true,
   },
   {
     title: "Conversion Rate",
@@ -55,7 +61,9 @@ export default function OverviewStats() {
             <div className="text-gray-600 dark:text-gray-400 flex-shrink-0">{stat.icon}</div>
           </div>
           <div className="space-y-1">
-            <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">{stat.value}</div>
+            <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
+              {stat.isCurrency && <AED />} {stat.value}
+            </div>
             <div className="flex items-center text-xs">
               {stat.changeType === "increase" ? (
                 <TrendingUp className="h-3 w-3 text-green-500 mr-1 flex-shrink-0" />

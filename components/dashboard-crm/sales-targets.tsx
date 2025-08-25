@@ -5,6 +5,10 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Target, TrendingUp, TrendingDown, Calendar, DollarSign } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const salesTargets = [
   {
     id: 1,
@@ -132,7 +136,7 @@ export default function SalesTargets() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>
-                        AED {target.achieved.toLocaleString()} / AED {target.target.toLocaleString()}
+                        <AED /> {target.achieved.toLocaleString()} / <AED /> {target.target.toLocaleString()}
                       </span>
                       <span className="font-medium">{target.percentage}%</span>
                     </div>
@@ -144,7 +148,9 @@ export default function SalesTargets() {
                       </div>
                       <div className="flex items-center space-x-1">
                         <DollarSign className="h-3 w-3" />
-                        <span>AED {(target.target - target.achieved).toLocaleString()} remaining</span>
+                        <span>
+                          <AED /> {(target.target - target.achieved).toLocaleString()} remaining
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -172,8 +178,12 @@ export default function SalesTargets() {
                     <div className="space-y-1">
                       <Progress value={member.percentage} className="h-1.5" />
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>AED {member.achieved.toLocaleString()}</span>
-                        <span>AED {member.target.toLocaleString()}</span>
+                        <span>
+                          <AED /> {member.achieved.toLocaleString()}
+                        </span>
+                        <span>
+                          <AED /> {member.target.toLocaleString()}
+                        </span>
                       </div>
                     </div>
                   </div>

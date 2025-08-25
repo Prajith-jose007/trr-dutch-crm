@@ -42,7 +42,7 @@ const customerSegments = [
   {
     name: "VIP Customers",
     count: 156,
-    revenue: "AED 1.2M",
+    revenue: "1.2M",
     description: "High-value customers with premium support",
     color: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
     href: "/customers/segments/vip",
@@ -50,7 +50,7 @@ const customerSegments = [
   {
     name: "Enterprise",
     count: 89,
-    revenue: "AED 890K",
+    revenue: "890K",
     description: "Large business customers",
     color: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
     href: "/customers/segments/enterprise",
@@ -58,7 +58,7 @@ const customerSegments = [
   {
     name: "SMB",
     count: 1247,
-    revenue: "AED 456K",
+    revenue: "456K",
     description: "Small and medium business customers",
     color: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
     href: "/customers/segments/smb",
@@ -66,7 +66,7 @@ const customerSegments = [
   {
     name: "New Customers",
     count: 89,
-    revenue: "AED 67K",
+    revenue: "67K",
     description: "Recently acquired customers",
     color: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
     href: "/customers/segments/new",
@@ -105,6 +105,10 @@ const recentCustomers = [
     tier: "VIP",
   },
 ]
+
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
 
 export default function CustomersContent() {
   return (
@@ -195,7 +199,9 @@ export default function CustomersContent() {
                       <div className="text-sm text-gray-600 dark:text-gray-400">customers</div>
                     </div>
                     <div>
-                      <div className="text-lg font-semibold text-green-600">{segment.revenue}</div>
+                      <div className="text-lg font-semibold text-green-600">
+                        <AED /> {segment.revenue}
+                      </div>
                       <div className="text-xs text-gray-500">total revenue</div>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">{segment.description}</p>
@@ -231,7 +237,9 @@ export default function CustomersContent() {
                   </div>
                 </div>
                 <div className="text-right space-y-1">
-                  <div className="font-semibold">AED {customer.revenue.toLocaleString()}</div>
+                  <div className="font-semibold">
+                    <AED /> {customer.revenue.toLocaleString()}
+                  </div>
                   <Badge
                     className={
                       customer.tier === "VIP"

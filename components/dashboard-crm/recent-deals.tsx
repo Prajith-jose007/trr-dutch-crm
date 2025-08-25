@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Building2, Calendar, DollarSign } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const recentDeals = [
   {
     id: 1,
@@ -97,7 +101,9 @@ export default function RecentDeals() {
               <div className="text-right space-y-2">
                 <div className="flex items-center space-x-2">
                   <DollarSign className="h-4 w-4 text-green-600" />
-                  <span className="font-semibold">AED {deal.value.toLocaleString()}</span>
+                  <span className="font-semibold">
+                    <AED /> {deal.value.toLocaleString()}
+                  </span>
                 </div>
                 <Badge className={getStageColor(deal.stage)}>{deal.stage}</Badge>
                 <div className="text-xs text-gray-500">{deal.probability}% probability</div>

@@ -18,10 +18,15 @@ import {
 import { Search, Filter, MoreHorizontal, Plus, Calendar, Eye, Edit, Trash2, TrendingUp, DollarSign } from "lucide-react"
 import Link from "next/link"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const dealStats = [
   {
     title: "Total Pipeline Value",
-    value: "AED 2.4M",
+    value: "2.4M",
+    isCurrency: true,
     change: "+15.3%",
     changeType: "increase" as const,
     icon: DollarSign,
@@ -42,7 +47,8 @@ const dealStats = [
   },
   {
     title: "Average Deal Size",
-    value: "AED 27K",
+    value: "27K",
+    isCurrency: true,
     change: "+5.1%",
     changeType: "increase" as const,
     icon: DollarSign,
@@ -208,7 +214,9 @@ export default function DealsContent() {
                 <stat.icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
               </div>
               <div className="space-y-1">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {stat.isCurrency && <AED />} {stat.value}
+                </div>
                 <div className="flex items-center text-xs">
                   <TrendingUp
                     className={`h-3 w-3 mr-1 ${stat.changeType === "increase" ? "text-green-500" : "text-red-500 rotate-180"}`}
@@ -302,7 +310,9 @@ export default function DealsContent() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="font-semibold">AED {deal.value.toLocaleString()}</div>
+                    <div className="font-semibold">
+                      <AED /> {deal.value.toLocaleString()}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Badge className={getStageColor(deal.stage)}>{deal.stage}</Badge>

@@ -6,6 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Plus, Calendar, Building2, TrendingUp, DollarSign } from "lucide-react"
 import Link from "next/link"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 const pipelineStages = [
   {
     id: "discovery",
@@ -195,7 +199,9 @@ export default function PipelineContent() {
               <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Pipeline Value</h3>
               <DollarSign className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">AED {totalValue.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              <AED /> {totalValue.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -214,7 +220,7 @@ export default function PipelineContent() {
               <DollarSign className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              AED {Math.round(totalValue / totalDeals).toLocaleString()}
+              <AED /> {Math.round(totalValue / totalDeals).toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -238,7 +244,9 @@ export default function PipelineContent() {
                 <CardTitle className="text-sm font-medium">{stage.name}</CardTitle>
                 <Badge className={stage.color}>{stage.count}</Badge>
               </div>
-              <CardDescription className="text-xs">AED {stage.value.toLocaleString()}</CardDescription>
+              <CardDescription className="text-xs">
+                <AED /> {stage.value.toLocaleString()}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {dealsByStage[stage.id as keyof typeof dealsByStage]?.map((deal) => (
@@ -256,7 +264,9 @@ export default function PipelineContent() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <div className="text-sm font-semibold text-green-600">AED {deal.value.toLocaleString()}</div>
+                      <div className="text-sm font-semibold text-green-600">
+                        <AED /> {deal.value.toLocaleString()}
+                      </div>
                       <span className={`text-xs font-medium ${getProbabilityColor(deal.probability)}`}>
                         {deal.probability}%
                       </span>
