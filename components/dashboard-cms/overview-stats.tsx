@@ -4,6 +4,10 @@ import type React from "react"
 
 import { FileText, Eye, MessageSquare, Users, TrendingUp, TrendingDown, Calendar, ImageIcon, DollarSign, Bell } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 interface StatCard {
   title: string
   value: string
@@ -11,6 +15,7 @@ interface StatCard {
   changeType: "increase" | "decrease"
   icon: React.ReactNode
   description: string
+  isCurrency?: boolean
 }
 
 const stats: StatCard[] = [
@@ -21,6 +26,7 @@ const stats: StatCard[] = [
     changeType: "increase",
     icon: <DollarSign className="h-4 w-4" />,
     description: "Published articles",
+    isCurrency: true,
   },
   {
     title: "This Month Revenue",
@@ -29,6 +35,7 @@ const stats: StatCard[] = [
     changeType: "increase",
     icon: <DollarSign className="h-4 w-4" />,
     description: "This month",
+    isCurrency: true,
   },
   {
     title: "Total Average Revenue",
@@ -37,6 +44,7 @@ const stats: StatCard[] = [
     changeType: "increase",
     icon: <DollarSign className="h-4 w-4" />,
     description: "User engagement",
+    isCurrency: true,
   },
   {
     title: "Balance Amount",
@@ -45,6 +53,7 @@ const stats: StatCard[] = [
     changeType: "decrease",
     icon: <DollarSign className="h-4 w-4" />,
     description: "Active writers",
+    isCurrency: true,
   },
   {
     title: "Total Agents",
@@ -86,7 +95,9 @@ export default function OverviewStats() {
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+            <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+              {stat.isCurrency && <AED /> } {stat.value}
+            </div>
             <div className="space-y-0.5">
               <h3 className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-500">{stat.description}</p>
