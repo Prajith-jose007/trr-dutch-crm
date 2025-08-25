@@ -17,51 +17,160 @@ import { useEffect, useState } from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement)
 
-const contentData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "Private",
-      data: [45, 52, 48, 61, 55, 67, 73, 69, 76, 82, 78, 85],
-      borderColor: "rgb(59, 130, 246)",
-      backgroundColor: "rgba(59, 130, 246, 0.1)",
-      tension: 0.4,
-    },
-    {
-      label: "Shared",
-      data: [12, 15, 13, 18, 16, 22, 25, 23, 28, 32, 29, 35],
-      borderColor: "rgb(16, 185, 129)",
-      backgroundColor: "rgba(16, 185, 129, 0.1)",
-      tension: 0.4,
-    },
-  ],
+const allPerformanceData = {
+  "This Month": {
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        label: "Private",
+        data: [12, 19, 13, 17],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
+        tension: 0.4,
+      },
+      {
+        label: "Shared",
+        data: [5, 8, 6, 9],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.1)",
+        tension: 0.4,
+      },
+    ],
+  },
+  "Last 6 Months": {
+    labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Private",
+        data: [73, 69, 76, 82, 78, 85],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
+        tension: 0.4,
+      },
+      {
+        label: "Shared",
+        data: [25, 23, 28, 32, 29, 35],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.1)",
+        tension: 0.4,
+      },
+    ],
+  },
+  "This Year": {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Private",
+        data: [45, 52, 48, 61, 55, 67, 73, 69, 76, 82, 78, 85],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
+        tension: 0.4,
+      },
+      {
+        label: "Shared",
+        data: [12, 15, 13, 18, 16, 22, 25, 23, 28, 32, 29, 35],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.1)",
+        tension: 0.4,
+      },
+    ],
+  },
+  "Last Year": {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Private",
+        data: [40, 48, 42, 55, 50, 60, 65, 62, 68, 75, 70, 78],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
+        tension: 0.4,
+      },
+      {
+        label: "Shared",
+        data: [10, 12, 11, 15, 14, 18, 20, 19, 22, 25, 23, 28],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.1)",
+        tension: 0.4,
+      },
+    ],
+  },
 }
 
-const vendorBookingData = {
-  labels: ["Vendor A", "Vendor B", "Vendor C", "Vendor D", "Vendor E", "Vendor F"],
-  datasets: [
-    {
-      label: "Bookings",
-      data: [65, 59, 80, 81, 56, 55],
-      backgroundColor: [
-        "rgb(255, 99, 132)",
-        "rgb(54, 162, 235)",
-        "rgb(255, 206, 86)",
-        "rgb(75, 192, 192)",
-        "rgb(153, 102, 255)",
-        "rgb(255, 159, 64)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
+const allVendorBookingData = {
+  "This Month": {
+    labels: ["Vendor A", "Vendor B", "Vendor C"],
+    datasets: [
+      {
+        label: "Bookings",
+        data: [25, 30, 40],
+        backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 206, 86)"],
+        borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 206, 86)"],
+        borderWidth: 1,
+      },
+    ],
+  },
+  "Last 6 Months": {
+    labels: ["Vendor A", "Vendor B", "Vendor C", "Vendor D", "Vendor E"],
+    datasets: [
+      {
+        label: "Bookings",
+        data: [150, 180, 220, 190, 170],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 206, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(153, 102, 255)",
+        ],
+        borderColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 206, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(153, 102, 255)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  },
+  "This Year": {
+    labels: ["Vendor A", "Vendor B", "Vendor C", "Vendor D", "Vendor E", "Vendor F"],
+    datasets: [
+      {
+        label: "Bookings",
+        data: [65, 59, 80, 81, 56, 55],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 206, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(153, 102, 255)",
+          "rgb(255, 159, 64)",
+        ],
+        borderColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 206, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(153, 102, 255)",
+          "rgb(255, 159, 64)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  },
+  "Last Year": {
+    labels: ["Vendor A", "Vendor B", "Vendor C", "Vendor D"],
+    datasets: [
+      {
+        label: "Bookings",
+        data: [250, 210, 300, 280],
+        backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 206, 86)", "rgb(75, 192, 192)"],
+        borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 206, 86)", "rgb(75, 192, 192)"],
+        borderWidth: 1,
+      },
+    ],
+  },
 }
 
 const chartOptions = {
@@ -159,6 +268,20 @@ export default function ContentChart() {
   const [isClient, setIsClient] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
+  const [performanceFilter, setPerformanceFilter] = useState<keyof typeof allPerformanceData>("This Year")
+  const [vendorBookingFilter, setVendorBookingFilter] = useState<keyof typeof allVendorBookingData>("This Year")
+
+  const [performanceData, setPerformanceData] = useState(allPerformanceData[performanceFilter])
+  const [vendorBookingData, setVendorBookingData] = useState(allVendorBookingData[vendorBookingFilter])
+
+  useEffect(() => {
+    setPerformanceData(allPerformanceData[performanceFilter])
+  }, [performanceFilter])
+
+  useEffect(() => {
+    setVendorBookingData(allVendorBookingData[vendorBookingFilter])
+  }, [vendorBookingFilter])
+
   useEffect(() => {
     setIsClient(true)
     const checkMobile = () => setIsMobile(window.innerWidth < 640)
@@ -176,7 +299,11 @@ export default function ContentChart() {
             <div>
               <CardTitle>Performance</CardTitle>
             </div>
-            <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
+            <select
+              value={performanceFilter}
+              onChange={(e) => setPerformanceFilter(e.target.value as keyof typeof allPerformanceData)}
+              className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto"
+            >
               <option>This Month</option>
               <option>Last 6 Months</option>
               <option>This Year</option>
@@ -186,7 +313,7 @@ export default function ContentChart() {
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
-            {isClient && <Line data={contentData} options={isMobile ? mobileChartOptions : chartOptions} />}
+            {isClient && <Line data={performanceData} options={isMobile ? mobileChartOptions : chartOptions} />}
           </div>
         </CardContent>
       </Card>
@@ -199,7 +326,11 @@ export default function ContentChart() {
               <CardTitle>Vendor Bookings</CardTitle>
               <CardDescription>Booking performance by vendor</CardDescription>
             </div>
-            <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
+            <select
+              value={vendorBookingFilter}
+              onChange={(e) => setVendorBookingFilter(e.target.value as keyof typeof allVendorBookingData)}
+              className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto"
+            >
               <option>This Month</option>
               <option>Last 6 Months</option>
               <option>This Year</option>
