@@ -22,7 +22,7 @@ const packages = [
         type: "Dinner Cruise",
         pricing: {
             dinner: { child: 249, adult: 299, adult_alc: 349 },
-            top_deck: { child: 299, adult: 349 },
+            top_deck: { child: 299, adult: 349, adult_alc: null },
             vip: { child: 349, adult: 399, adult_alc: 499 },
             royal: { child: 499, adult: 799, adult_alc: 999 },
         },
@@ -34,7 +34,7 @@ const packages = [
         type: "Brunch Cruise",
         pricing: {
             dinner: { child: 199, adult: 249, adult_alc: 299 },
-            top_deck: { child: 249, adult: 299 },
+            top_deck: { child: 249, adult: 299, adult_alc: null },
             vip: { child: 299, adult: 349, adult_alc: 449 },
             royal: { child: 399, adult: 599, adult_alc: 799 },
         },
@@ -46,7 +46,7 @@ const packages = [
         type: "Sightseeing",
         pricing: {
             dinner: { child: 149, adult: 199, adult_alc: null },
-            top_deck: { child: 199, adult: 249 },
+            top_deck: { child: 199, adult: 249, adult_alc: null },
             vip: { child: 249, adult: 299, adult_alc: 399 },
             royal: { child: null, adult: null, adult_alc: null },
         },
@@ -54,13 +54,63 @@ const packages = [
     }
 ];
 
+const initialQuantities = {
+    dinner_child: 0,
+    dinner_adult: 0,
+    dinner_adult_alc: 0,
+    top_deck_child: 0,
+    top_deck_adult: 0,
+    vip_child: 0,
+    vip_adult: 0,
+    vip_adult_alc: 0,
+    royal_child: 0,
+    royal_adult: 0,
+    royal_adult_alc: 0,
+};
+
+
 export function AddBookingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedPackage, setSelectedPackage] = useState<any>(null);
+    const [quantities, setQuantities] = useState(initialQuantities);
     const [totalAmount, setTotalAmount] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [netAmount, setNetAmount] = useState(0);
     const [commission, setCommission] = useState(0);
+
+    const handleQuantityChange = (name: keyof typeof initialQuantities, value: string) => {
+        setQuantities(prev => ({ ...prev, [name]: Number(value) || 0 }));
+    };
+    
+    const calculateTotal = useCallback(() => {
+        if (!selectedPackage) return 0;
+        
+        let total = 0;
+        const p = selectedPackage.pricing;
+
+        total += (quantities.dinner_child * (p.dinner.child || 0));
+        total += (quantities.dinner_adult * (p.dinner.adult || 0));
+        total += (quantities.dinner_adult_alc * (p.dinner.adult_alc || 0));
+        
+        total += (quantities.top_deck_child * (p.top_deck.child || 0));
+        total += (quantities.top_deck_adult * (p.top_deck.adult || 0));
+
+        total += (quantities.vip_child * (p.vip.child || 0));
+        total += (quantities.vip_adult * (p.vip.adult || 0));
+        total += (quantities.vip_adult_alc * (p.vip.adult_alc || 0));
+
+        total += (quantities.royal_child * (p.royal.child || 0));
+        total += (quantities.royal_adult * (p.royal.adult || 0));
+        total += (quantities.royal_adult_alc * (p.royal.adult_alc || 0));
+        
+        return total;
+    }, [selectedPackage, quantities]);
+
+    useEffect(() => {
+        const newTotal = calculateTotal();
+        setTotalAmount(newTotal);
+    }, [quantities, selectedPackage, calculateTotal]);
+
 
     const calculateCommission = useCallback(() => {
         const net = totalAmount - (totalAmount * (discount / 100));
@@ -74,12 +124,13 @@ export function AddBookingForm() {
 
     useEffect(() => {
         calculateCommission();
-    }, [calculateCommission]);
+    }, [totalAmount, discount, calculateCommission]);
 
 
     const handlePackageChange = (packageId: string) => {
         const pkg = packages.find(p => p.id === packageId);
         setSelectedPackage(pkg);
+        setQuantities(initialQuantities); // Reset quantities when package changes
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -133,17 +184,16 @@ export function AddBookingForm() {
                         </div>
                         
                         {selectedPackage && (
-                            <Card className="bg-gray-50 dark:bg-gray-800/50">
+                             <Card className="bg-gray-50 dark:bg-gray-800/50">
                                 <CardHeader>
                                     <CardTitle className="text-lg">{selectedPackage.yachtName} - {selectedPackage.type}</CardTitle>
                                     <CardDescription>Review the pricing details for the selected package.</CardDescription>
                                 </CardHeader>
-                                <CardContent className="space-y-4 text-sm">
-                                    {/* Pricing details can be displayed here */}
-                                    <p><strong>Dinner:</strong> Child: <AED/>{selectedPackage.pricing.dinner.child}, Adult: <AED/>{selectedPackage.pricing.dinner.adult}</p>
-                                    <p><strong>Top Deck:</strong> Child: <AED/>{selectedPackage.pricing.top_deck.child}, Adult: <AED/>{selectedPackage.pricing.top_deck.adult}</p>
-                                    <p><strong>VIP:</strong> Child: <AED/>{selectedPackage.pricing.vip.child}, Adult: <AED/>{selectedPackage.pricing.vip.adult}</p>
-                                     <p><strong>Royal:</strong> Child: <AED/>{selectedPackage.pricing.royal.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.royal.adult ?? 'N/A'}</p>
+                                <CardContent className="space-y-2 text-sm">
+                                    <p><strong>Dinner:</strong> Child: <AED/>{selectedPackage.pricing.dinner.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.dinner.adult ?? 'N/A'}, Adult+Alc: <AED/>{selectedPackage.pricing.dinner.adult_alc ?? 'N/A'}</p>
+                                    <p><strong>Top Deck:</strong> Child: <AED/>{selectedPackage.pricing.top_deck.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.top_deck.adult ?? 'N/A'}</p>
+                                    <p><strong>VIP:</strong> Child: <AED/>{selectedPackage.pricing.vip.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.vip.adult ?? 'N/A'}, VIP+Alc: <AED/>{selectedPackage.pricing.vip.adult_alc ?? 'N/A'}</p>
+                                     <p><strong>Royal:</strong> Child: <AED/>{selectedPackage.pricing.royal.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.royal.adult ?? 'N/A'}, Royal+Alc: <AED/>{selectedPackage.pricing.royal.adult_alc ?? 'N/A'}</p>
                                 </CardContent>
                             </Card>
                         )}
@@ -165,16 +215,73 @@ export function AddBookingForm() {
                             </div>
                         </div>
 
-                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Quantities */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                             <h3 className="font-medium text-gray-900 dark:text-white">Quantities</h3>
+                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="dinner_child">Dinner Child</Label>
+                                    <Input id="dinner_child" type="number" placeholder="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="dinner_adult">Dinner Adult</Label>
+                                    <Input id="dinner_adult" type="number" placeholder="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="dinner_adult_alc">Dinner Adult (Alc)</Label>
+                                    <Input id="dinner_adult_alc" type="number" placeholder="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="top_deck_child">Top Deck Child</Label>
+                                    <Input id="top_deck_child" type="number" placeholder="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="top_deck_adult">Top Deck Adult</Label>
+                                    <Input id="top_deck_adult" type="number" placeholder="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="vip_child">VIP Child</Label>
+                                    <Input id="vip_child" type="number" placeholder="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="vip_adult">VIP Adult</Label>
+                                    <Input id="vip_adult" type="number" placeholder="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="vip_adult_alc">VIP Adult (Alc)</Label>
+                                    <Input id="vip_adult_alc" type="number" placeholder="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="royal_child">Royal Child</Label>
+                                    <Input id="royal_child" type="number" placeholder="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="royal_adult">Royal Adult</Label>
+                                    <Input id="royal_adult" type="number" placeholder="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="royal_adult_alc">Royal Adult (Alc)</Label>
+                                    <Input id="royal_adult_alc" type="number" placeholder="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} />
+                                </div>
+                             </div>
+                        </div>
+
+
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="adult-qty">Adult Quantity</Label>
-                                <Input id="adult-qty" type="number" placeholder="e.g., 2" />
+                                <Label htmlFor="payment-mode">Payment Mode</Label>
+                                <Select>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select payment mode" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="credit-card">Credit Card</SelectItem>
+                                        <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
+                                        <SelectItem value="cash">Cash</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="child-qty">Child Quantity</Label>
-                                <Input id="child-qty" type="number" placeholder="e.g., 1" />
-                            </div>
-                             <div className="space-y-2">
                                 <Label htmlFor="ticket-ref">Ticket REF No</Label>
                                 <div className="relative">
                                     <Ticket className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -182,27 +289,13 @@ export function AddBookingForm() {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="payment-mode">Payment Mode</Label>
-                            <Select>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select payment mode" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="credit-card">Credit Card</SelectItem>
-                                    <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
-                                    <SelectItem value="cash">Cash</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
                         
                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="total-amount">Total Amount</Label>
                                 <div className="relative">
                                     <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="total-amount" type="number" placeholder="e.g. 1000" className="pl-10" value={totalAmount} onChange={(e) => setTotalAmount(Number(e.target.value))} />
+                                    <Input id="total-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={totalAmount} readOnly />
                                 </div>
                             </div>
                             <div className="space-y-2">
@@ -218,14 +311,14 @@ export function AddBookingForm() {
                                 <Label htmlFor="net-amount">Net Amount</Label>
                                 <div className="relative">
                                     <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10" value={netAmount} readOnly />
+                                    <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={netAmount} readOnly />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="commission">Commission</Label>
                                 <div className="relative">
                                     <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10" value={commission} readOnly />
+                                    <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={commission} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -248,4 +341,3 @@ export function AddBookingForm() {
         </div>
     );
 }
-
