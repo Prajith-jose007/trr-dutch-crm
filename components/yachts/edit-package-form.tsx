@@ -21,6 +21,7 @@ const packages = [
         type: "Dinner Cruise",
         pricing: {
             dinner: { child: 249, adult: 299, adult_alc: 349 },
+            top_deck: { child: 299, adult: 349 },
             vip: { child: 349, adult: 399, adult_alc: 499 },
             royal: { child: 499, adult: 799, adult_alc: 999 },
         },
@@ -32,6 +33,7 @@ const packages = [
         type: "Brunch Cruise",
         pricing: {
             dinner: { child: 199, adult: 249, adult_alc: 299 },
+            top_deck: { child: 249, adult: 299 },
             vip: { child: 299, adult: 349, adult_alc: 449 },
             royal: { child: 399, adult: 599, adult_alc: 799 },
         },
@@ -43,6 +45,7 @@ const packages = [
         type: "Sightseeing",
         pricing: {
             dinner: { child: 149, adult: 199, adult_alc: null },
+            top_deck: { child: 199, adult: 249 },
             vip: { child: 249, adult: 299, adult_alc: 399 },
             royal: { child: null, adult: null, adult_alc: null },
         },
@@ -139,6 +142,27 @@ export function EditPackageForm({ packageId }: { packageId: string }) {
                             </div>
                         </div>
 
+                        {/* Top Deck Pricing */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white">Top Deck Pricing</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="top-deck-child">Child Top Deck Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="top-deck-child" type="number" defaultValue={packageData.pricing.top_deck?.child ?? ''} placeholder="e.g., 299" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="top-deck-adult">Adult Top Deck Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="top-deck-adult" type="number" defaultValue={packageData.pricing.top_deck?.adult ?? ''} placeholder="e.g., 349" className="pl-10" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         {/* VIP Pricing */}
                         <div className="space-y-4 rounded-lg border p-4">
                             <h3 className="font-medium text-gray-900 dark:text-white">VIP Pricing</h3>

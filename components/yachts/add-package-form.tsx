@@ -93,6 +93,27 @@ export function AddPackageForm() {
                             </div>
                         </div>
 
+                        {/* Top Deck Pricing */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white">Top Deck Pricing</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="top-deck-child">Child Top Deck Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="top-deck-child" type="number" placeholder="e.g., 299" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="top-deck-adult">Adult Top Deck Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="top-deck-adult" type="number" placeholder="e.g., 349" className="pl-10" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* VIP Pricing */}
                         <div className="space-y-4 rounded-lg border p-4">
                             <h3 className="font-medium text-gray-900 dark:text-white">VIP Pricing</h3>
