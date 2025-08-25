@@ -191,6 +191,12 @@ const menuData: MenuSection[] = [
         icon: Users,
       },
       {
+        id: "agent",
+        label: "Agent",
+        href: "/agent",
+        icon: User,
+      },
+      {
         id: "activities",
         label: "Activities",
         href: "/activities",
