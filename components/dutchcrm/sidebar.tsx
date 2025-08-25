@@ -81,19 +81,6 @@ const menuData: MenuSection[] = [
     label: "Customer Management",
     items: [
       {
-        id: "customers",
-        label: "Customers",
-        href: "/customers",
-        icon: Users2,
-      },
-      {
-        id: "leads",
-        label: "Leads",
-        href: "/leads",
-        icon: UserPlus,
-        badge: "12",
-      },
-      {
         id: "contacts",
         label: "Contacts",
         href: "/contacts",
@@ -106,30 +93,44 @@ const menuData: MenuSection[] = [
     label: "Sales Management",
     items: [
       {
-        id: "deals",
-        label: "Deals",
-        href: "/deals",
-        icon: Handshake,
-        badge: "8",
-      },
-      {
-        id: "opportunities",
-        label: "Opportunities",
-        href: "/opportunities",
-        icon: Target,
-      },
-      {
-        id: "quotes",
-        label: "Quotes",
-        href: "/quotes",
-        icon: FileText,
-        badge: "3",
-      },
-      {
         id: "private",
         label: "Private",
-        href: "/sales/private",
         icon: User,
+        children: [
+          {
+            id: "leads",
+            label: "Leads",
+            href: "/leads",
+            icon: UserPlus,
+            badge: "12",
+          },
+          {
+            id: "customers",
+            label: "Customers",
+            href: "/customers",
+            icon: Users2,
+          },
+          {
+            id: "deals",
+            label: "Deals",
+            href: "/deals",
+            icon: Handshake,
+            badge: "8",
+          },
+          {
+            id: "opportunities",
+            label: "Opportunities",
+            href: "/opportunities",
+            icon: Target,
+          },
+          {
+            id: "quotes",
+            label: "Quotes",
+            href: "/quotes",
+            icon: FileText,
+            badge: "3",
+          },
+        ],
       },
       {
         id: "shared",
