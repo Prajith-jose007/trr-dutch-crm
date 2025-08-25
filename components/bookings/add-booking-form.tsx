@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Ship, Calendar, User, Phone, Wallet, Ticket } from "lucide-react";
+import { Ship, Calendar, User, Phone, Wallet, Ticket, Percent } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function AED() {
     return <img className="aed inline-block" alt="AED" />;
@@ -57,6 +57,21 @@ const packages = [
 export function AddBookingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedPackage, setSelectedPackage] = useState<any>(null);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [netAmount, setNetAmount] = useState(0);
+    const [commission, setCommission] = useState(0);
+
+    const calculateCommission = useCallback(() => {
+        const net = totalAmount - (totalAmount * (discount / 100));
+        setNetAmount(net);
+        setCommission(net * 0.10); // Assuming 10% commission on net amount
+    }, [totalAmount, discount]);
+
+    useEffect(() => {
+        calculateCommission();
+    }, [calculateCommission]);
+
 
     const handlePackageChange = (packageId: string) => {
         const pkg = packages.find(p => p.id === packageId);
@@ -178,13 +193,38 @@ export function AddBookingForm() {
                             </Select>
                         </div>
                         
-                         <div className="space-y-2">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
                                 <Label htmlFor="total-amount">Total Amount</Label>
                                 <div className="relative">
                                     <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="total-amount" type="number" placeholder="Calculated automatically or enter manually" className="pl-10" />
+                                    <Input id="total-amount" type="number" placeholder="e.g. 1000" className="pl-10" value={totalAmount} onChange={(e) => setTotalAmount(Number(e.target.value))} />
                                 </div>
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="discount">Discount (%)</Label>
+                                <div className="relative">
+                                    <Percent className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <Input id="discount" type="number" placeholder="e.g., 10" className="pl-10" value={discount} onChange={(e) => setDiscount(Number(e.target.value))} />
+                                </div>
+                            </div>
+                        </div>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="net-amount">Net Amount</Label>
+                                <div className="relative">
+                                    <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10" value={netAmount} readOnly />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="commission">Commission</Label>
+                                <div className="relative">
+                                    <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10" value={commission} readOnly />
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="notes">Notes</Label>
