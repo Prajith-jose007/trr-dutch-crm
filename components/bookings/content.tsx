@@ -59,7 +59,7 @@ const bookingsData = [
 ];
 
 function AED() {
-  return <span style={{fontFamily: 'UAEDirham'}}>&#x00EA;</span>
+  return <img className="aed inline-block" alt="AED" />
 }
 
 export default function BookingsContent() {
