@@ -5,10 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { CreditCard, Download, Calendar, CheckCircle, Star, Zap, Crown } from "lucide-react"
 
+function AED() {
+  return <img className="aed inline-block" alt="AED" />
+}
+
 export default function SubscriptionSettings() {
   const currentPlan = {
     name: "Pro Plan",
-    price: "$29",
+    price: "29",
     period: "month",
     features: [
       "Unlimited projects",
@@ -25,7 +29,7 @@ export default function SubscriptionSettings() {
     {
       id: "free",
       name: "Free",
-      price: "$0",
+      price: "0",
       period: "forever",
       description: "Perfect for getting started",
       features: ["Up to 3 projects", "Basic analytics", "Community support", "Standard templates"],
@@ -36,7 +40,7 @@ export default function SubscriptionSettings() {
     {
       id: "pro",
       name: "Pro",
-      price: "$29",
+      price: "29",
       period: "month",
       description: "Best for professionals",
       features: [
@@ -54,7 +58,7 @@ export default function SubscriptionSettings() {
     {
       id: "enterprise",
       name: "Enterprise",
-      price: "$99",
+      price: "99",
       period: "month",
       description: "For large organizations",
       features: [
@@ -75,21 +79,21 @@ export default function SubscriptionSettings() {
     {
       id: "INV-001",
       date: "Dec 15, 2023",
-      amount: "$29.00",
+      amount: "29.00",
       status: "paid",
       description: "Pro Plan - Monthly",
     },
     {
       id: "INV-002",
       date: "Nov 15, 2023",
-      amount: "$29.00",
+      amount: "29.00",
       status: "paid",
       description: "Pro Plan - Monthly",
     },
     {
       id: "INV-003",
       date: "Oct 15, 2023",
-      amount: "$29.00",
+      amount: "29.00",
       status: "paid",
       description: "Pro Plan - Monthly",
     },
@@ -117,7 +121,8 @@ export default function SubscriptionSettings() {
                 <div>
                   <CardTitle className="text-lg">{currentPlan.name}</CardTitle>
                   <CardDescription>
-                    ${currentPlan.price}/{currentPlan.period} • Next billing: {currentPlan.nextBilling}
+                    <AED />
+                    {currentPlan.price}/{currentPlan.period} • Next billing: {currentPlan.nextBilling}
                   </CardDescription>
                 </div>
               </div>
@@ -175,7 +180,7 @@ export default function SubscriptionSettings() {
                 </div>
                 <CardTitle className="text-lg">{plan.name}</CardTitle>
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {plan.price}
+                  {plan.price === "0" ? "Free" : <><AED />{plan.price}</>}
                   <span className="text-sm font-normal text-gray-600 dark:text-gray-400">/{plan.period}</span>
                 </div>
                 <CardDescription>{plan.description}</CardDescription>
@@ -251,7 +256,7 @@ export default function SubscriptionSettings() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="font-medium text-gray-900 dark:text-white">{invoice.amount}</span>
+                <span className="font-medium text-gray-900 dark:text-white"><AED />{invoice.amount}</span>
                 <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0">
                   Paid
                 </Badge>
