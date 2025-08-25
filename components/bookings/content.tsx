@@ -12,50 +12,6 @@ import Link from "next/link"
 
 const bookingsData = [
   {
-    id: "BK-001",
-    status: "Confirmed",
-    date: "2024-05-20",
-    yacht: "Serenity",
-    agent: "John Doe",
-    client: "Alice Johnson",
-    paymentStatus: "Paid",
-    type: "Private",
-    transactionId: "TRN-12345",
-    bookingRef: "REF-ABCDE",
-    paymentMode: "Credit Card",
-    free: "No",
-    chQty: 2,
-    adQty: 4,
-    chdTopQty: 0,
-    adtTopQty: 0,
-    adAlcQty: 4,
-    vipChQty: 0,
-    vipAdQty: 0,
-    vipAlcQty: 0,
-    rylChQty: 0,
-    rylAdQty: 0,
-    rylAlcQty: 0,
-    basicQty: 0,
-    stdQty: 0,
-    premQty: 0,
-    vipQty: 6,
-    hrChtrQty: 4,
-    totalCount: 6,
-    addonPack: "Premium Drinks",
-    totalAmt: 5000,
-    rate: 1250,
-    discount: 0,
-    commission: 500,
-    netAmt: 4500,
-    paid: 4500,
-    balance: 0,
-    note: "Client requested champagne.",
-    createdBy: "admin",
-    modifiedBy: "admin",
-    dateOfCreation: "2024-05-10",
-    dateOfModification: "2024-05-12",
-  },
-  {
     id: "BK-002",
     status: "Pending",
     date: "2024-06-15",
@@ -142,14 +98,14 @@ export default function BookingsContent() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Bookings Management</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shared Bookings Management</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage and view all shared bookings</p>
         </div>
         <div className="flex gap-2">
           <Button asChild>
             <Link href="/shared/bookings/add">
               <Plus className="h-4 w-4 mr-2" />
-              Add Booking
+              Add Shared Booking
             </Link>
           </Button>
         </div>
