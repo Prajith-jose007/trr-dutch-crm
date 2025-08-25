@@ -6,8 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { DollarSign, Package, Ship, Tag, Users } from "lucide-react";
+import { Ship } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -33,7 +32,7 @@ export function AddPackageForm() {
             <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create New Yacht Package</h1>
                 <p className="text-gray-600 dark:text-gray-400 mt-1">
-                    Define a new package for shared yacht cruises.
+                    Define a new package for shared yacht cruises with detailed pricing.
                 </p>
             </div>
             <Card>
@@ -45,59 +44,111 @@ export function AddPackageForm() {
                     <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="packageName">Package Name</Label>
+                                <Label htmlFor="yachtName">Yacht Name</Label>
                                 <div className="relative">
-                                    <Package className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="packageName" placeholder="e.g., Sunset Cruise Deluxe" className="pl-10" />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="yacht">Yacht</Label>
-                                 <div className="relative">
                                     <Ship className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Select>
-                                        <SelectTrigger className="pl-10">
-                                            <SelectValue placeholder="Select a yacht" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="odyssey">Odyssey</SelectItem>
-                                            <SelectItem value="majesty">Majesty</SelectItem>
-                                            <SelectItem value="serenity">Serenity</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <Input id="yachtName" placeholder="e.g., Lotus Royale" className="pl-10" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="cruiseType">Type</Label>
+                                <Select>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select cruise type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="dinner-cruise">Dinner Cruise</SelectItem>
+                                        <SelectItem value="brunch-cruise">Brunch Cruise</SelectItem>
+                                        <SelectItem value="sightseeing-cruise">Sightseeing Cruise</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        {/* Dinner Cruise Pricing */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white">Dinner Cruise Pricing</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="dinner-child">Child Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="dinner-child" type="number" placeholder="e.g., 249" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="dinner-adult">Adult Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="dinner-adult" type="number" placeholder="e.g., 299" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="dinner-adult-alc">Adult + Alcohol Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="dinner-adult-alc" type="number" placeholder="e.g., 349" className="pl-10" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="price">Price</Label>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2"><AED /></span>
-                                    <Input id="price" type="number" placeholder="Enter price" className="pl-10" />
+                        {/* VIP Pricing */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white">VIP Pricing</h3>
+                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="vip-child">VIP Child Price</Label>
+                                    <div className="relative">
+                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="vip-child" type="number" placeholder="e.g., 349" className="pl-10" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="capacity">Capacity</Label>
-                                <div className="relative">
-                                     <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                    <Input id="capacity" type="number" placeholder="e.g., 50" className="pl-10" />
+                                <div className="space-y-2">
+                                    <Label htmlFor="vip-adult">VIP Adult Price</Label>
+                                    <div className="relative">
+                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="vip-adult" type="number" placeholder="e.g., 399" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="vip-adult-alc">VIP Adult + Alcohol Price</Label>
+                                    <div className="relative">
+                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="vip-adult-alc" type="number" placeholder="e.g., 499" className="pl-10" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="inclusions">Inclusions</Label>
-                             <div className="relative">
-                                <Textarea id="inclusions" placeholder="e.g., Welcome drink, Buffet dinner, Live music..." />
+                        {/* Royal Pricing */}
+                        <div className="space-y-4 rounded-lg border p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white">Royal Pricing</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="royal-child">Royal Child Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="royal-child" type="number" placeholder="e.g., 499" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="royal-adult">Royal Adult Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="royal-adult" type="number" placeholder="e.g., 799" className="pl-10" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="royal-adult-alc">Royal Adult + Alcohol Price</Label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><AED /></span>
+                                        <Input id="royal-adult-alc" type="number" placeholder="e.g., 999" className="pl-10" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div className="space-y-2">
-                            <Label htmlFor="duration">Duration (in hours)</Label>
-                            <Input id="duration" type="number" placeholder="e.g., 3" />
-                        </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="status">Status</Label>
                             <Select defaultValue="active">
@@ -124,4 +175,3 @@ export function AddPackageForm() {
         </div>
     );
 }
-

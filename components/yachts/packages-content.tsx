@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Ship, MoreHorizontal, Edit, Trash2 } from "lucide-react";
+import { Plus, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,29 +12,35 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 const packages = [
     {
         id: "PKG-001",
-        name: "Sunset Cruise Deluxe",
-        yacht: "Odyssey",
-        price: 750,
-        duration: 3,
-        capacity: 50,
+        yachtName: "Lotus Royale",
+        type: "Dinner Cruise",
+        pricing: {
+            dinner: { child: 249, adult: 299, adult_alc: 349 },
+            vip: { child: 349, adult: 399, adult_alc: 499 },
+            royal: { child: 499, adult: 799, adult_alc: 999 },
+        },
         status: "Active"
     },
     {
         id: "PKG-002",
-        name: "Afternoon Delight",
-        yacht: "Majesty",
-        price: 500,
-        duration: 2,
-        capacity: 40,
+        yachtName: "Majesty Yacht",
+        type: "Brunch Cruise",
+        pricing: {
+            dinner: { child: 199, adult: 249, adult_alc: 299 },
+            vip: { child: 299, adult: 349, adult_alc: 449 },
+            royal: { child: 399, adult: 599, adult_alc: 799 },
+        },
         status: "Active"
     },
     {
         id: "PKG-003",
-        name: "VIP Night Cruise",
-        yacht: "Serenity",
-        price: 1200,
-        duration: 4,
-        capacity: 30,
+        yachtName: "Serenity Cruiser",
+        type: "Sightseeing",
+        pricing: {
+            dinner: { child: 149, adult: 199, adult_alc: null },
+            vip: { child: 249, adult: 299, adult_alc: 399 },
+            royal: { child: null, adult: null, adult_alc: null },
+        },
         status: "Inactive"
     }
 ];
@@ -78,47 +84,61 @@ export default function YachtPackagesContent() {
                     <CardDescription>A list of all available yacht packages.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>ID</TableHead>
-                                <TableHead>Package Name</TableHead>
-                                <TableHead>Yacht</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Duration (hrs)</TableHead>
-                                <TableHead>Capacity</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {packages.map((pkg) => (
-                                <TableRow key={pkg.id}>
-                                    <TableCell className="font-medium">{pkg.id}</TableCell>
-                                    <TableCell>{pkg.name}</TableCell>
-                                    <TableCell>{pkg.yacht}</TableCell>
-                                    <TableCell><AED />{pkg.price}</TableCell>
-                                    <TableCell>{pkg.duration}</TableCell>
-                                    <TableCell>{pkg.capacity}</TableCell>
-                                    <TableCell><Badge className={getStatusColor(pkg.status)}>{pkg.status}</Badge></TableCell>
-                                    <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Edit</DropdownMenuItem>
-                                                <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>ID</TableHead>
+                                    <TableHead>Yacht Name</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Child</TableHead>
+                                    <TableHead>Adult</TableHead>
+                                    <TableHead>Adult (Alc)</TableHead>
+                                    <TableHead>VIP Child</TableHead>
+                                    <TableHead>VIP Adult</TableHead>
+                                    <TableHead>VIP Adult (Alc)</TableHead>
+                                    <TableHead>Royal Child</TableHead>
+                                    <TableHead>Royal Adult</TableHead>
+                                    <TableHead>Royal Adult (Alc)</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {packages.map((pkg) => (
+                                    <TableRow key={pkg.id}>
+                                        <TableCell className="font-medium">{pkg.id}</TableCell>
+                                        <TableCell>{pkg.yachtName}</TableCell>
+                                        <TableCell>{pkg.type}</TableCell>
+                                        <TableCell>{pkg.pricing.dinner.child ? <><AED />{pkg.pricing.dinner.child}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.dinner.adult ? <><AED />{pkg.pricing.dinner.adult}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.dinner.adult_alc ? <><AED />{pkg.pricing.dinner.adult_alc}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.vip.child ? <><AED />{pkg.pricing.vip.child}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.vip.adult ? <><AED />{pkg.pricing.vip.adult}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.vip.adult_alc ? <><AED />{pkg.pricing.vip.adult_alc}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.royal.child ? <><AED />{pkg.pricing.royal.child}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.royal.adult ? <><AED />{pkg.pricing.royal.adult}</> : "N/A"}</TableCell>
+                                        <TableCell>{pkg.pricing.royal.adult_alc ? <><AED />{pkg.pricing.royal.adult_alc}</> : "N/A"}</TableCell>
+                                        <TableCell><Badge className={getStatusColor(pkg.status)}>{pkg.status}</Badge></TableCell>
+                                        <TableCell className="text-right">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Edit</DropdownMenuItem>
+                                                    <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete</DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </CardContent>
             </Card>
         </div>
