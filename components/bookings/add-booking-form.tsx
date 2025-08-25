@@ -198,7 +198,7 @@ export function AddBookingForm() {
                             </Card>
                         )}
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="client-name">Client Name</Label>
                                  <div className="relative">
@@ -211,6 +211,13 @@ export function AddBookingForm() {
                                  <div className="relative">
                                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                     <Input id="client-phone" placeholder="e.g., +971 50 123 4567" className="pl-10" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="agent-name">Agent Name</Label>
+                                 <div className="relative">
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <Input id="agent-name" placeholder="e.g., Jane Smith" className="pl-10" />
                                 </div>
                             </div>
                         </div>
