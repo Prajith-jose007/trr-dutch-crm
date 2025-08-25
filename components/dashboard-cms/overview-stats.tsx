@@ -96,7 +96,7 @@ export default function OverviewStats() {
           </div>
           <div className="space-y-1">
             <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-              {stat.isCurrency && <AED /> } {stat.value}
+              {stat.isCurrency && "$"} {stat.value}
             </div>
             <div className="space-y-0.5">
               <h3 className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</h3>
