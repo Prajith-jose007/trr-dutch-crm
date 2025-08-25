@@ -41,8 +41,15 @@ const growthData = {
   labels: ["January", "February", "March", "April", "May", "June"],
   datasets: [
     {
-      label: "Bookings",
+      label: "Private",
       data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgba(59, 130, 246, 0.8)",
+      borderColor: "rgb(59, 130, 246)",
+      borderWidth: 1,
+    },
+    {
+      label: "Shared",
+      data: [8, 15, 5, 8, 4, 6],
       backgroundColor: "rgba(16, 185, 129, 0.8)",
       borderColor: "rgb(16, 185, 129)",
       borderWidth: 1,
