@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -11,6 +12,50 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Link from "next/link"
 
 const bookingsData = [
+  {
+    id: "BK-001",
+    status: "Confirmed",
+    date: "2024-05-20",
+    yacht: "Lotus Royale",
+    agent: "John Doe",
+    client: "Alice Johnson",
+    paymentStatus: "Paid",
+    type: "Private",
+    transactionId: "TRN-12345",
+    bookingRef: "REF-ABCDE",
+    paymentMode: "Credit Card",
+    free: "No",
+    chQty: 0,
+    adQty: 0,
+    chdTopQty: 0,
+    adtTopQty: 0,
+    adAlcQty: 0,
+    vipChQty: 0,
+    vipAdQty: 0,
+    vipAlcQty: 0,
+    rylChQty: 0,
+    rylAdQty: 0,
+    rylAlcQty: 0,
+    basicQty: 0,
+    stdQty: 0,
+    premQty: 0,
+    vipQty: 0,
+    hrChtrQty: 2,
+    totalCount: 2,
+    addonPack: "Birthday Pack",
+    totalAmt: 5000,
+    rate: 2500,
+    discount: 0,
+    commission: 500,
+    netAmt: 4500,
+    paid: 4500,
+    balance: 0,
+    note: "Special request for vegetarian meals.",
+    createdBy: "admin",
+    modifiedBy: "admin",
+    dateOfCreation: "2024-05-18",
+    dateOfModification: "2024-05-18",
+  },
   {
     id: "BK-002",
     status: "Pending",
@@ -275,5 +320,3 @@ export default function BookingsContent() {
     </div>
   )
 }
-
-    
