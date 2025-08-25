@@ -129,7 +129,11 @@ export default function YachtPackagesContent() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Edit</DropdownMenuItem>
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href={`/shared/yachts/edit/${pkg.id}`}>
+                                                            <Edit className="mr-2 h-4 w-4" /> Edit
+                                                        </Link>
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete</DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
