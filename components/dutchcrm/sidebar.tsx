@@ -22,6 +22,7 @@ import {
   Activity,
   Users,
   DollarSign,
+  User,
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -123,6 +124,18 @@ const menuData: MenuSection[] = [
         href: "/quotes",
         icon: FileText,
         badge: "3",
+      },
+      {
+        id: "private",
+        label: "Private",
+        href: "/sales/private",
+        icon: User,
+      },
+      {
+        id: "shared",
+        label: "Shared",
+        href: "/sales/shared",
+        icon: Users,
       },
     ],
   },
