@@ -23,6 +23,8 @@ import {
   Users,
   DollarSign,
   User,
+  BookMarked,
+  Ship,
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -135,8 +137,21 @@ const menuData: MenuSection[] = [
       {
         id: "shared",
         label: "Shared",
-        href: "/sales/shared",
         icon: Users,
+        children: [
+          {
+            id: "bookings-management",
+            label: "Bookings Management",
+            href: "/shared/bookings",
+            icon: BookMarked,
+          },
+          {
+            id: "yacht-management",
+            label: "Yacht Management",
+            href: "/shared/yachts",
+            icon: Ship,
+          },
+        ],
       },
     ],
   },
