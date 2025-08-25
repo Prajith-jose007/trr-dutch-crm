@@ -37,30 +37,14 @@ const contentData = {
   ],
 }
 
-const categoryData = {
-  labels: ["Technology", "Business", "Health", "Sports", "Entertainment", "Politics", "Science"],
+const growthData = {
+  labels: ["January", "February", "March", "April", "May", "June"],
   datasets: [
     {
-      label: "Articles",
-      data: [156, 142, 98, 87, 76, 65, 54],
-      backgroundColor: [
-        "rgba(59, 130, 246, 0.8)",
-        "rgba(16, 185, 129, 0.8)",
-        "rgba(245, 158, 11, 0.8)",
-        "rgba(239, 68, 68, 0.8)",
-        "rgba(139, 92, 246, 0.8)",
-        "rgba(236, 72, 153, 0.8)",
-        "rgba(6, 182, 212, 0.8)",
-      ],
-      borderColor: [
-        "rgb(59, 130, 246)",
-        "rgb(16, 185, 129)",
-        "rgb(245, 158, 11)",
-        "rgb(239, 68, 68)",
-        "rgb(139, 92, 246)",
-        "rgb(236, 72, 153)",
-        "rgb(6, 182, 212)",
-      ],
+      label: "Bookings",
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgba(16, 185, 129, 0.8)",
+      borderColor: "rgb(16, 185, 129)",
       borderWidth: 1,
     },
   ],
@@ -192,12 +176,13 @@ export default function ContentChart() {
         </CardContent>
       </Card>
 
-      {/* Content by Category Chart */}
+      {/* Growth Chart */}
       <Card>
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Content by Category</CardTitle>
+              <CardTitle>Growth</CardTitle>
+              <CardDescription>Booking growth over the last months</CardDescription>
             </div>
             <select className="text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-auto">
               <option>This year</option>
@@ -208,7 +193,7 @@ export default function ContentChart() {
         </CardHeader>
         <CardContent>
           <div className="h-64 sm:h-80 w-full">
-            {isClient && <Bar data={categoryData} options={isMobile ? mobileChartOptions : chartOptions} />}
+            {isClient && <Bar data={growthData} options={isMobile ? mobileChartOptions : chartOptions} />}
           </div>
         </CardContent>
       </Card>
