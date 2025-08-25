@@ -1,30 +1,68 @@
+
 "use client";
 
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload, FileText, Download, UserPlus, FileUp } from "lucide-react";
+import { Upload, FileText, Download, UserPlus, FileUp, Users } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "../ui/badge";
+
+interface Agent {
+  [key: string]: string;
+}
 
 export function ImportAgents() {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [headers, setHeaders] = useState<string[]>([]);
+
+  const resetState = () => {
+    setFile(null);
+    setAgents([]);
+    setHeaders([]);
+  };
+  
+  const parseCSV = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = e.target?.result as string;
+        const rows = text.split('\n').filter(row => row.trim() !== '');
+        if (rows.length > 0) {
+            const headerRow = rows[0].split(',').map(h => h.trim());
+            setHeaders(headerRow);
+
+            const dataRows = rows.slice(1).map(row => {
+                const values = row.split(',').map(v => v.trim());
+                return headerRow.reduce((obj, header, index) => {
+                    obj[header] = values[index] || "";
+                    return obj;
+                }, {} as Agent);
+            });
+            setAgents(dataRows);
+        }
+    };
+    reader.readAsText(file);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
       if (selectedFile && selectedFile.type === "text/csv") {
         setFile(selectedFile);
+        parseCSV(selectedFile);
       } else {
         toast({
           title: "Invalid file type",
           description: "Please upload a CSV file.",
           variant: "destructive",
         });
-        setFile(null);
+        resetState();
       }
     }
   };
@@ -46,19 +84,20 @@ export function ImportAgents() {
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && droppedFile.type === "text/csv") {
       setFile(droppedFile);
+      parseCSV(droppedFile);
     } else {
       toast({
         title: "Invalid file type",
         description: "Please upload a CSV file.",
         variant: "destructive",
       });
-      setFile(null);
+      resetState();
     }
   };
 
 
   const handleImport = () => {
-    if (!file) return;
+    if (!file || agents.length === 0) return;
     setIsUploading(true);
 
     // Simulate API call for upload
@@ -66,9 +105,9 @@ export function ImportAgents() {
       setIsUploading(false);
       toast({
         title: "Import Successful",
-        description: `${file.name} has been imported and agents have been added.`,
+        description: `${agents.length} agents from ${file.name} have been added.`,
       });
-      setFile(null);
+      resetState();
     }, 2000);
   };
   
@@ -143,16 +182,51 @@ export function ImportAgents() {
                           <p className="text-xs text-gray-500 dark:text-gray-400">{(file.size / 1024).toFixed(2)} KB</p>
                       </div>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => setFile(null)}>Remove</Button>
+                  <Button variant="ghost" size="sm" onClick={() => resetState()}>Remove</Button>
               </div>
             )}
-             <div className="flex justify-end">
-                <Button onClick={handleImport} disabled={!file || isUploading}>
-                  {isUploading ? "Importing..." : "Import Agents"}
-                </Button>
-             </div>
+            
           </CardContent>
         </Card>
+
+        {agents.length > 0 && (
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Users className="h-5 w-5" />
+                        Agents to be Imported
+                    </CardTitle>
+                    <CardDescription>Review the agents from the uploaded CSV file before importing.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    {headers.map((header) => (
+                                        <TableHead key={header}>{header}</TableHead>
+                                    ))}
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {agents.map((agent, index) => (
+                                    <TableRow key={index}>
+                                        {headers.map((header) => (
+                                            <TableCell key={header}>{agent[header]}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div className="flex justify-end mt-6">
+                        <Button onClick={handleImport} disabled={!file || isUploading}>
+                          {isUploading ? "Importing..." : `Import ${agents.length} Agents`}
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        )}
       </div>
     </>
   );
