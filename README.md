@@ -1,30 +1,60 @@
-# Cms Full Form - Dashboard CmsFu
+# Dutch CRM - Customer Relationship Management
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+This project is a Customer Relationship Management (CRM) application built with Next.js, React, and Tailwind CSS. It is designed to manage customers, deals, bookings, and more.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/prajithitdutch-4543s-projects/v0-cms-full-form-dashboard-cms-fu)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/bvslqHtRlwo)
+## Getting Started
 
-## Overview
+To get a local copy up and running, follow these simple steps.
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+### Prerequisites
 
-## Deployment
+*   Node.js (v18 or later)
+*   npm, pnpm, or yarn
 
-Your project is live at:
+### Installation
 
-**[https://vercel.com/prajithitdutch-4543s-projects/v0-cms-full-form-dashboard-cms-fu](https://vercel.com/prajithitdutch-4543s-projects/v0-cms-full-form-dashboard-cms-fu)**
+1.  Clone the repository:
+    ```sh
+    git clone <YOUR_REPOSITORY_URL>
+    ```
+2.  Navigate to the project directory:
+    ```sh
+    cd trr-dutch-crm
+    ```
+3.  Install NPM packages:
+    ```sh
+    npm install
+    ```
+4.  Run the development server:
+    ```sh
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Build your app
+## Database Setup
 
-Continue building your app on:
+This application is designed to work with a MySQL database but comes with mock data for frontend development. To connect to your own database, follow these steps:
 
-**[https://v0.app/chat/projects/bvslqHtRlwo](https://v0.app/chat/projects/bvslqHtRlwo)**
+1.  **Create a `.env.local` file** in the root of your project.
+2.  **Add your database credentials** to the file. This file will be ignored by Git to keep your credentials secure.
+    ```env
+    DB_HOST=your_database_host
+    DB_USER=your_database_username
+    DB_PASSWORD=your_database_password
+    DB_DATABASE=your_database_name
+    DB_PORT=3306
+    ```
+3.  **Set up the database schema.** You can use the provided `schema.sql` file to create the necessary tables in your database.
+4.  **Implement the backend API.** You will need to create API routes within the `app/api/` directory to connect to your database and handle data operations (CRUD). This part is not implemented by the AI assistant.
 
-## How It Works
+## How To Make It Live (Deployment)
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+The recommended way to deploy this Next.js application is with [Vercel](https://vercel.com).
+
+### Vercel Deployment Steps
+
+1.  **Push to a Git Repository:** Ensure your project is on GitHub, GitLab, or Bitbucket.
+2.  **Import to Vercel:** Create a new project on Vercel and import your repository. Vercel will automatically detect the Next.js framework.
+3.  **Set Up a Production Database:** Use a cloud database provider like PlanetScale, AWS RDS, or DigitalOcean to host your MySQL database.
+4.  **Configure Environment Variables:** In your Vercel project settings, add the environment variables from your `.env.local` file. **Do not commit your `.env.local` file to Git.**
+5.  **Deploy:** Vercel will build and deploy your application. Any new push to your connected branch (e.g., `main`) will trigger a new deployment automatically.
