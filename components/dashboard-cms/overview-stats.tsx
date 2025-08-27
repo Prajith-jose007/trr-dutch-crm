@@ -25,7 +25,7 @@ const stats: StatCard[] = [
     change: "+12.5%",
     changeType: "increase",
     icon: <AED />,
-    description: "Published articles",
+    description: "All-time revenue",
     isCurrency: true,
   },
   {
