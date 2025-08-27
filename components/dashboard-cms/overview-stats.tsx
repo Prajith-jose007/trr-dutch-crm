@@ -34,7 +34,7 @@ const stats: StatCard[] = [
     change: "+23.1%",
     changeType: "increase",
     icon: <AED />,
-    description: "This month",
+    description: "",
     isCurrency: true,
   },
   {
@@ -43,7 +43,7 @@ const stats: StatCard[] = [
     change: "+8.2%",
     changeType: "increase",
     icon: <AED />,
-    description: "User engagement",
+    description: "",
     isCurrency: true,
   },
   {
@@ -52,7 +52,7 @@ const stats: StatCard[] = [
     change: "-2.1%",
     changeType: "decrease",
     icon: <AED />,
-    description: "Active writers",
+    description: "",
     isCurrency: true,
   },
   {
@@ -61,7 +61,7 @@ const stats: StatCard[] = [
     change: "+5.3%",
     changeType: "increase",
     icon: <Users className="h-4 w-4" />,
-    description: "Upcoming content",
+    description: "",
   },
   {
     title: "Notification Alert",
@@ -69,7 +69,7 @@ const stats: StatCard[] = [
     change: "+15.7%",
     changeType: "increase",
     icon: <Bell className="h-4 w-4" />,
-    description: "Images & videos",
+    description: "",
   },
 ]
 
