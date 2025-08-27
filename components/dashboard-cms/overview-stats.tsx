@@ -25,7 +25,7 @@ const stats: StatCard[] = [
     change: "+12.5%",
     changeType: "increase",
     icon: <AED />,
-    description: "All-time revenue",
+    description: "",
     isCurrency: true,
   },
   {
@@ -100,7 +100,7 @@ export default function OverviewStats() {
             </div>
             <div className="space-y-0.5">
               <h3 className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-500">{stat.description}</p>
+              {stat.description && <p className="text-xs text-gray-500 dark:text-gray-500">{stat.description}</p>}
             </div>
           </div>
         </div>
