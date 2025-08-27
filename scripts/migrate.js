@@ -1,61 +1,88 @@
-// This is a placeholder for your data migration script.
-// I am unable to write the backend code to connect to your database.
-// A developer will need to implement the logic in this file.
+// This script provides a functional example of how to migrate data from a CSV
+// file into your MySQL database. A developer will need to adapt this script
+// for all the data they wish to import (e.g., bookings, yacht_packages).
 
-// The general steps for this script would be:
-// 1. Import the 'mysql' library and the 'fs' (file system) library.
-//    const mysql = require('mysql');
-//    const fs = require('fs');
-//    require('dotenv').config({ path: '../.env' }); // Load .env variables
+// Import necessary libraries. 'fs' for file system operations, 'mysql2/promise'
+// for database interaction, and 'dotenv' to load environment variables.
+const fs = require('fs');
+const mysql = require('mysql2/promise');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-// 2. Create a connection to your MySQL database using the credentials
-//    from your .env file.
-/*
-const connection = mysql.createConnection({
+// Database connection configuration using environment variables
+const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  port: process.env.DB_PORT
-});
-*/
+  port: Number(process.env.DB_PORT),
+};
 
-// 3. Connect to the database.
-/*
-connection.connect(error => {
-  if (error) {
-    console.error('Error connecting to the database:', error);
-    return;
+// --- Main Migration Function ---
+// This async function orchestrates the migration process.
+async function migrate() {
+  let connection;
+  try {
+    // Establish a connection to the database
+    connection = await mysql.createConnection(dbConfig);
+    console.log('Successfully connected to the database.');
+
+    // --- Migrate Agents ---
+    // Call the function to migrate agents. You can add more calls here for
+    // other data types (e.g., migrateBookings, migrateYachts).
+    await migrateAgents(connection);
+
+    console.log('Data migration completed successfully!');
+
+  } catch (error) {
+    console.error('Error during data migration:', error);
+  } finally {
+    // Ensure the database connection is always closed
+    if (connection) {
+      await connection.end();
+      console.log('Database connection closed.');
+    }
   }
-  console.log('Successfully connected to the database.');
-  // Call functions to migrate your data here
-});
-*/
-
-// 4. Create functions to read your data files (e.g., CSVs or JSON)
-//    and insert the data into your database tables.
-//    For example, for agents:
-/*
-function migrateAgents() {
-  // Read an agents.csv file
-  // Parse the CSV data
-  // For each row in the CSV:
-  //   const query = 'INSERT INTO agents (firstName, lastName, email) VALUES (?, ?, ?)';
-  //   connection.query(query, [firstName, lastName, email], (error, results) => {
-  //     if (error) {
-  //       return console.error('Failed to insert agent:', error);
-  //     }
-  //     console.log('Inserted agent with ID:', results.insertId);
-  //   });
 }
-*/
 
-// 5. Remember to close the connection when you're done.
-//    connection.end();
+// --- Agent Migration Example ---
+// This function reads agent data from a CSV and inserts it into the 'agents' table.
+async function migrateAgents(connection) {
+  try {
+    // Read the sample CSV file
+    const csvPath = path.resolve(__dirname, 'sample-agents.csv');
+    const csvData = fs.readFileSync(csvPath, 'utf8');
+    
+    // Split the CSV into rows and skip the header
+    const rows = csvData.trim().split('\n').slice(1);
+    
+    console.log(`Found ${rows.length} agents to migrate...`);
 
-console.log(
-  "Data migration script needs to be implemented."
-);
-console.log(
-  "Please ask a developer to add the necessary database logic to this file."
-);
+    // Prepare the SQL INSERT statement to prevent SQL injection
+    const sql = 'INSERT INTO agents (name, email, phone_number, status) VALUES (?, ?, ?, ?)';
+
+    // Loop through each row and insert it into the database
+    for (const row of rows) {
+      const [name, email, phoneNumber, status] = row.split(',').map(field => field.trim());
+      
+      await connection.execute(sql, [name, email, phoneNumber, status]);
+      console.log(`- Migrated agent: ${name}`);
+    }
+
+    console.log('Agent migration finished.');
+
+  } catch (error) {
+    console.error('Failed to migrate agents:', error);
+    // Re-throw the error to be caught by the main migrate function
+    throw error;
+  }
+}
+
+// --- Placeholder for Other Migrations ---
+// You can create more functions like `migrateAgents` for other data.
+// async function migrateBookings(connection) { ... }
+// async function migrateYachts(connection) { ... }
+
+
+// Start the migration process
+migrate();

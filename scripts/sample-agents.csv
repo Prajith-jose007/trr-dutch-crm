@@ -1,0 +1,5 @@
+name,email,phone_number,status
+John Doe,john.doe@example.com,123-456-7890,Active
+Jane Smith,jane.smith@example.com,987-654-3210,Active
+Peter Jones,peter.jones@example.com,555-123-4567,Inactive
+Aminoff,aminoff@example.com,555-987-6543,Active
