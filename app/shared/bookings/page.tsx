@@ -7,10 +7,29 @@ export const metadata: Metadata = {
   description: "Manage all your shared bookings.",
 };
 
-export default function BookingsPage() {
+async function getBookings() {
+  // This function will run on the server to fetch data.
+  // NOTE: This URL needs to be the absolute URL of your deployed application
+  // in a production environment. For local development, this works.
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/bookings/list`, {
+    cache: 'no-store', // Ensures fresh data on every request
+  });
+
+  if (!res.ok) {
+    // This will be caught by the Error Boundary
+    throw new Error('Failed to fetch bookings');
+  }
+
+  return res.json();
+}
+
+
+export default async function BookingsPage() {
+  const bookings = await getBookings();
+
   return (
     <Layout>
-      <BookingsContent />
+      <BookingsContent bookingsData={bookings} />
     </Layout>
   );
 }

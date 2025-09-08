@@ -11,103 +11,11 @@ import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 
-const bookingsData = [
-  {
-    id: "BK-001",
-    status: "Confirmed",
-    date: "2024-05-20",
-    yacht: "Lotus Royale",
-    agent: "John Doe",
-    client: "Alice Johnson",
-    paymentStatus: "Paid",
-    type: "Private",
-    transactionId: "TRN-12345",
-    bookingRef: "REF-ABCDE",
-    paymentMode: "Credit Card",
-    free: "No",
-    chQty: 0,
-    adQty: 0,
-    chdTopQty: 0,
-    adtTopQty: 0,
-    adAlcQty: 0,
-    vipChQty: 0,
-    vipAdQty: 0,
-    vipAlcQty: 0,
-    rylChQty: 0,
-    rylAdQty: 0,
-    rylAlcQty: 0,
-    basicQty: 0,
-    stdQty: 0,
-    premQty: 0,
-    vipQty: 0,
-    hrChtrQty: 2,
-    totalCount: 2,
-    addonPack: "Birthday Pack",
-    totalAmt: 5000,
-    rate: 2500,
-    discount: 0,
-    commission: 500,
-    netAmt: 4500,
-    paid: 4500,
-    balance: 0,
-    note: "Special request for vegetarian meals.",
-    createdBy: "admin",
-    modifiedBy: "admin",
-    dateOfCreation: "2024-05-18",
-    dateOfModification: "2024-05-18",
-  },
-  {
-    id: "BK-002",
-    status: "Pending",
-    date: "2024-06-15",
-    yacht: "Odyssey",
-    agent: "Jane Smith",
-    client: "Bob Williams",
-    paymentStatus: "Unpaid",
-    type: "Shared",
-    transactionId: "TRN-67890",
-    bookingRef: "REF-FGHIJ",
-    paymentMode: "Bank Transfer",
-    free: "No",
-    chQty: 1,
-    adQty: 2,
-    chdTopQty: 0,
-    adtTopQty: 0,
-    adAlcQty: 0,
-    vipChQty: 0,
-    vipAdQty: 0,
-    vipAlcQty: 0,
-    rylChQty: 0,
-    rylAdQty: 0,
-    rylAlcQty: 0,
-    basicQty: 3,
-    stdQty: 0,
-    premQty: 0,
-    vipQty: 0,
-    hrChtrQty: 0,
-    totalCount: 3,
-    addonPack: "None",
-    totalAmt: 1500,
-    rate: 500,
-    discount: 10,
-    commission: 135,
-    netAmt: 1350,
-    paid: 0,
-    balance: 1350,
-    note: "",
-    createdBy: "agent_jane",
-    modifiedBy: "agent_jane",
-    dateOfCreation: "2024-05-18",
-    dateOfModification: "2024-05-18",
-  },
-  // Add more sample data as needed
-];
-
 function AED() {
   return <img className="aed inline-block" alt="AED" />
 }
 
-export default function BookingsContent() {
+export default function BookingsContent({ bookingsData }: { bookingsData: any[] }) {
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredBookings = bookingsData.filter(booking => 
@@ -117,7 +25,7 @@ export default function BookingsContent() {
   );
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case 'confirmed':
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
       case 'pending':
@@ -130,7 +38,7 @@ export default function BookingsContent() {
   }
 
    const getPaymentStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case 'paid':
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
       case 'unpaid':
@@ -253,27 +161,27 @@ export default function BookingsContent() {
                   <TableRow key={booking.id}>
                     <TableCell className="font-medium whitespace-nowrap">{booking.id}</TableCell>
                     <TableCell className="whitespace-nowrap"><Badge className={getStatusColor(booking.status)}>{booking.status}</Badge></TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.date}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.yacht}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.agent}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.client}</TableCell>
-                    <TableCell className="whitespace-nowrap"><Badge className={getPaymentStatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Badge></TableCell>
+                    <TableCell className="whitespace-nowrap">{new Date(booking.booking_date).toLocaleDateString()}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.yacht_package_id}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.agent_name}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.client_name}</TableCell>
+                    <TableCell className="whitespace-nowrap"><Badge className={getPaymentStatusColor(booking.payment_status)}>{booking.payment_status}</Badge></TableCell>
                     <TableCell className="whitespace-nowrap">{booking.type}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.transactionId}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.bookingRef}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.paymentMode}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.transaction_id}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.ticket_ref}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.payment_mode}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.free}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.chQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.adQty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.dinner_child_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.dinner_adult_qty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.chdTopQty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.adtTopQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.adAlcQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.vipChQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.vipAdQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.vipAlcQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.rylChQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.rylAdQty}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.rylAlcQty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.dinner_adult_alc_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.vip_child_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.vip_adult_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.vip_adult_alc_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.royal_child_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.royal_adult_qty}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.royal_adult_alc_qty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.basicQty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.stdQty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.premQty}</TableCell>
@@ -281,18 +189,18 @@ export default function BookingsContent() {
                     <TableCell className="whitespace-nowrap">{booking.hrChtrQty}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.totalCount}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.addonPack}</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.totalAmt.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.rate.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.total_amount?.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.rate?.toLocaleString()}</TableCell>
                     <TableCell className="whitespace-nowrap">{booking.discount}%</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.commission.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.netAmt.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.paid.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap"><AED /> {booking.balance.toLocaleString()}</TableCell>
-                    <TableCell className="whitespace-nowrap max-w-xs truncate">{booking.note}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.createdBy}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.modifiedBy}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.dateOfCreation}</TableCell>
-                    <TableCell className="whitespace-nowrap">{booking.dateOfModification}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.commission?.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.net_amount?.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.paid?.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap"><AED /> {booking.balance?.toLocaleString()}</TableCell>
+                    <TableCell className="whitespace-nowrap max-w-xs truncate">{booking.notes}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.created_by}</TableCell>
+                    <TableCell className="whitespace-nowrap">{booking.modified_by}</TableCell>
+                    <TableCell className="whitespace-nowrap">{new Date(booking.date_of_creation).toLocaleDateString()}</TableCell>
+                    <TableCell className="whitespace-nowrap">{new Date(booking.date_of_modification).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
                        <DropdownMenu>
                         <DropdownMenuTrigger asChild>
