@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload, FileText, Download, UserPlus, FileUp, Users } from "lucide-react";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "../ui/badge";
@@ -98,19 +98,40 @@ export function ImportAgents() {
   };
 
 
-  const handleImport = () => {
+  const handleImport = async () => {
     if (!file || agents.length === 0) return;
     setIsUploading(true);
 
-    // Simulate API call for upload
-    setTimeout(() => {
-      setIsUploading(false);
+    try {
+      const response = await fetch('/api/agents/import', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ agents }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to import agents');
+      }
+
+      const result = await response.json();
+      
       showToast({
         title: "Import Successful",
-        description: `${agents.length} agents from ${file.name} have been added.`,
+        description: `${result.importedCount} agents from ${file.name} have been added.`,
       });
       resetState();
-    }, 2000);
+
+    } catch (error) {
+      showToast({
+        title: "Import Failed",
+        description: "An error occurred while importing the agents. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
   
   const createSampleCSV = () => {
@@ -233,3 +254,5 @@ export function ImportAgents() {
     </>
   );
 }
+
+    
