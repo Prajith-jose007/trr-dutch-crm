@@ -21,8 +21,8 @@ export async function POST(request: NextRequest) {
 
     const connection = await mysql.createConnection(dbConfig);
 
-    // Find the user by email (which we use as userId)
-    const sql = 'SELECT id, first_name, last_name, email, role, password FROM agents WHERE email = ?';
+    // Find the user by user_id in the new 'users' table
+    const sql = 'SELECT id, first_name, last_name, user_id, role, password FROM users WHERE user_id = ?';
     const [rows] = await connection.execute(sql, [userId]);
 
     await connection.end();
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     // Do not send the password back to the client
     const userToReturn = {
-      id: user.email,
+      id: user.user_id, // Use user_id as the unique identifier on the client
       name: `${user.first_name} ${user.last_name}`,
       role: user.role,
     };

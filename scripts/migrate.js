@@ -39,10 +39,10 @@ async function migrate() {
     // This new step reads the schema.sql file and executes it to create tables.
     await createSchema(connection);
 
-    // --- Migrate Agents ---
-    // Call the function to migrate agents. You can add more calls here for
-    // other data types (e.g., migrateBookings, migrateYachts).
+    // --- Migrate System Users ---
     await migrateSystemUsers(connection);
+    
+    // --- Migrate Agents ---
     await migrateAgents(connection);
 
 
@@ -83,16 +83,14 @@ async function createSchema(connection) {
 }
 
 // --- System User Migration ---
-// This function creates the core superadmin and admin users.
+// This function creates the core superadmin and admin users in the 'users' table.
 async function migrateSystemUsers(connection) {
     console.log('Migrating system users (superadmin, admin)...');
     const users = [
         {
             first_name: 'Super',
             last_name: 'Admin',
-            email: 'superadmin',
-            phone_number: '000-000-0000',
-            status: 'active',
+            user_id: 'superadmin',
             role: 'superadmin',
             // In a real app, this should be a securely hashed password.
             password: 'Dutch@989#1' 
@@ -100,22 +98,18 @@ async function migrateSystemUsers(connection) {
         {
             first_name: 'Admin',
             last_name: 'User',
-            email: 'admin',
-            phone_number: '000-000-0001',
-            status: 'active',
+            user_id: 'admin',
             role: 'admin',
             password: 'Dutch@123#'
         }
     ];
 
     const sql = `
-      INSERT INTO agents (first_name, last_name, email, phone_number, status, role, password) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO users (first_name, last_name, user_id, role, password) 
+      VALUES (?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE 
         first_name = VALUES(first_name), 
         last_name = VALUES(last_name), 
-        phone_number = VALUES(phone_number),
-        status = VALUES(status),
         role = VALUES(role),
         password = VALUES(password)
     `;
@@ -124,13 +118,11 @@ async function migrateSystemUsers(connection) {
         await connection.execute(sql, [
             user.first_name,
             user.last_name,
-            user.email,
-            user.phone_number,
-            user.status,
+            user.user_id,
             user.role,
             user.password
         ]);
-        console.log(`- Upserted system user: ${user.email}`);
+        console.log(`- Upserted system user: ${user.user_id}`);
     }
     console.log('System user migration finished.');
 }
@@ -141,7 +133,7 @@ async function migrateSystemUsers(connection) {
 async function migrateAgents(connection) {
   try {
     // Read the sample CSV file
-    const csvPath = path.resolve(__dirname, 'sample-agents.csv');
+    const csvPath = path.resolve(__dirname, '../scripts/sample-agents.csv');
     const csvData = fs.readFileSync(csvPath, 'utf8');
     
     // Split the CSV into rows and skip the header
@@ -164,9 +156,9 @@ async function migrateAgents(connection) {
 
     // Loop through each row and execute the upsert query
     for (const row of rows) {
-      const [firstName, lastName, email, phoneNumber, status] = row.split(',').map(field => field.trim());
+      const [firstName, lastName, email, phoneNumber] = row.split(',').map(field => field.trim());
       
-      await connection.execute(sql, [firstName, lastName, email, phoneNumber, status || 'active']);
+      await connection.execute(sql, [firstName, lastName, email, phoneNumber, 'active']);
       console.log(`- Processed agent from CSV: ${email}`);
     }
 

@@ -1,7 +1,21 @@
 -- This SQL script creates the necessary tables for the Dutch CRM application.
 -- A developer should execute this script in their MySQL database to set up the schema.
 
--- Create the 'agents' table to store sales agent information, now including roles and password
+-- Create the 'users' table for storing login credentials and roles.
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(191) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL, -- Should store hashed passwords
+    role ENUM('superadmin', 'admin', 'sales_head', 'sales_manager', 'sales', 'accounts_manager', 'accounts', 'guest') NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- Create the 'agents' table to store sales agent information.
+-- This table is now separate from the users table.
 CREATE TABLE IF NOT EXISTS agents (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -9,12 +23,9 @@ CREATE TABLE IF NOT EXISTS agents (
     email VARCHAR(191) NOT NULL UNIQUE,
     phone_number VARCHAR(50),
     status VARCHAR(50) DEFAULT 'active',
-    role VARCHAR(50) DEFAULT 'sales', -- Added role column
-    password VARCHAR(255), -- Added password column for hashed passwords
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 
 -- Create the 'yacht_packages' table for shared cruise offerings
 CREATE TABLE IF NOT EXISTS yacht_packages (
@@ -40,7 +51,7 @@ CREATE TABLE IF NOT EXISTS yacht_packages (
     price_royal_adult_alc DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Create the 'bookings' table to store all booking information
 CREATE TABLE IF NOT EXISTS bookings (
@@ -74,4 +85,4 @@ CREATE TABLE IF NOT EXISTS bookings (
     payment_status VARCHAR(50) DEFAULT 'unpaid',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
