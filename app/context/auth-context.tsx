@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 
 export type UserRole = 'superadmin' | 'admin' | 'sales_head' | 'sales_manager' | 'sales' | 'accounts_manager' | 'accounts' | 'guest';
 
@@ -12,60 +13,42 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (userId: string) => void;
+  login: (userData: User) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define users based on your requirements
-const users: Record<string, User> = {
-  superadmin: { id: 'superadmin', name: 'Super Admin', role: 'superadmin' },
-  admin: { id: 'admin', name: 'Admin', role: 'admin' },
-  saleshead: { id: 'saleshead', name: 'Sales Head', role: 'sales_head' },
-  salesmanager: { id: 'salesmanager', name: 'Sales Manager', role: 'sales_manager' },
-  sales: { id: 'sales', name: 'Sales Team', role: 'sales' },
-  accountsmanager: { id: 'accountsmanager', name: 'Accounts Manager', role: 'accounts_manager' },
-  accounts: { id: 'accounts', name: 'Accounts Team', role: 'accounts' },
-};
-
-const getRoleFromId = (userId: string): UserRole => {
-    if (userId.startsWith('superadmin')) return 'superadmin';
-    if (userId.startsWith('admin')) return 'admin';
-    if (userId.startsWith('saleshead')) return 'sales_head';
-    if (userId.startsWith('salesmanager')) return 'sales_manager';
-    if (userId.startsWith('sales')) return 'sales';
-    if (userId.startsWith('accountsmanager')) return 'accounts_manager';
-    if (userId.startsWith('accounts')) return 'accounts';
-    return 'guest';
-}
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      const role = getRoleFromId(storedUserId);
-      const name = users[storedUserId]?.name || 'Guest';
-      setUser({ id: storedUserId, name, role });
-    } else {
-      setUser({ id: 'guest', name: 'Guest', role: 'guest' });
+    // On initial load, check if user data exists in localStorage
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } else {
+        // If no user in storage, treat as guest
+        setUser(null); 
+      }
+    } catch (error) {
+      console.error("Failed to parse user from localStorage", error);
+      setUser(null);
     }
   }, []);
 
-  const login = (userId: string) => {
-    const role = getRoleFromId(userId);
-    const name = users[userId]?.name || 'Guest';
-    const loggedInUser = { id: userId, name, role };
-    setUser(loggedInUser);
-    localStorage.setItem('userId', userId);
+  const login = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('userId');
-    window.location.href = '/auth/login';
+    localStorage.removeItem('user');
+    router.push('/auth/login');
   };
 
   return (
