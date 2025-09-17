@@ -16,12 +16,14 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 // Database connection configuration using environment variables
+// Note: We add the `multipleStatements: true` flag to allow executing the schema.sql file.
 const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   port: Number(process.env.DB_PORT),
+  multipleStatements: true,
 };
 
 // --- Main Migration Function ---
@@ -32,6 +34,10 @@ async function migrate() {
     // Establish a connection to the database
     connection = await mysql.createConnection(dbConfig);
     console.log('Successfully connected to the database.');
+
+    // --- Create Schema ---
+    // This new step reads the schema.sql file and executes it to create tables.
+    await createSchema(connection);
 
     // --- Migrate Agents ---
     // Call the function to migrate agents. You can add more calls here for
@@ -50,6 +56,24 @@ async function migrate() {
     }
   }
 }
+
+// --- New Schema Creation Function ---
+// Reads and executes the schema.sql file to ensure tables exist.
+async function createSchema(connection) {
+  try {
+    console.log('Reading schema.sql to create tables if they dont exist...');
+    const schemaPath = path.resolve(__dirname, '../schema.sql');
+    const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
+    
+    await connection.query(schemaSQL);
+    console.log('Database schema verified/created successfully.');
+    
+  } catch (error) {
+    console.error('Failed to execute schema.sql:', error);
+    throw error; // Stop the migration if schema creation fails
+  }
+}
+
 
 // --- Agent Migration Example ---
 // This function reads agent data from a CSV and inserts it into the 'agents' table.
