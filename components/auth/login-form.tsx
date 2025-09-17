@@ -190,12 +190,6 @@ export function LoginForm() {
               Sign up
             </Link>
           </div>
-
-          <div className="text-center">
-            <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">
-              Continue as guest
-            </Link>
-          </div>
         </form>
       </div>
     </>
