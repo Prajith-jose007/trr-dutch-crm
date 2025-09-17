@@ -89,14 +89,14 @@ async function migrateAgents(connection) {
     console.log(`Found ${rows.length} agents to migrate...`);
 
     // Prepare the SQL INSERT statement to prevent SQL injection
-    const sql = 'INSERT INTO agents (name, email, phone_number, status) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO agents (first_name, last_name, email, phone_number, status) VALUES (?, ?, ?, ?, ?)';
 
     // Loop through each row and insert it into the database
     for (const row of rows) {
-      const [name, email, phoneNumber, status] = row.split(',').map(field => field.trim());
+      const [firstName, lastName, email, phoneNumber, status] = row.split(',').map(field => field.trim());
       
-      await connection.execute(sql, [name, email, phoneNumber, status]);
-      console.log(`- Migrated agent: ${name}`);
+      await connection.execute(sql, [firstName, lastName, email, phoneNumber, status]);
+      console.log(`- Migrated agent: ${firstName} ${lastName}`);
     }
 
     console.log('Agent migration finished.');

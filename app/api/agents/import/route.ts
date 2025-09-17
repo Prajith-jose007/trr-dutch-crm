@@ -22,13 +22,12 @@ export async function POST(request: NextRequest) {
 
     const connection = await mysql.createConnection(dbConfig);
 
-    // Assuming your CSV headers match these keys: FirstName, LastName, Email, PhoneNumber
-    // A developer may need to adjust the column names (name, email, phone_number, etc.)
-    // to match the final schema.sql for the 'agents' table.
-    const sql = 'INSERT INTO agents (name, email, phone_number, status) VALUES ?';
+    // Using the corrected schema with first_name and last_name
+    const sql = 'INSERT INTO agents (first_name, last_name, email, phone_number, status) VALUES ?';
 
     const values = agents.map(agent => [
-        `${agent.FirstName || ''} ${agent.LastName || ''}`.trim(),
+        agent.FirstName || '',
+        agent.LastName || '',
         agent.Email,
         agent.PhoneNumber,
         'active' // Default status
@@ -42,8 +41,8 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error importing agents:', error);
-    return NextResponse.json({ message: 'Failed to import agents' }, { status: 500 });
+    // Provide more specific error feedback if possible
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ message: 'Failed to import agents', error: errorMessage }, { status: 500 });
   }
 }
-
-    
