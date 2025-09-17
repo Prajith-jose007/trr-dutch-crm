@@ -1,3 +1,9 @@
+// IMPORTANT: Before running this script, you must first create the database tables.
+// This script only populates data; it does not create the schema.
+// A developer must run the contents of the `schema.sql` file in your MySQL
+// database (e.g., in phpMyAdmin or MySQL Workbench) before this script will work.
+// Failure to do so will result in a "Table 'dutchprj.agents' doesn't exist" error.
+
 // This script provides a functional example of how to migrate data from a CSV
 // file into your MySQL database. A developer will need to adapt this script
 // for all the data they wish to import (e.g., bookings, yacht_packages).
