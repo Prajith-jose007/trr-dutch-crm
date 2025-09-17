@@ -65,7 +65,13 @@ async function createSchema(connection) {
     const schemaPath = path.resolve(__dirname, '../schema.sql');
     const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
     
-    await connection.query(schemaSQL);
+    // A simple way to handle multiple statements in the file
+    const statements = schemaSQL.split(';').filter(s => s.trim());
+    for (const statement of statements) {
+      if (statement) {
+        await connection.query(statement);
+      }
+    }
     console.log('Database schema verified/created successfully.');
     
   } catch (error) {
@@ -86,17 +92,27 @@ async function migrateAgents(connection) {
     // Split the CSV into rows and skip the header
     const rows = csvData.trim().split('\n').slice(1);
     
-    console.log(`Found ${rows.length} agents to migrate...`);
+    console.log(`Found ${rows.length} agents to process...`);
 
-    // Prepare the SQL INSERT statement to prevent SQL injection
-    const sql = 'INSERT INTO agents (first_name, last_name, email, phone_number, status) VALUES (?, ?, ?, ?, ?)';
+    // Prepare the SQL INSERT statement with an ON DUPLICATE KEY UPDATE clause (upsert).
+    // This will insert a new agent if the email doesn't exist, or update the existing
+    // agent's information if the email is already in the database.
+    const sql = `
+      INSERT INTO agents (first_name, last_name, email, phone_number, status) 
+      VALUES (?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE 
+        first_name = VALUES(first_name), 
+        last_name = VALUES(last_name), 
+        phone_number = VALUES(phone_number),
+        status = VALUES(status)
+    `;
 
-    // Loop through each row and insert it into the database
+    // Loop through each row and execute the upsert query
     for (const row of rows) {
       const [firstName, lastName, email, phoneNumber, status] = row.split(',').map(field => field.trim());
       
-      await connection.execute(sql, [firstName, lastName, email, phoneNumber, status]);
-      console.log(`- Migrated agent: ${firstName} ${lastName}`);
+      await connection.execute(sql, [firstName, lastName, email, phoneNumber, status || 'active']);
+      console.log(`- Processed agent: ${email}`);
     }
 
     console.log('Agent migration finished.');
