@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type UserRole = 'superadmin' | 'admin' | 'sales_head' | 'sales_manager' | 'sales' | 'accounts_manager' | 'accounts' | 'guest';
+export type UserRole = 'superadmin' | 'admin' | 'sales_head'_manager' | 'sales' | 'accounts_manager' | 'accounts' | 'guest';
 
 interface User {
   id: string;
@@ -13,6 +13,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,13 +32,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
-      } else {
-        // If no user in storage, treat as guest
-        setUser(null); 
       }
     } catch (error) {
       console.error("Failed to parse user from localStorage", error);
       setUser(null);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

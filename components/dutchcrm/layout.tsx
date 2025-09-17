@@ -14,7 +14,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -23,14 +23,15 @@ export default function Layout({ children }: LayoutProps) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    if (!user) {
-      router.push('/auth/login');
-    }
-  }, [user, router]);
-
-  useEffect(() => {
     setMounted(true)
   }, [])
+  
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, loading, router]);
+
 
   // Listen for menu state changes and hover state
   useEffect(() => {
@@ -57,9 +58,13 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearInterval(interval)
   }, [])
 
-  if (!mounted || !user) {
+  if (loading || !user) {
     // Render a loading state or nothing while redirecting or until auth is confirmed
-    return null;
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   // Calculate margin based on menu state and hover - only for desktop
