@@ -80,10 +80,6 @@ export function LoginForm() {
 
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
-          <p className="text-slate-600">Log in to your account to continue managing your customers</p>
-          <p className="text-xs text-slate-500 mt-2">
-            (Use 'superadmin' or 'admin' as the User ID)
-          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
