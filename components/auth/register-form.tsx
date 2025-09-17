@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Eye, EyeOff, Mail, Lock, User, Building, Github } from "lucide-react"
 import { AuthBrandSection } from "./auth-brand-section"
+import Image from "next/image"
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -47,9 +48,7 @@ export function RegisterForm() {
           <div className="space-y-6">
             {/* Mobile logo */}
             <div className="lg:hidden flex items-center justify-center mb-8">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-xl">DC</span>
-              </div>
+              <Image src="/logo.svg" alt="Dutch CRM Logo" width={48} height={48} className="mr-3" />
               <h1 className="text-2xl font-bold text-slate-900">Dutch CRM</h1>
             </div>
 

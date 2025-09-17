@@ -31,6 +31,7 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { useAuth, UserRole } from "@/app/context/auth-context"
+import Image from "next/image"
 
 type MenuState = "full" | "collapsed" | "hidden"
 
@@ -475,9 +476,7 @@ export default function Sidebar() {
             {/* Header */}
             <div className="h-16 px-3 flex items-center border-b border-gray-200 dark:border-[#1F1F23]">
               <Link href="/" className="flex items-center gap-3 w-full">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-sm">DC</span>
-                </div>
+                <Image src="/logo.svg" alt="Dutch CRM Logo" width={32} height={32} />
                 <span className="text-lg font-semibold text-gray-900 dark:text-white">Dutch CRM</span>
               </Link>
             </div>
@@ -543,18 +542,14 @@ export default function Sidebar() {
           <div className="h-16 px-3 flex items-center border-b border-gray-200 dark:border-[#1F1F23]">
             {showText ? (
               <Link href="/" className="flex items-center gap-3 w-full">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-sm">DC</span>
-                </div>
+                <Image src="/logo.svg" alt="Dutch CRM Logo" width={32} height={32} />
                 <span className="text-lg font-semibold text-gray-900 dark:text-white transition-opacity duration-200">
                   Dutch CRM
                 </span>
               </Link>
             ) : (
               <div className="flex justify-center w-full">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-sm">DC</span>
-                </div>
+                <Image src="/logo.svg" alt="Dutch CRM Logo" width={32} height={32} />
               </div>
             )}
           </div>
