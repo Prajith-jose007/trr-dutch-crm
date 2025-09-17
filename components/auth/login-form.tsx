@@ -9,8 +9,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
+import { useAuth } from "@/app/context/auth-context"
 
 export function LoginForm() {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -22,9 +24,15 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    
+    // Simulate API call and login
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    // In a real app, you'd verify credentials. Here, we just log the user in.
+    login(formData.email);
+    
     setIsLoading(false)
+    
     // Redirect to dashboard
     window.location.href = "/"
   }
@@ -42,21 +50,24 @@ export function LoginForm() {
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-slate-900 mb-2">Welkom terug</h2>
         <p className="text-slate-600">Log in op uw account om door te gaan met klantenbeheer</p>
+        <p className="text-xs text-slate-500 mt-2">
+          (Use 'superadmin', 'admin', 'sales', or 'accounts' as the email to test roles)
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">User ID</Label>
           <div className="relative mt-1">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
             <Input
               id="email"
-              type="email"
+              type="text"
               required
               className="pl-10"
-              placeholder="Enter your email"
+              placeholder="Enter your user ID"
               value={formData.email}
-              onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+              onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
             />
           </div>
         </div>

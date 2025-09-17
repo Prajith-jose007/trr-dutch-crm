@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
 import { useTheme } from "next-themes"
+import { useAuth } from "@/app/context/auth-context"
 
 interface ThemeConfig {
   menuState: "full" | "collapsed" | "hidden"
@@ -144,6 +145,7 @@ const defaultConfig: ThemeConfig = {
 }
 
 export function ThemeCustomizer() {
+  const { user } = useAuth();
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -503,17 +505,9 @@ export function ThemeCustomizer() {
       </div>
     )
   }
-
-  if (!mounted) {
-    return (
-      <button
-        className="fixed right-4 top-1/2 -translate-y-1/2 z-[80] p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-lg"
-        title="Theme Customizer"
-        disabled
-      >
-        <Palette className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-      </button>
-    )
+  
+  if (!mounted || user?.role !== 'superadmin') {
+    return null
   }
 
   const panelPosition = config.layout === "rtl" ? "left-0" : "right-0"

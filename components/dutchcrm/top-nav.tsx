@@ -1,6 +1,6 @@
 "use client"
 
-import { Menu, Search, Bell, Settings, User, ChevronDown, Home } from "lucide-react"
+import { Menu, Search, Bell, Settings, User, ChevronDown, Home, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -15,8 +15,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from "../theme-toggle"
 import Link from "next/link"
+import { useAuth } from "@/app/context/auth-context"
 
 export default function TopNav() {
+  const { user, logout } = useAuth();
+
   const handleMenuToggle = () => {
     if (typeof window !== "undefined" && (window as any).toggleMenuState) {
       ;(window as any).toggleMenuState()
@@ -28,6 +31,11 @@ export default function TopNav() {
       const currentState = (window as any).isMobileMenuOpen || false
       ;(window as any).setIsMobileMenuOpen(!currentState)
     }
+  }
+  
+  const getRoleName = (role: string | undefined) => {
+    if (!role) return "Guest";
+    return role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
   return (
@@ -109,25 +117,28 @@ export default function TopNav() {
                 </AvatarFallback>
               </Avatar>
               <div className="hidden lg:flex flex-col items-start">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">Jan van der Berg</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Sales Manager</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{user?.name || "Guest"}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{getRoleName(user?.role)}</span>
               </div>
               <ChevronDown className="hidden lg:block h-4 w-4 text-gray-500" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Mijn Account</DropdownMenuLabel>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              Profiel
+              Profile
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
-              Instellingen
+              Settings
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">Uitloggen</DropdownMenuItem>
+            <DropdownMenuItem onClick={logout} className="text-red-600">
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

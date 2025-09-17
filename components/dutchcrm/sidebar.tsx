@@ -25,10 +25,12 @@ import {
   User,
   BookMarked,
   Ship,
+  Palette
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import { useAuth, UserRole } from "@/app/context/auth-context"
 
 type MenuState = "full" | "collapsed" | "hidden"
 
@@ -38,8 +40,9 @@ interface SubMenuItem {
   href: string
   icon?: React.ComponentType<any>
   badge?: string
-  isNew?: boolean
-  children?: SubMenuItem[]
+  isNew?: boolean;
+  children?: SubMenuItem[];
+  allowedRoles?: UserRole[];
 }
 
 interface MenuItem {
@@ -48,20 +51,29 @@ interface MenuItem {
   href?: string
   icon: React.ComponentType<any>
   badge?: string
-  isNew?: boolean
-  children?: SubMenuItem[]
+  isNew?: boolean;
+  children?: SubMenuItem[];
+  allowedRoles?: UserRole[];
 }
 
 interface MenuSection {
   id: string
-  label: string
-  items: MenuItem[]
+  label: string;
+  items: MenuItem[];
+  allowedRoles?: UserRole[];
 }
+
+const allRoles: UserRole[] = ['superadmin', 'admin', 'sales_head', 'sales_manager', 'sales', 'accounts_manager', 'accounts'];
+const salesRoles: UserRole[] = ['superadmin', 'admin', 'sales_head', 'sales_manager', 'sales'];
+const accountsRoles: UserRole[] = ['superadmin', 'admin', 'accounts_manager', 'accounts'];
+const adminRoles: UserRole[] = ['superadmin', 'admin'];
+const superAdminRole: UserRole[] = ['superadmin'];
 
 const menuData: MenuSection[] = [
   {
     id: "main",
     label: "Main",
+    allowedRoles: allRoles,
     items: [
       {
         id: "dashboard",
@@ -81,6 +93,7 @@ const menuData: MenuSection[] = [
   {
     id: "customer_management",
     label: "Customer Management",
+    allowedRoles: salesRoles,
     items: [
       {
         id: "contacts",
@@ -93,6 +106,7 @@ const menuData: MenuSection[] = [
   {
     id: "sales_management",
     label: "Sales Management",
+    allowedRoles: salesRoles,
     items: [
       {
         id: "private",
@@ -138,6 +152,7 @@ const menuData: MenuSection[] = [
         id: "shared",
         label: "Shared",
         icon: Users,
+        allowedRoles: adminRoles,
         children: [
           {
             id: "bookings-management",
@@ -158,6 +173,7 @@ const menuData: MenuSection[] = [
   {
     id: "finance",
     label: "Finance",
+    allowedRoles: accountsRoles,
     items: [
       {
         id: "invoices",
@@ -183,6 +199,7 @@ const menuData: MenuSection[] = [
   {
     id: "team_communication",
     label: "Team & Communication",
+    allowedRoles: adminRoles,
     items: [
       {
         id: "team",
@@ -207,6 +224,7 @@ const menuData: MenuSection[] = [
   {
     id: "tools_settings",
     label: "Tools & Settings",
+    allowedRoles: allRoles,
     items: [
       {
         id: "integrations",
@@ -229,9 +247,10 @@ const menuData: MenuSection[] = [
       },
     ],
   },
-]
+];
 
 export default function Sidebar() {
+  const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [menuState, setMenuState] = useState<MenuState>("full")
   const [isHovered, setIsHovered] = useState(false)
@@ -322,6 +341,13 @@ export default function Sidebar() {
     })
   }
 
+  const hasAccess = (allowedRoles: UserRole[] | undefined) => {
+      if (!allowedRoles || allowedRoles.length === 0) return true; // Public item
+      if (!user) return false;
+      return allowedRoles.includes(user.role);
+  }
+
+
   function NavItem({
     item,
     level = 0,
@@ -331,6 +357,8 @@ export default function Sidebar() {
     level?: number
     parentId?: string
   }) {
+    if (!hasAccess(item.allowedRoles)) return null;
+
     const itemId = `${parentId}-${item.id}`
     const isExpanded = expandedItems.has(itemId)
     const hasChildren = item.children && item.children.length > 0
@@ -350,7 +378,6 @@ export default function Sidebar() {
           if (hasChildren) {
             toggleExpanded(itemId)
           } else if (item.href) {
-            window.location.href = item.href
             handleNavigation()
           }
         }}
@@ -393,6 +420,8 @@ export default function Sidebar() {
       </div>
     )
 
+    const filteredChildren = item.children?.filter(child => hasAccess(child.allowedRoles));
+
     return (
       <div>
         {item.href && !hasChildren ? (
@@ -404,7 +433,7 @@ export default function Sidebar() {
         )}
         {hasChildren && isExpanded && showText && (
           <div className="mt-1 space-y-1">
-            {item.children!.map((child) => (
+            {filteredChildren!.map((child) => (
               <NavItem key={child.id} item={child} level={level + 1} parentId={itemId} />
             ))}
           </div>
@@ -426,6 +455,8 @@ export default function Sidebar() {
 
   // Show text if menu is full OR if collapsed and hovered OR on mobile
   const showText = menuState === "full" || (menuState === "collapsed" && isHovered) || (isMobile && isMobileMenuOpen)
+
+  const filteredMenuData = menuData.filter(section => hasAccess(section.allowedRoles));
 
   // On mobile, show sidebar as overlay when isMobileMenuOpen is true
   if (isMobile) {
@@ -459,7 +490,7 @@ export default function Sidebar() {
               }}
             >
               <div className="space-y-6">
-                {menuData.map((section) => (
+                {filteredMenuData.map((section) => (
                   <div key={section.id}>
                     <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider sidebar-section-label">
                       {section.label}
@@ -476,6 +507,7 @@ export default function Sidebar() {
 
             <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
               <div className="space-y-1">
+                {hasAccess(superAdminRole) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette }} />}
                 <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
                 <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
               </div>
@@ -535,7 +567,7 @@ export default function Sidebar() {
             }}
           >
             <div className="space-y-6">
-              {menuData.map((section) => (
+              {filteredMenuData.map((section) => (
                 <div key={section.id}>
                   {showText && (
                     <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider sidebar-section-label transition-opacity duration-200">
@@ -554,6 +586,7 @@ export default function Sidebar() {
 
           <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
             <div className="space-y-1">
+              {hasAccess(superAdminRole) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette }} />}
               <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
               <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
             </div>
