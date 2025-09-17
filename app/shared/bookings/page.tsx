@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next"
 import Layout from "@/components/dutchcrm/layout"
 import BookingsContent from "@/components/bookings/content"
@@ -7,11 +8,12 @@ export const metadata: Metadata = {
   description: "Manage all your shared bookings.",
 };
 
+// Use a constant for the base URL to avoid environment variable issues in development.
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 async function getBookings() {
   // This function will run on the server to fetch data.
-  // NOTE: This URL needs to be the absolute URL of your deployed application
-  // in a production environment. For local development, this works.
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/bookings/list`, {
+  const res = await fetch(`${APP_URL}/api/bookings/list`, {
     cache: 'no-store', // Ensures fresh data on every request
   });
 
