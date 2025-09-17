@@ -92,7 +92,7 @@ export function SuperCacheSettingsContent() {
             <Zap className="h-6 w-6 text-blue-600" />
             Super Cache Settings
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">Cấu hình cache nâng cao cho website</p>
+          <p className="text-gray-600 dark:text-gray-400">Advanced cache configuration for your website</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
@@ -153,10 +153,10 @@ export function SuperCacheSettingsContent() {
       {/* Main Settings */}
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="general">Tổng quan</TabsTrigger>
+          <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="controllers">Controllers</TabsTrigger>
           <TabsTrigger value="routes">Routes</TabsTrigger>
-          <TabsTrigger value="advanced">Nâng cao</TabsTrigger>
+          <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
 
         {/* General Settings */}
@@ -165,14 +165,14 @@ export function SuperCacheSettingsContent() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                Cài đặt cơ bản
+                Basic Settings
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-sm font-medium">Kích hoạt Cache</Label>
-                  <p className="text-xs text-gray-600">Bật/tắt hệ thống cache</p>
+                  <Label className="text-sm font-medium">Enable Cache</Label>
+                  <p className="text-xs text-gray-600">Enable/disable the caching system</p>
                 </div>
                 <Switch checked={cacheEnabled} onCheckedChange={setCacheEnabled} />
               </div>
@@ -181,7 +181,7 @@ export function SuperCacheSettingsContent() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="default-ttl">Thời gian cache mặc định (giây)</Label>
+                  <Label htmlFor="default-ttl">Default Cache Time (seconds)</Label>
                   <Input
                     id="default-ttl"
                     value={defaultTtl}
@@ -190,14 +190,14 @@ export function SuperCacheSettingsContent() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="max-size">Kích thước tối đa (MB)</Label>
+                  <Label htmlFor="max-size">Max Size (MB)</Label>
                   <Input id="max-size" value={maxSize} onChange={(e) => setMaxSize(e.target.value)} placeholder="500" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="cleanup-interval">Khoảng thời gian dọn dẹp (phút)</Label>
+                  <Label htmlFor="cleanup-interval">Cleanup Interval (minutes)</Label>
                   <Input id="cleanup-interval" defaultValue="60" />
                 </div>
                 <div>
@@ -221,16 +221,16 @@ export function SuperCacheSettingsContent() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-sm font-medium">Nén dữ liệu</Label>
-                    <p className="text-xs text-gray-600">Sử dụng gzip để nén cache</p>
+                    <Label className="text-sm font-medium">Data Compression</Label>
+                    <p className="text-xs text-gray-600">Use gzip to compress cache</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-sm font-medium">Tự động dọn dẹp</Label>
-                    <p className="text-xs text-gray-600">Xóa cache hết hạn tự động</p>
+                    <Label className="text-sm font-medium">Auto Cleanup</Label>
+                    <p className="text-xs text-gray-600">Automatically delete expired cache</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -238,7 +238,7 @@ export function SuperCacheSettingsContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label className="text-sm font-medium">Debug Mode</Label>
-                    <p className="text-xs text-gray-600">Hiển thị thông tin debug</p>
+                    <p className="text-xs text-gray-600">Show debug information</p>
                   </div>
                   <Switch />
                 </div>
@@ -254,11 +254,11 @@ export function SuperCacheSettingsContent() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Code className="h-5 w-5" />
-                  Cấu hình Cache theo Controller
+                  Cache Configuration by Controller
                 </CardTitle>
                 <Button size="sm" onClick={addControllerRule}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Thêm Rule
+                  Add Rule
                 </Button>
               </div>
             </CardHeader>
@@ -297,7 +297,7 @@ export function SuperCacheSettingsContent() {
                           />
                         </div>
                         <div>
-                          <Label className="text-xs">TTL (giây)</Label>
+                          <Label className="text-xs">TTL (seconds)</Label>
                           <Input
                             value={rule.ttl}
                             onChange={(e) => {
@@ -311,7 +311,7 @@ export function SuperCacheSettingsContent() {
                           />
                         </div>
                         <div>
-                          <Label className="text-xs">Điều kiện</Label>
+                          <Label className="text-xs">Conditions</Label>
                           <div className="flex gap-1 flex-wrap">
                             {["public", "authenticated", "mobile", "paginated"].map((condition) => (
                               <Badge
@@ -371,11 +371,11 @@ export function SuperCacheSettingsContent() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Route className="h-5 w-5" />
-                  Cấu hình Route Rewrite
+                  Route Rewrite Configuration
                 </CardTitle>
                 <Button size="sm" onClick={addRouteRule}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Thêm Route
+                  Add Route
                 </Button>
               </div>
             </CardHeader>
@@ -414,7 +414,7 @@ export function SuperCacheSettingsContent() {
                           />
                         </div>
                         <div>
-                          <Label className="text-xs">TTL (giây)</Label>
+                          <Label className="text-xs">TTL (seconds)</Label>
                           <Input
                             value={rule.ttl}
                             onChange={(e) => {

@@ -48,8 +48,8 @@ export function LoginForm() {
       </div>
 
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-2">Welkom terug</h2>
-        <p className="text-slate-600">Log in op uw account om door te gaan met klantenbeheer</p>
+        <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
+        <p className="text-slate-600">Log in to your account to continue managing your customers</p>
         <p className="text-xs text-slate-500 mt-2">
           (Use 'superadmin', 'admin', 'sales', or 'accounts' as the email to test roles)
         </p>

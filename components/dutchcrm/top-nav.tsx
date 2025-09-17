@@ -75,7 +75,7 @@ export default function TopNav() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="search"
-            placeholder="Zoek klanten, leads, deals..."
+            placeholder="Search customers, leads, deals..."
             className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
           />
         </div>

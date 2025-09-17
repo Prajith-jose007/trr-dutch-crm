@@ -146,7 +146,7 @@ export function AllSiteSEOSettingsContent() {
             <Search className="h-6 w-6 text-green-600" />
             AllSite SEO Settings
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">Cấu hình SEO toàn diện cho website</p>
+          <p className="text-gray-600 dark:text-gray-400">Comprehensive SEO configuration for your website</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
@@ -207,12 +207,12 @@ export function AllSiteSEOSettingsContent() {
       {/* Main Settings */}
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="general">Tổng quan</TabsTrigger>
+          <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="controllers">Controllers</TabsTrigger>
           <TabsTrigger value="posttypes">Post Types</TabsTrigger>
           <TabsTrigger value="schema">Schema</TabsTrigger>
           <TabsTrigger value="sitemap">Sitemap</TabsTrigger>
-          <TabsTrigger value="advanced">Nâng cao</TabsTrigger>
+          <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
 
         {/* General Settings */}
@@ -221,14 +221,14 @@ export function AllSiteSEOSettingsContent() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                Cài đặt chung
+                General Settings
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-sm font-medium">Kích hoạt SEO</Label>
-                  <p className="text-xs text-gray-600">Bật/tắt tất cả tính năng SEO</p>
+                  <Label className="text-sm font-medium">Enable SEO</Label>
+                  <p className="text-xs text-gray-600">Enable/disable all SEO features</p>
                 </div>
                 <Switch checked={seoEnabled} onCheckedChange={setSeoEnabled} />
               </div>
@@ -279,7 +279,7 @@ export function AllSiteSEOSettingsContent() {
               <Separator />
 
               <div className="space-y-3">
-                <h4 className="font-medium">Meta Tags mặc định</h4>
+                <h4 className="font-medium">Default Meta Tags</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="meta-author">Author</Label>
@@ -321,7 +321,7 @@ export function AllSiteSEOSettingsContent() {
               <Separator />
 
               <div className="space-y-3">
-                <h4 className="font-medium">Mạng xã hội</h4>
+                <h4 className="font-medium">Social Networks</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="facebook-url">Facebook URL</Label>
@@ -352,11 +352,11 @@ export function AllSiteSEOSettingsContent() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Code className="h-5 w-5" />
-                  Cấu hình SEO theo Controller
+                  SEO Configuration by Controller
                 </CardTitle>
                 <Button size="sm" onClick={addControllerRule}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Thêm Rule
+                  Add Rule
                 </Button>
               </div>
             </CardHeader>
@@ -478,7 +478,7 @@ export function AllSiteSEOSettingsContent() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
-                Cấu hình SEO theo Post Type
+                SEO Configuration by Post Type
               </CardTitle>
             </CardHeader>
             <CardContent>

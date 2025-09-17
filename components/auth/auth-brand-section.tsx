@@ -15,10 +15,10 @@ export function AuthBrandSection() {
             </div>
             <h1 className="text-2xl font-bold">Dutch CRM</h1>
           </div>
-          <h2 className="text-2xl font-bold mb-6 leading-tight">Krachtige Customer Relationship Management</h2>
+          <h2 className="text-2xl font-bold mb-6 leading-tight">Powerful Customer Relationship Management</h2>
           <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-            Beheer uw klanten, leads en verkoop effectief met ons uitgebreide CRM-platform. Verhoog uw productiviteit en
-            versterk klantrelaties.
+            Manage your customers, leads, and sales effectively with our comprehensive CRM platform. Increase your
+            productivity and strengthen customer relationships.
           </p>
         </div>
 
@@ -34,8 +34,8 @@ export function AuthBrandSection() {
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-2">Klantenbeheer</h3>
-              <p className="text-slate-300">Centraliseer al uw klantgegevens en interacties op één plek.</p>
+              <h3 className="font-semibold text-lg mb-2">Customer Management</h3>
+              <p className="text-slate-300">Centralize all your customer data and interactions in one place.</p>
             </div>
           </div>
 
@@ -51,7 +51,7 @@ export function AuthBrandSection() {
             </div>
             <div>
               <h3 className="font-semibold text-lg mb-2">Sales Pipeline</h3>
-              <p className="text-slate-300">Volg leads en deals door uw verkoopproces met gedetailleerde analytics.</p>
+              <p className="text-slate-300">Track leads and deals through your sales process with detailed analytics.</p>
             </div>
           </div>
 
@@ -66,16 +66,16 @@ export function AuthBrandSection() {
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-2">Team Samenwerking</h3>
-              <p className="text-slate-300">Werk samen met rolgebaseerde toegang en real-time updates.</p>
+              <h3 className="font-semibold text-lg mb-2">Team Collaboration</h3>
+              <p className="text-slate-300">Collaborate with role-based access and real-time updates.</p>
             </div>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-700">
           <p className="text-slate-400 text-sm">
-            "Dutch CRM heeft onze klantrelaties getransformeerd. De intuïtieve interface en krachtige functies maken het
-            een plezier om te gebruiken."
+            "Dutch CRM has transformed our customer relationships. The intuitive interface and powerful features make
+            it a pleasure to use."
           </p>
           <div className="flex items-center mt-4">
             <div className="w-10 h-10 bg-slate-600 rounded-full flex items-center justify-center mr-3">
@@ -83,7 +83,7 @@ export function AuthBrandSection() {
             </div>
             <div>
               <p className="font-medium">Pieter Janssen</p>
-              <p className="text-slate-400 text-sm">Sales Manager, TechBedrijf</p>
+              <p className="text-slate-400 text-sm">Sales Manager, TechCompany</p>
             </div>
           </div>
         </div>
