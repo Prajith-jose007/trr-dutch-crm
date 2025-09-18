@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from "react"
-import { MoreHorizontal, Search, Filter, Plus, Edit, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Search, Filter, Plus, Edit, Trash2, Eye, Upload, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -50,6 +50,45 @@ export default function BookingsContent({ bookingsData }: { bookingsData: any[] 
     }
   }
 
+  const exportToCSV = () => {
+    if (filteredBookings.length === 0) return;
+
+    const headers = Object.keys(filteredBookings[0]);
+    const csvContent = [
+      headers.join(','),
+      ...filteredBookings.map(row => 
+        headers.map(header => {
+          let value = row[header];
+          // Handle null/undefined and stringify objects
+          if (value === null || value === undefined) {
+            return '';
+          }
+          if (typeof value === 'object') {
+            value = JSON.stringify(value);
+          }
+          // Escape commas and quotes
+          let stringValue = String(value);
+          if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+            stringValue = `"${stringValue.replace(/"/g, '""')}"`;
+          }
+          return stringValue;
+        }).join(',')
+      )
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "bookings.csv");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
 
   return (
     <div className="space-y-6">
@@ -59,6 +98,16 @@ export default function BookingsContent({ bookingsData }: { bookingsData: any[] 
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage and view all shared bookings</p>
         </div>
         <div className="flex gap-2">
+           <Button variant="outline" asChild>
+            <Link href="/shared/bookings/import">
+                <Upload className="h-4 w-4 mr-2" />
+                Import from CSV
+            </Link>
+          </Button>
+          <Button variant="outline" onClick={exportToCSV}>
+            <Download className="h-4 w-4 mr-2" />
+            Export to CSV
+          </Button>
           <Button asChild>
             <Link href="/shared/bookings/add">
               <Plus className="h-4 w-4 mr-2" />
