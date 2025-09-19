@@ -84,6 +84,8 @@ export function AddBookingForm() {
     const [discount, setDiscount] = useState(0);
     const [netAmount, setNetAmount] = useState(0);
     const [commission, setCommission] = useState(0);
+    const [paid, setPaid] = useState(0);
+    const [balance, setBalance] = useState(0);
     const [agents, setAgents] = useState<Agent[]>([]);
     const { toast } = useToast();
 
@@ -154,20 +156,16 @@ export function AddBookingForm() {
         setTotalAmount(newTotal);
     }, [quantities, selectedPackage, calculateTotal]);
 
-
-    const calculateCommission = useCallback(() => {
+    useEffect(() => {
         const net = totalAmount - (totalAmount * (discount / 100));
         setNetAmount(net);
+        setBalance(net - paid);
         if (discount === 0) {
             setCommission(0);
         } else {
             setCommission(net * 0.10); // Assuming 10% commission on net amount
         }
-    }, [totalAmount, discount]);
-
-    useEffect(() => {
-        calculateCommission();
-    }, [totalAmount, discount, calculateCommission]);
+    }, [totalAmount, discount, paid]);
 
 
     const handlePackageChange = (packageId: string) => {
@@ -192,6 +190,8 @@ export function AddBookingForm() {
             discount,
             netAmount,
             commission,
+            paid,
+            balance,
             notes,
             quantities,
         };
@@ -403,11 +403,11 @@ export function AddBookingForm() {
                                     <Label htmlFor="discount">Discount (%)</Label>
                                     <div className="relative">
                                         <Percent className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                        <Input id="discount" type="number" placeholder="e.g., 10" className="pl-10" value={discount} onChange={(e) => setDiscount(Number(e.target.value))} />
+                                        <Input id="discount" type="number" placeholder="From agent" className="pl-10 bg-gray-100 dark:bg-gray-800" value={discount} readOnly />
                                     </div>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="net-amount">Net Amount</Label>
                                     <div className="relative">
@@ -420,6 +420,22 @@ export function AddBookingForm() {
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                         <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={commission} readOnly />
+                                    </div>
+                                </div>
+                            </div>
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="paid">Paid</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="paid" type="number" placeholder="Enter amount paid" className="pl-10" value={paid} onChange={(e) => setPaid(Number(e.target.value))} />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="balance">Balance</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="balance" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={balance} readOnly />
                                     </div>
                                 </div>
                             </div>
@@ -443,5 +459,7 @@ export function AddBookingForm() {
         </>
     );
 }
+
+    
 
     
