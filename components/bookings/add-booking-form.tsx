@@ -59,6 +59,7 @@ const packages = [
 interface Agent {
   id: number;
   name: string;
+  customer_discount: number;
 }
 
 const initialQuantities = {
@@ -112,6 +113,13 @@ export function AddBookingForm() {
         fetchAgents();
     }, []);
 
+    const handleAgentChange = (agentId: string) => {
+        const selectedAgent = agents.find(agent => agent.id.toString() === agentId);
+        if (selectedAgent) {
+            setAgentName(selectedAgent.name);
+            setDiscount(selectedAgent.customer_discount || 0);
+        }
+    };
 
     const handleQuantityChange = (name: keyof typeof initialQuantities, value: string) => {
         setQuantities(prev => ({ ...prev, [name]: Number(value) || 0 }));
@@ -293,13 +301,13 @@ export function AddBookingForm() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="agent-name">Agent Name</Label>
-                                    <Select onValueChange={setAgentName} required>
+                                    <Select onValueChange={handleAgentChange} required>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select an agent" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {agents.map(agent => (
-                                                <SelectItem key={agent.id} value={agent.name}>
+                                                <SelectItem key={agent.id} value={agent.id.toString()}>
                                                     {agent.name}
                                                 </SelectItem>
                                             ))}
@@ -435,3 +443,5 @@ export function AddBookingForm() {
         </>
     );
 }
+
+    
