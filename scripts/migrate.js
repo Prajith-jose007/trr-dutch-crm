@@ -146,22 +146,23 @@ async function migrateAgents(connection) {
     // This will insert a new agent if the email doesn't exist, or update the existing
     // agent's information if the email is already in the database.
     const sql = `
-      INSERT INTO agents (name, address, email, phone_number, trn_number, customer_discount, status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO agents (name, address, email, phone, trn_number, customer_type_id, customer_discount, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE 
         name = VALUES(name), 
         address = VALUES(address),
-        phone_number = VALUES(phone_number),
+        phone = VALUES(phone),
         trn_number = VALUES(trn_number),
+        customer_type_id = VALUES(customer_type_id),
         customer_discount = VALUES(customer_discount),
         status = VALUES(status)
     `;
 
     // Loop through each row and execute the upsert query
     for (const row of rows) {
-      const [name, address, email, phoneNumber, trnNumber, customerDiscount] = row.split(',').map(field => field.trim());
+      const [name, address, email, phone, trnNumber, customerTypeId, customerDiscount] = row.split(',').map(field => field.trim());
       
-      await connection.execute(sql, [name, address, email, phoneNumber, trnNumber, parseFloat(customerDiscount) || 0, 'active']);
+      await connection.execute(sql, [name, address, email, phone, trnNumber, parseInt(customerTypeId) || null, parseFloat(customerDiscount) || 0, 'active']);
       console.log(`- Processed agent from CSV: ${email}`);
     }
 

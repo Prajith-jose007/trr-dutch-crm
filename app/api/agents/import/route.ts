@@ -23,15 +23,16 @@ export async function POST(request: NextRequest) {
     const connection = await mysql.createConnection(dbConfig);
 
     // Using the corrected schema with new fields
-    const sql = 'INSERT INTO agents (name, address, email, phone_number, trn_number, customer_discount, status) VALUES ?';
+    const sql = 'INSERT INTO agents (name, address, email, phone, trn_number, customer_type_id, customer_discount, status) VALUES ?';
 
     const values = agents.map(agent => [
         agent.Name || '',
         agent.Address || '',
         agent.Email,
-        agent.PhoneNumber,
+        agent.Phone,
         agent.TRNNumber || '',
-        parseFloat(agent.CustomerDiscount) || 0,
+        parseInt(agent.CustomerTypeID) || null,
+        parseFloat(agent.Discount) || 0,
         'active' // Default status
     ]);
 
