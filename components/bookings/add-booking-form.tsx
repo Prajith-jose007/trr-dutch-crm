@@ -56,12 +56,10 @@ const packages = [
     }
 ];
 
-const agents = [
-    { id: "AGT-001", name: "John Doe" },
-    { id: "AGT-002", name: "Jane Smith" },
-    { id: "AGT-003", name: "Peter Jones" },
-    { id: "AGT-004", name: "Aminoff" },
-];
+interface Agent {
+  id: number;
+  name: string;
+}
 
 const initialQuantities = {
     dinner_child: 0,
@@ -85,6 +83,7 @@ export function AddBookingForm() {
     const [discount, setDiscount] = useState(0);
     const [netAmount, setNetAmount] = useState(0);
     const [commission, setCommission] = useState(0);
+    const [agents, setAgents] = useState<Agent[]>([]);
     const { toast } = useToast();
 
     // Form state
@@ -95,6 +94,23 @@ export function AddBookingForm() {
     const [paymentMode, setPaymentMode] = useState('');
     const [ticketRef, setTicketRef] = useState('');
     const [notes, setNotes] = useState('');
+
+    useEffect(() => {
+        async function fetchAgents() {
+            try {
+                const res = await fetch('/api/agents/list');
+                if (res.ok) {
+                    const data = await res.json();
+                    setAgents(data);
+                } else {
+                    console.error("Failed to fetch agents");
+                }
+            } catch (error) {
+                console.error("Error fetching agents:", error);
+            }
+        }
+        fetchAgents();
+    }, []);
 
 
     const handleQuantityChange = (name: keyof typeof initialQuantities, value: string) => {
@@ -419,4 +435,3 @@ export function AddBookingForm() {
         </>
     );
 }
-
