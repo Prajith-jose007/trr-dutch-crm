@@ -45,7 +45,8 @@ export function ImportAgents() {
                     obj[header] = values[index] || "";
                     return obj;
                 }, {} as Agent);
-            });
+            }).filter(agent => agent.Email && agent.Email.trim() !== ""); // Filter out rows with no email
+            
             setAgents(dataRows);
         }
     };
@@ -254,5 +255,3 @@ export function ImportAgents() {
     </>
   );
 }
-
-    
