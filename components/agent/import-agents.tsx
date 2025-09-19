@@ -45,7 +45,7 @@ export function ImportAgents() {
                     obj[header] = values[index] || "";
                     return obj;
                 }, {} as Agent);
-            }).filter(agent => agent.Email && agent.Email.trim() !== ""); // Filter out rows with no email
+            }).filter(agent => agent.Email && agent.Email.trim() !== "" && agent.Email.includes('@')); // Filter out rows with no valid email
             
             setAgents(dataRows);
         }
@@ -113,7 +113,8 @@ export function ImportAgents() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to import agents');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to import agents');
       }
 
       const result = await response.json();
@@ -125,9 +126,10 @@ export function ImportAgents() {
       resetState();
 
     } catch (error) {
+       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
       showToast({
         title: "Import Failed",
-        description: "An error occurred while importing the agents. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
