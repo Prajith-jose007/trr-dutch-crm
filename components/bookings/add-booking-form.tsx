@@ -322,47 +322,47 @@ export function AddBookingForm() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_child">Dinner Child</Label>
-                                        <Input id="dinner_child" type="number" placeholder="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} />
+                                        <Input id="dinner_child" type="number" placeholder="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.child === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_adult">Dinner Adult</Label>
-                                        <Input id="dinner_adult" type="number" placeholder="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} />
+                                        <Input id="dinner_adult" type="number" placeholder="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.adult === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_adult_alc">Dinner Adult (Alc)</Label>
-                                        <Input id="dinner_adult_alc" type="number" placeholder="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} />
+                                        <Input id="dinner_adult_alc" type="number" placeholder="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.adult_alc === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="top_deck_child">Top Deck Child</Label>
-                                        <Input id="top_deck_child" type="number" placeholder="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} />
+                                        <Input id="top_deck_child" type="number" placeholder="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.top_deck.child === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="top_deck_adult">Top Deck Adult</Label>
-                                        <Input id="top_deck_adult" type="number" placeholder="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} />
+                                        <Input id="top_deck_adult" type="number" placeholder="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.top_deck.adult === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_child">VIP Child</Label>
-                                        <Input id="vip_child" type="number" placeholder="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} />
+                                        <Input id="vip_child" type="number" placeholder="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.child === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_adult">VIP Adult</Label>
-                                        <Input id="vip_adult" type="number" placeholder="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} />
+                                        <Input id="vip_adult" type="number" placeholder="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.adult === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_adult_alc">VIP Adult (Alc)</Label>
-                                        <Input id="vip_adult_alc" type="number" placeholder="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} />
+                                        <Input id="vip_adult_alc" type="number" placeholder="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.adult_alc === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_child">Royal Child</Label>
-                                        <Input id="royal_child" type="number" placeholder="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} />
+                                        <Input id="royal_child" type="number" placeholder="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.child === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_adult">Royal Adult</Label>
-                                        <Input id="royal_adult" type="number" placeholder="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} />
+                                        <Input id="royal_adult" type="number" placeholder="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.adult === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_adult_alc">Royal Adult (Alc)</Label>
-                                        <Input id="royal_adult_alc" type="number" placeholder="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} />
+                                        <Input id="royal_adult_alc" type="number" placeholder="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.adult_alc === null} />
                                     </div>
                                 </div>
                             </div>
@@ -459,6 +459,8 @@ export function AddBookingForm() {
         </>
     );
 }
+
+    
 
     
 
