@@ -1,3 +1,4 @@
+
 // IMPORTANT: Before running this script, you must first create the database tables.
 // This script only populates data; it does not create the schema.
 // A developer must run the contents of the `schema.sql` file in your MySQL
@@ -145,20 +146,22 @@ async function migrateAgents(connection) {
     // This will insert a new agent if the email doesn't exist, or update the existing
     // agent's information if the email is already in the database.
     const sql = `
-      INSERT INTO agents (first_name, last_name, email, phone_number, status) 
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO agents (name, address, email, phone_number, trn_number, customer_discount, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE 
-        first_name = VALUES(first_name), 
-        last_name = VALUES(last_name), 
+        name = VALUES(name), 
+        address = VALUES(address),
         phone_number = VALUES(phone_number),
+        trn_number = VALUES(trn_number),
+        customer_discount = VALUES(customer_discount),
         status = VALUES(status)
     `;
 
     // Loop through each row and execute the upsert query
     for (const row of rows) {
-      const [firstName, lastName, email, phoneNumber] = row.split(',').map(field => field.trim());
+      const [name, address, email, phoneNumber, trnNumber, customerDiscount] = row.split(',').map(field => field.trim());
       
-      await connection.execute(sql, [firstName, lastName, email, phoneNumber, 'active']);
+      await connection.execute(sql, [name, address, email, phoneNumber, trnNumber, parseFloat(customerDiscount) || 0, 'active']);
       console.log(`- Processed agent from CSV: ${email}`);
     }
 
