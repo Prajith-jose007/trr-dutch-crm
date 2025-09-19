@@ -22,14 +22,16 @@ export async function POST(request: NextRequest) {
 
     const connection = await mysql.createConnection(dbConfig);
 
-    // Using the corrected schema with first_name and last_name
-    const sql = 'INSERT INTO agents (first_name, last_name, email, phone_number, status) VALUES ?';
+    // Using the corrected schema with new fields
+    const sql = 'INSERT INTO agents (name, address, email, phone_number, trn_number, customer_discount, status) VALUES ?';
 
     const values = agents.map(agent => [
-        agent.FirstName || '',
-        agent.LastName || '',
+        agent.Name || '',
+        agent.Address || '',
         agent.Email,
         agent.PhoneNumber,
+        agent.TRNNumber || '',
+        parseFloat(agent.CustomerDiscount) || 0,
         'active' // Default status
     ]);
 

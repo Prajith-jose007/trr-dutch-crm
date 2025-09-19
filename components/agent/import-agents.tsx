@@ -136,9 +136,9 @@ export function ImportAgents() {
   };
   
   const createSampleCSV = () => {
-    const header = "FirstName,LastName,Email,PhoneNumber\n";
-    const row1 = "John,Doe,john.doe@example.com,123-456-7890\n";
-    const row2 = "Jane,Smith,jane.smith@example.com,987-654-3210\n";
+    const header = "Name,Address,Email,PhoneNumber,TRNNumber,CustomerDiscount\n";
+    const row1 = "John Doe,123 Main St,john.doe@example.com,123-456-7890,123456789,10\n";
+    const row2 = "Jane Smith,456 Oak Ave,jane.smith@example.com,987-654-3210,987654321,5\n";
     const csvContent = header + row1 + row2;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
