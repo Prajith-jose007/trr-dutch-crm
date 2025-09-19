@@ -1,4 +1,35 @@
 
+-- This file defines the database schema for the Dutch CRM application.
+-- It's designed to be run by the migration script `scripts/migrate.js`
+-- which creates the tables if they don't already exist.
+
+-- Main table for system users (for login)
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `first_name` VARCHAR(100) NOT NULL,
+  `last_name` VARCHAR(100) NOT NULL,
+  `user_id` VARCHAR(100) NOT NULL UNIQUE,
+  `role` ENUM('superadmin', 'admin', 'sales_head_manager', 'sales', 'accounts_manager', 'accounts', 'guest') NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `status` ENUM('active', 'inactive') DEFAULT 'active',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Main table for sales agents
+CREATE TABLE IF NOT EXISTS `agents` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `address` TEXT,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `phone_number` VARCHAR(50),
+  `trn_number` VARCHAR(100),
+  `customer_discount` DECIMAL(5, 2) DEFAULT 0.00,
+  `status` ENUM('active', 'inactive') DEFAULT 'active',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Main table for bookings
 CREATE TABLE IF NOT EXISTS `bookings` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,47 +64,33 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   `date_of_modification` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Table for yacht packages
+
+-- Table for storing yacht packages
 CREATE TABLE IF NOT EXISTS `yacht_packages` (
-  `id` VARCHAR(255) PRIMARY KEY,
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `yacht_name` VARCHAR(255) NOT NULL,
-  `type` VARCHAR(100),
-  `status` VARCHAR(50) DEFAULT 'active'
-);
+  `type` VARCHAR(100) NOT NULL,
+  `status` ENUM('Active', 'Inactive') DEFAULT 'Active',
 
--- Pricing table linked to yacht packages
-CREATE TABLE IF NOT EXISTS `yacht_pricing` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `package_id` VARCHAR(255) NOT NULL,
-  `category` VARCHAR(100) NOT NULL, -- e.g., 'dinner', 'top_deck'
-  `pax_type` VARCHAR(100) NOT NULL, -- e.g., 'child', 'adult', 'adult_alc'
-  `price` DECIMAL(10, 2),
-  FOREIGN KEY (package_id) REFERENCES yacht_packages(id)
-);
+  -- Dinner pricing
+  `price_dinner_child` DECIMAL(10, 2),
+  `price_dinner_adult` DECIMAL(10, 2),
+  `price_dinner_adult_alc` DECIMAL(10, 2),
 
--- Table for agents
-CREATE TABLE IF NOT EXISTS `agents` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(255) NOT NULL,
-  `address` VARCHAR(255),
-  `email` VARCHAR(255) NOT NULL UNIQUE,
-  `phone_number` VARCHAR(255),
-  `trn_number` VARCHAR(255),
-  `customer_discount` DECIMAL(5, 2) DEFAULT 0,
-  `status` VARCHAR(50) DEFAULT 'active',
-  `date_of_creation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `date_of_modification` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+  -- Top deck pricing
+  `price_top_deck_child` DECIMAL(10, 2),
+  `price_top_deck_adult` DECIMAL(10, 2),
 
+  -- VIP pricing
+  `price_vip_child` DECIMAL(10, 2),
+  `price_vip_adult` DECIMAL(10, 2),
+  `price_vip_adult_alc` DECIMAL(10, 2),
+  
+  -- Royal pricing
+  `price_royal_child` DECIMAL(10, 2),
+  `price_royal_adult` DECIMAL(10, 2),
+  `price_royal_adult_alc` DECIMAL(10, 2),
 
--- Table for system users (for login)
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `first_name` VARCHAR(255),
-  `last_name` VARCHAR(255),
-  `user_id` VARCHAR(255) NOT NULL UNIQUE,
-  `role` VARCHAR(100) NOT NULL,
-  `password` VARCHAR(255) NOT NULL, -- Should be hashed in a real application
-  `date_of_creation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `date_of_modification` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
