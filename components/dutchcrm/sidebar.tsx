@@ -64,8 +64,8 @@ interface MenuSection {
   allowedRoles?: UserRole[];
 }
 
-const allRoles: UserRole[] = ['superadmin', 'admin', 'sales_head', 'sales_manager', 'sales', 'accounts_manager', 'accounts'];
-const salesRoles: UserRole[] = ['superadmin', 'admin', 'sales_head', 'sales_manager', 'sales'];
+const allRoles: UserRole[] = ['superadmin', 'admin', 'sales_head_manager', 'sales', 'accounts_manager', 'accounts'];
+const salesRoles: UserRole[] = ['superadmin', 'admin', 'sales_head_manager', 'sales'];
 const accountsRoles: UserRole[] = ['superadmin', 'admin', 'accounts_manager', 'accounts'];
 const adminRoles: UserRole[] = ['superadmin', 'admin'];
 const superAdminRole: UserRole[] = ['superadmin'];
