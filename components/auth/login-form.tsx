@@ -44,11 +44,11 @@ export function LoginForm() {
       }
 
       // On successful login, save user data to context and redirect
-      login(data.user);
+      login(data);
       
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${data.user.name}!`,
+        description: `Welcome back, ${data.name}!`,
       });
 
       // Redirect to dashboard after a short delay

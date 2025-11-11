@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       role: user.role,
     };
 
-    return NextResponse.json({ message: 'Login successful', user: userToReturn }, { status: 200 });
+    return NextResponse.json(userToReturn, { status: 200 });
 
   } catch (error) {
     console.error('Login error:', error);
