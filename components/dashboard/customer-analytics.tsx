@@ -1,6 +1,8 @@
 "use client"
 import { Doughnut } from "react-chartjs-2"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
+import { useEffect, useState } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -53,6 +55,12 @@ const chartOptions = {
 }
 
 export default function CustomerAnalytics() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-3 sm:p-6 border border-gray-200 dark:border-[#1F1F23] w-full min-w-0">
       <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -64,7 +72,11 @@ export default function CustomerAnalytics() {
         {/* Chart - Full width on mobile */}
         <div className="h-32 sm:h-48 w-full flex justify-center">
           <div className="w-32 sm:w-48 h-32 sm:h-48">
-            <Doughnut data={customerData} options={chartOptions} />
+            {isClient ? (
+              <Doughnut data={customerData} options={chartOptions} />
+            ) : (
+              <Skeleton className="h-full w-full rounded-full" />
+            )}
           </div>
         </div>
 
