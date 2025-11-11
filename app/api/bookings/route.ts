@@ -1,3 +1,4 @@
+
 // app/api/bookings/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
@@ -35,8 +36,6 @@ export async function POST(request: NextRequest) {
     const connection = await mysql.createConnection(dbConfig);
 
     // SQL query to insert data into your 'bookings' table
-    // Note: The column names here must match your schema.sql
-    // Removed 'paid' and 'balance' as they are not in the schema
     const sql = `
       INSERT INTO bookings (
         booking_date, client_name, client_phone, agent_name, 
@@ -45,12 +44,12 @@ export async function POST(request: NextRequest) {
         dinner_child_qty, dinner_adult_qty, dinner_adult_alc_qty,
         top_deck_child_qty, top_deck_adult_qty,
         vip_child_qty, vip_adult_qty, vip_adult_alc_qty,
-        royal_child_qty, royal_adult_qty, royal_adult_alc_qty
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        royal_child_qty, royal_adult_qty, royal_adult_alc_qty,
+        paid, balance, payment_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
     // The values from the form data, with date formatted for MySQL
-    // Removed bookingData.paid and bookingData.balance from values
     const values = [
       formatMySqlDateTime(bookingData.bookingDate),
       bookingData.clientName,
@@ -75,6 +74,9 @@ export async function POST(request: NextRequest) {
       bookingData.quantities.royal_child,
       bookingData.quantities.royal_adult,
       bookingData.quantities.royal_adult_alc,
+      bookingData.paid,
+      bookingData.balance,
+      bookingData.paymentStatus,
     ];
 
     // Execute the query
@@ -91,3 +93,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Failed to create booking', error: errorMessage }, { status: 500 });
   }
 }
+
+    

@@ -180,6 +180,16 @@ export function AddBookingForm() {
         e.preventDefault();
         setIsSubmitting(true);
 
+        const currentBalance = netAmount - paid;
+        let paymentStatus;
+        if (paid <= 0) {
+            paymentStatus = 'unpaid';
+        } else if (currentBalance <= 0) {
+            paymentStatus = 'paid';
+        } else {
+            paymentStatus = 'partial';
+        }
+
         const bookingData = {
             bookingDate,
             clientName,
@@ -193,9 +203,10 @@ export function AddBookingForm() {
             netAmount,
             commission,
             paid,
-            balance,
+            balance: currentBalance,
             notes,
             quantities,
+            paymentStatus,
         };
 
         try {
@@ -461,5 +472,7 @@ export function AddBookingForm() {
         </>
     );
 }
+
+    
 
     
