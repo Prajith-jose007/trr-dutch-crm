@@ -32,6 +32,19 @@ const dbConfig = {
 async function migrate() {
   let connection;
   try {
+    // Connect without a specific database to create it first
+    const initialConnection = await mysql.createConnection({
+        host: dbConfig.host,
+        user: dbConfig.user,
+        password: dbConfig.password,
+        port: dbConfig.port,
+    });
+    
+    console.log('Creating database if it doesn\'t exist...');
+    await initialConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\`;`);
+    console.log(`Database '${dbConfig.database}' is ready.`);
+    await initialConnection.end();
+
     // Establish a connection to the database
     connection = await mysql.createConnection(dbConfig);
     console.log('Successfully connected to the database.');
