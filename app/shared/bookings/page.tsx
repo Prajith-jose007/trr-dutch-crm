@@ -8,10 +8,12 @@ export const metadata: Metadata = {
   description: "Manage all your shared bookings.",
 };
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
+
 async function getBookings() {
   // This function will run on the server to fetch data.
-  // Using a relative URL is more robust for server-side fetching.
-  const res = await fetch("/api/bookings/list", {
+  // An absolute URL is needed for server-side fetching.
+  const res = await fetch(`${APP_URL}/api/bookings/list`, {
     cache: 'no-store', // Ensures fresh data on every request
   });
 
