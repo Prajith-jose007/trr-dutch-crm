@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
 
     // SQL query to insert data into your 'bookings' table
     // Note: The column names here must match your schema.sql
+    // Removed 'paid' and 'balance' as they are not in the schema
     const sql = `
       INSERT INTO bookings (
         booking_date, client_name, client_phone, agent_name, 
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     `;
     
     // The values from the form data, with date formatted for MySQL
+    // Removed bookingData.paid and bookingData.balance from values
     const values = [
       formatMySqlDateTime(bookingData.bookingDate),
       bookingData.clientName,
