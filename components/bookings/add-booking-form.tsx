@@ -154,18 +154,20 @@ export function AddBookingForm() {
     useEffect(() => {
         const newTotal = calculateTotal();
         setTotalAmount(newTotal);
-    }, [quantities, selectedPackage, calculateTotal]);
 
-    useEffect(() => {
-        const net = totalAmount - (totalAmount * (discount / 100));
-        setNetAmount(net);
-        setBalance(net - paid);
-        if (discount === 0) {
-            setCommission(0);
+        const discountAmount = newTotal * (discount / 100);
+        const newNetAmount = newTotal - discountAmount;
+        setNetAmount(newNetAmount);
+
+        if (discount > 0) {
+            setCommission(newNetAmount * 0.10); // 10% commission on net amount
         } else {
-            setCommission(net * 0.10); // Assuming 10% commission on net amount
+            setCommission(0);
         }
-    }, [totalAmount, discount, paid]);
+
+        setBalance(newNetAmount - paid);
+
+    }, [quantities, selectedPackage, discount, paid, calculateTotal]);
 
 
     const handlePackageChange = (packageId: string) => {
@@ -396,7 +398,7 @@ export function AddBookingForm() {
                                     <Label htmlFor="total-amount">Total Amount</Label>
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                        <Input id="total-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={totalAmount} readOnly />
+                                        <Input id="total-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={totalAmount.toFixed(2)} readOnly />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
@@ -412,14 +414,14 @@ export function AddBookingForm() {
                                     <Label htmlFor="net-amount">Net Amount</Label>
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                        <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={netAmount} readOnly />
+                                        <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={netAmount.toFixed(2)} readOnly />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="commission">Commission</Label>
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                        <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={commission} readOnly />
+                                        <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={commission.toFixed(2)} readOnly />
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +437,7 @@ export function AddBookingForm() {
                                     <Label htmlFor="balance">Balance</Label>
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                        <Input id="balance" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={balance} readOnly />
+                                        <Input id="balance" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={balance.toFixed(2)} readOnly />
                                     </div>
                                 </div>
                             </div>
@@ -459,9 +461,5 @@ export function AddBookingForm() {
         </>
     );
 }
-
-    
-
-    
 
     
