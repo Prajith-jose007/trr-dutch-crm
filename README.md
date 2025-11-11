@@ -1,4 +1,4 @@
-git pull# Dutch CRM - Customer Relationship Management
+# Dutch CRM - Customer Relationship Management
 
 This project is a Customer Relationship Management (CRM) application built with Next.js, React, and Tailwind CSS. It is designed to manage customers, deals, bookings, and more.
 
@@ -29,7 +29,7 @@ To get a local copy up and running, follow these simple steps.
     ```sh
     npm run dev
     ```
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
 
 ## Database Setup
 
@@ -55,6 +55,6 @@ The recommended way to deploy this Next.js application is with [Vercel](https://
 
 1.  **Push to a Git Repository:** Ensure your project is on GitHub, GitLab, or Bitbucket.
 2.  **Import to Vercel:** Create a new project on Vercel and import your repository. Vercel will automatically detect the Next.js framework.
-3.  **Set Up a Production Database:** Use a cloud database provider like PlanetScale, AWS RDS, or DigitalOcean to host your MySQL database.
+3.  **Set up a Production Database:** Use a cloud database provider like PlanetScale, AWS RDS, or DigitalOcean to host your MySQL database.
 4.  **Configure Environment Variables:** In your Vercel project settings, add the environment variables from your `.env.local` file. **Do not commit your `.env.local` file to Git.**
 5.  **Deploy:** Vercel will build and deploy your application. Any new push to your connected branch (e.g., `main`) will trigger a new deployment automatically.
