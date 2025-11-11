@@ -1,4 +1,3 @@
-
 // app/api/bookings/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
@@ -45,9 +44,8 @@ export async function POST(request: NextRequest) {
         dinner_child_qty, dinner_adult_qty, dinner_adult_alc_qty,
         top_deck_child_qty, top_deck_adult_qty,
         vip_child_qty, vip_adult_qty, vip_adult_alc_qty,
-        royal_child_qty, royal_adult_qty, royal_adult_alc_qty,
-        paid, balance
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        royal_child_qty, royal_adult_qty, royal_adult_alc_qty
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
     // The values from the form data, with date formatted for MySQL
@@ -75,8 +73,6 @@ export async function POST(request: NextRequest) {
       bookingData.quantities.royal_child,
       bookingData.quantities.royal_adult,
       bookingData.quantities.royal_adult_alc,
-      bookingData.paid,
-      bookingData.balance,
     ];
 
     // Execute the query
@@ -93,5 +89,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Failed to create booking', error: errorMessage }, { status: 500 });
   }
 }
-
-    
