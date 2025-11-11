@@ -12,6 +12,22 @@ const dbConfig = {
   port: Number(process.env.DB_PORT),
 };
 
+// Helper function to format date for MySQL
+function formatMySqlDateTime(dateString: string) {
+    if (!dateString) return null;
+    try {
+        const date = new Date(dateString);
+        // Pad single digit month/day/etc. with a leading zero
+        const pad = (num: number) => num.toString().padStart(2, '0');
+        
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    } catch (e) {
+        console.error("Could not parse date:", dateString);
+        return null; // Return null if date is invalid
+    }
+}
+
+
 export async function POST(request: NextRequest) {
   try {
     const bookingData = await request.json();
@@ -34,9 +50,9 @@ export async function POST(request: NextRequest) {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
-    // The values from the form data
+    // The values from the form data, with date formatted for MySQL
     const values = [
-      bookingData.bookingDate,
+      formatMySqlDateTime(bookingData.bookingDate),
       bookingData.clientName,
       bookingData.clientPhone,
       bookingData.agentName,
