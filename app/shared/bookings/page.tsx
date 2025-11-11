@@ -8,12 +8,10 @@ export const metadata: Metadata = {
   description: "Manage all your shared bookings.",
 };
 
-// Use a constant for the base URL to avoid environment variable issues in development.
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-
 async function getBookings() {
   // This function will run on the server to fetch data.
-  const res = await fetch(`${APP_URL}/api/bookings/list`, {
+  // Using a relative URL is more robust for server-side fetching.
+  const res = await fetch("/api/bookings/list", {
     cache: 'no-store', // Ensures fresh data on every request
   });
 
