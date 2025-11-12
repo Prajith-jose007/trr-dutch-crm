@@ -1,4 +1,3 @@
-
 // app/api/agents/import/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
@@ -42,10 +41,10 @@ export async function POST(request: NextRequest) {
       agent.name,
       agent.address,
       agent.email,
-      agent.phone_no, // Changed from phone_number to phone_no
+      agent.phone_no, // This will be inserted into the 'phone_number' column
       agent.trn_number,
       parseInt(agent.customer_type_id) || null,
-      agent['Customer type name'], // Accessing field with space
+      agent['Customer type name'],
       'active' // Default status
     ]);
 
