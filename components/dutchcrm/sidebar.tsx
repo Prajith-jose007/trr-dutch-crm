@@ -1,3 +1,4 @@
+
 "use client"
 
 import type React from "react"
@@ -32,6 +33,7 @@ import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { useAuth, UserRole } from "@/app/context/auth-context"
 import Image from "next/image"
+import { PERMISSIONS, rolePermissions } from "@/app/config/roles";
 
 type MenuState = "full" | "collapsed" | "hidden"
 
@@ -43,7 +45,7 @@ interface SubMenuItem {
   badge?: string
   isNew?: boolean;
   children?: SubMenuItem[];
-  allowedRoles?: UserRole[];
+  permission?: typeof PERMISSIONS[keyof typeof PERMISSIONS];
 }
 
 interface MenuItem {
@@ -54,33 +56,26 @@ interface MenuItem {
   badge?: string
   isNew?: boolean;
   children?: SubMenuItem[];
-  allowedRoles?: UserRole[];
+  permission?: typeof PERMISSIONS[keyof typeof PERMISSIONS];
 }
 
 interface MenuSection {
   id: string
   label: string;
   items: MenuItem[];
-  allowedRoles?: UserRole[];
 }
-
-const allRoles: UserRole[] = ['superadmin', 'admin', 'sales_head_manager', 'sales', 'accounts_manager', 'accounts'];
-const salesRoles: UserRole[] = ['superadmin', 'admin', 'sales_head_manager', 'sales'];
-const accountsRoles: UserRole[] = ['superadmin', 'admin', 'accounts_manager', 'accounts'];
-const adminRoles: UserRole[] = ['superadmin', 'admin'];
-const superAdminRole: UserRole[] = ['superadmin'];
 
 const menuData: MenuSection[] = [
   {
     id: "main",
     label: "Main",
-    allowedRoles: allRoles,
     items: [
       {
         id: "dashboard",
         label: "Dashboard",
         href: "/",
         icon: Home,
+        permission: PERMISSIONS.VIEW_DASHBOARD,
       },
       {
         id: "analytics",
@@ -88,26 +83,26 @@ const menuData: MenuSection[] = [
         href: "/analytics",
         icon: BarChart2,
         badge: "3",
+        permission: PERMISSIONS.VIEW_ANALYTICS,
       },
     ],
   },
   {
     id: "customer_management",
     label: "Customer Management",
-    allowedRoles: salesRoles,
     items: [
       {
         id: "contacts",
         label: "Contacts",
         href: "/contacts",
         icon: Phone,
+        permission: PERMISSIONS.VIEW_CONTACTS,
       },
     ],
   },
   {
     id: "sales_management",
     label: "Sales Management",
-    allowedRoles: salesRoles,
     items: [
       {
         id: "private",
@@ -120,12 +115,14 @@ const menuData: MenuSection[] = [
             href: "/leads",
             icon: UserPlus,
             badge: "12",
+            permission: PERMISSIONS.VIEW_LEADS,
           },
           {
             id: "customers",
             label: "Customers",
             href: "/customers",
             icon: Users2,
+            permission: PERMISSIONS.VIEW_CUSTOMERS,
           },
           {
             id: "deals",
@@ -133,12 +130,14 @@ const menuData: MenuSection[] = [
             href: "/deals",
             icon: Handshake,
             badge: "8",
+            permission: PERMISSIONS.VIEW_DEALS,
           },
           {
             id: "opportunities",
             label: "Opportunities",
             href: "/opportunities",
             icon: Target,
+            permission: PERMISSIONS.VIEW_OPPORTUNITIES,
           },
           {
             id: "quotes",
@@ -146,6 +145,7 @@ const menuData: MenuSection[] = [
             href: "/quotes",
             icon: FileText,
             badge: "3",
+            permission: PERMISSIONS.VIEW_QUOTES,
           },
         ],
       },
@@ -153,19 +153,20 @@ const menuData: MenuSection[] = [
         id: "shared",
         label: "Shared",
         icon: Users,
-        allowedRoles: adminRoles,
         children: [
           {
             id: "bookings-management",
             label: "Bookings Management",
             href: "/shared/bookings",
             icon: BookMarked,
+            permission: PERMISSIONS.MANAGE_SHARED_BOOKINGS,
           },
           {
             id: "yacht-management",
             label: "Yacht Management",
             href: "/shared/yachts",
             icon: Ship,
+            permission: PERMISSIONS.MANAGE_SHARED_YACHTS,
           },
         ],
       },
@@ -174,7 +175,6 @@ const menuData: MenuSection[] = [
   {
     id: "finance",
     label: "Finance",
-    allowedRoles: accountsRoles,
     items: [
       {
         id: "invoices",
@@ -182,63 +182,68 @@ const menuData: MenuSection[] = [
         href: "/invoices",
         icon: Receipt,
         badge: "2",
+        permission: PERMISSIONS.MANAGE_INVOICES,
       },
       {
         id: "payments",
         label: "Payments",
         href: "/payments",
         icon: CreditCard,
+        permission: PERMISSIONS.MANAGE_PAYMENTS,
       },
       {
         id: "revenue",
         label: "Revenue",
         href: "/revenue",
         icon: DollarSign,
+        permission: PERMISSIONS.VIEW_REVENUE,
       },
     ],
   },
   {
     id: "team_communication",
     label: "Team & Communication",
-    allowedRoles: adminRoles,
     items: [
       {
         id: "team",
         label: "Team",
         href: "/team",
         icon: Users,
+        permission: PERMISSIONS.MANAGE_TEAM,
       },
       {
         id: "agent",
         label: "Agent",
         href: "/agent",
         icon: User,
+        permission: PERMISSIONS.MANAGE_AGENTS,
       },
       {
         id: "user_management",
         label: "User Management",
         href: "/users",
         icon: Users,
-        allowedRoles: superAdminRole,
+        permission: PERMISSIONS.MANAGE_USERS,
       },
       {
         id: "activities",
         label: "Activities",
         href: "/activities",
         icon: Activity,
+        permission: PERMISSIONS.VIEW_ACTIVITIES,
       },
     ],
   },
   {
     id: "tools_settings",
     label: "Tools & Settings",
-    allowedRoles: allRoles,
     items: [
       {
         id: "integrations",
         label: "Integrations",
         href: "/plugins",
         icon: Puzzle,
+        permission: PERMISSIONS.MANAGE_PLUGINS,
       },
       {
         id: "automation",
@@ -246,12 +251,14 @@ const menuData: MenuSection[] = [
         href: "/automation",
         icon: Zap,
         isNew: true,
+        permission: PERMISSIONS.MANAGE_AUTOMATION,
       },
       {
         id: "backup",
         label: "Backup & Export",
         href: "/backup",
         icon: Database,
+        permission: PERMISSIONS.MANAGE_BACKUP,
       },
     ],
   },
@@ -265,6 +272,13 @@ export default function Sidebar() {
   const [previousDesktopState, setPreviousDesktopState] = useState<MenuState>("full")
   const [isMobile, setIsMobile] = useState(false)
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+  const [userPermissions, setUserPermissions] = useState<ReadonlyArray<string>>([]);
+
+  useEffect(() => {
+    if (user?.role) {
+      setUserPermissions(rolePermissions[user.role] || []);
+    }
+  }, [user]);
 
   // Cycle through menu states: full -> collapsed -> hidden -> full
   const toggleMenuState = () => {
@@ -349,10 +363,10 @@ export default function Sidebar() {
     })
   }
 
-  const hasAccess = (allowedRoles: UserRole[] | undefined) => {
-      if (!allowedRoles || allowedRoles.length === 0) return true; // Public item
+  const hasAccess = (permission?: string) => {
+      if (!permission) return true; // Items without a permission are public
       if (!user) return false;
-      return allowedRoles.includes(user.role);
+      return userPermissions.includes(permission);
   }
 
 
@@ -365,11 +379,14 @@ export default function Sidebar() {
     level?: number
     parentId?: string
   }) {
-    if (!hasAccess(item.allowedRoles)) return null;
+    if (!hasAccess(item.permission)) return null;
 
     const itemId = `${parentId}-${item.id}`
     const isExpanded = expandedItems.has(itemId)
-    const hasChildren = item.children && item.children.length > 0
+
+    const filteredChildren = item.children?.filter(child => hasAccess(child.permission));
+    const hasChildren = filteredChildren && filteredChildren.length > 0;
+    
     const showText = menuState === "full" || (menuState === "collapsed" && isHovered) || (isMobile && isMobileMenuOpen)
     const showExpandIcon = hasChildren && showText
 
@@ -428,8 +445,6 @@ export default function Sidebar() {
       </div>
     )
 
-    const filteredChildren = item.children?.filter(child => hasAccess(child.allowedRoles));
-
     return (
       <div>
         {item.href && !hasChildren ? (
@@ -464,7 +479,15 @@ export default function Sidebar() {
   // Show text if menu is full OR if collapsed and hovered OR on mobile
   const showText = menuState === "full" || (menuState === "collapsed" && isHovered) || (isMobile && isMobileMenuOpen)
 
-  const filteredMenuData = menuData.filter(section => hasAccess(section.allowedRoles));
+  const filteredMenuData = menuData.map(section => ({
+    ...section,
+    items: section.items.filter(item => {
+      if (item.children) {
+        return item.children.some(child => hasAccess(child.permission));
+      }
+      return hasAccess(item.permission);
+    })
+  })).filter(section => section.items.length > 0);
 
   // On mobile, show sidebar as overlay when isMobileMenuOpen is true
   if (isMobile) {
@@ -513,9 +536,9 @@ export default function Sidebar() {
 
             <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
               <div className="space-y-1">
-                {hasAccess(superAdminRole) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette }} />}
-                <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
-                <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
+                {hasAccess(PERMISSIONS.CUSTOMIZE_THEME) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette, permission: PERMISSIONS.CUSTOMIZE_THEME }} />}
+                <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings, permission: PERMISSIONS.MANAGE_SETTINGS }} />
+                <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle, permission: PERMISSIONS.VIEW_HELP }} />
               </div>
             </div>
           </div>
@@ -588,9 +611,9 @@ export default function Sidebar() {
 
           <div className="px-2 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
             <div className="space-y-1">
-              {hasAccess(superAdminRole) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette }} />}
-              <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings }} />
-              <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle }} />
+              {hasAccess(PERMISSIONS.CUSTOMIZE_THEME) && <NavItem item={{ id: "theme-customizer", label: "Theme Customizer", href: "#", icon: Palette, permission: PERMISSIONS.CUSTOMIZE_THEME }} />}
+              <NavItem item={{ id: "settings", label: "Settings", href: "/settings", icon: Settings, permission: PERMISSIONS.MANAGE_SETTINGS }} />
+              <NavItem item={{ id: "help", label: "Help", href: "/help", icon: HelpCircle, permission: PERMISSIONS.VIEW_HELP }} />
             </div>
           </div>
         </div>
