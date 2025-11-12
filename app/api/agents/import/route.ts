@@ -1,3 +1,4 @@
+
 // app/api/agents/import/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     const sql = `
       INSERT INTO agents (
-        id, name, address, email, phone_number, trn_number, customer_type_id, customer_type, status
+        id, name, address, email, phone_number, trn_number, customer_type_id, customer_type, customer_discount, status
       ) VALUES ?
       ON DUPLICATE KEY UPDATE
         name = VALUES(name),
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
         trn_number = VALUES(trn_number),
         customer_type_id = VALUES(customer_type_id),
         customer_type = VALUES(customer_type),
+        customer_discount = VALUES(customer_discount),
         status = VALUES(status)
     `;
 
@@ -45,6 +47,7 @@ export async function POST(request: NextRequest) {
       agent.trn_number,
       parseInt(agent.customer_type_id) || null,
       agent['Customer type name'],
+      parseFloat(agent.discount) || 0, // Adding discount
       'active' // Default status
     ]);
 

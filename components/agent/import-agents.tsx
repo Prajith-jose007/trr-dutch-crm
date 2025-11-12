@@ -142,9 +142,9 @@ export function ImportAgents({ onImportSuccess }: ImportAgentsProps) {
   };
   
   const createSampleCSV = () => {
-    const header = "id,name,address,email,phone_no,trn_number,customer_type_id,Customer type name\n";
-    const row1 = "1,TMC Agency,123 Main St,tmc@example.com,123-456-7890,123456789,1,Corporate\n";
-    const row2 = "2,Global Travel,456 Oak Ave,global@example.com,987-654-3210,987654321,2,Retail\n";
+    const header = "id,name,address,email,phone_no,trn_number,customer_type_id,Customer type name,discount\n";
+    const row1 = "1,TMC Agency,123 Main St,tmc@example.com,123-456-7890,123456789,1,Corporate,10\n";
+    const row2 = "2,Global Travel,456 Oak Ave,global@example.com,987-654-3210,987654321,2,Retail,5\n";
     const csvContent = header + row1 + row2;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
