@@ -45,7 +45,7 @@ export function ImportAgents() {
                     obj[header] = values[index] || "";
                     return obj;
                 }, {} as Agent);
-            }).filter(agent => agent.Email && agent.Email.trim() !== "" && agent.Email.includes('@')); // Filter out rows with no valid email
+            }).filter(agent => agent.email && agent.email.trim() !== "" && agent.email.includes('@')); // Filter out rows with no valid email
             
             setAgents(dataRows);
         }
@@ -137,9 +137,9 @@ export function ImportAgents() {
   };
   
   const createSampleCSV = () => {
-    const header = "Name,Address,Email,Phone,TRNNumber,CustomerTypeID,Discount\n";
-    const row1 = "John Doe,123 Main St,john.doe@example.com,123-456-7890,123456789,1,10\n";
-    const row2 = "Jane Smith,456 Oak Ave,jane.smith@example.com,987-654-3210,987654321,2,5\n";
+    const header = "id,is_tmc,name,agency_code,short_name,company_type_id,customer_type_id,tmc_id,parent_agency_id,country,city,zipcode,address,phone,email,staff_email,website,status,created_by,created_at,updated_by,updated_at,version,customer_type,trn_number,outbound_api_access,ticket_time_limit\n";
+    const row1 = "1,true,TMC Agency,A001,TMC,1,2,3,null,UAE,Dubai,12345,123 Main St,123-456-7890,tmc@example.com,staff@tmc.com,www.tmc.com,active,admin,2023-01-01 10:00:00,admin,2023-01-01 10:00:00,1,Corporate,123456789,true,24\n";
+    const row2 = "2,false,Global Travel,G002,Global,2,1,null,1,USA,New York,10001,456 Oak Ave,987-654-3210,global@example.com,info@global.com,www.global.com,active,admin,2023-01-02 11:00:00,admin,2023-01-02 11:00:00,1,Retail,987654321,false,48\n";
     const csvContent = header + row1 + row2;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
