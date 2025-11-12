@@ -215,6 +215,13 @@ const menuData: MenuSection[] = [
         icon: User,
       },
       {
+        id: "user_management",
+        label: "User Management",
+        href: "/users",
+        icon: Users,
+        allowedRoles: superAdminRole,
+      },
+      {
         id: "activities",
         label: "Activities",
         href: "/activities",
