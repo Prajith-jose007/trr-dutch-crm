@@ -10,6 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "../ui/skeleton";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 function AED() {
   return <img className="aed inline-block" alt="AED" />;
@@ -31,10 +34,38 @@ interface Agent {
 export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], loading: boolean }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [agents, setAgents] = useState(initialAgents);
+  const { toast } = useToast();
 
   useEffect(() => {
     setAgents(initialAgents);
   }, [initialAgents]);
+
+  const handleDelete = async (agentId: number) => {
+    try {
+      const response = await fetch(`/api/agents/delete/${agentId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to delete agent');
+      }
+
+      setAgents(prevAgents => prevAgents.filter(agent => agent.id !== agentId));
+      toast({
+        title: "Success",
+        description: "Agent deleted successfully.",
+      });
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
 
   const filteredAgents = agents.filter(agent => 
     Object.values(agent).some(value => 
@@ -54,6 +85,8 @@ export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], 
   }
 
   return (
+    <>
+    <Toaster />
     <Card>
       <CardHeader>
         <CardTitle>All Agents ({filteredAgents.length})</CardTitle>
@@ -130,7 +163,25 @@ export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], 
                           <DropdownMenuItem><Eye className="mr-2 h-4 w-4" /> View Details</DropdownMenuItem>
                           <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Edit Agent</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete Agent</DropdownMenuItem>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                               <Button variant="ghost" className="w-full justify-start text-red-600 hover:text-red-700 px-2 py-1.5 text-sm font-normal relative">
+                                <Trash2 className="mr-2 h-4 w-4" /> Delete Agent
+                               </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete the agent <span className="font-bold">{agent.name}</span> and remove their data from our servers.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(agent.id)}>Delete</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -142,5 +193,6 @@ export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], 
         </div>
       </CardContent>
     </Card>
+    </>
   )
 }
