@@ -21,10 +21,11 @@ export async function POST(request: NextRequest) {
 
     const connection = await mysql.createConnection(dbConfig);
 
+    // Corrected SQL to use phone_number instead of phone
     const sql = `
       INSERT INTO agents (
         id, is_tmc, name, agency_code, short_name, company_type_id, customer_type_id, 
-        tmc_id, parent_agency_id, country, city, zipcode, address, phone, email, 
+        tmc_id, parent_agency_id, country, city, zipcode, address, phone_number, email, 
         staff_email, website, status, created_by, created_at, updated_by, updated_at, 
         version, customer_type, trn_number, outbound_api_access, ticket_time_limit
       ) VALUES ?
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
         city = VALUES(city),
         zipcode = VALUES(zipcode),
         address = VALUES(address),
-        phone = VALUES(phone),
+        phone_number = VALUES(phone_number),
         email = VALUES(email),
         staff_email = VALUES(staff_email),
         website = VALUES(website),
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
         ticket_time_limit = VALUES(ticket_time_limit)
     `;
 
-    const values = agents.map(agent => [
+    const values = agents.map((agent: any) => [
       agent.id,
       agent.is_tmc === 'true' || agent.is_tmc === '1',
       agent.name,
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
       agent.city,
       agent.zipcode,
       agent.address,
-      agent.phone,
+      agent.phone_number, // Corrected field from 'phone' to 'phone_number'
       agent.email,
       agent.staff_email,
       agent.website,
