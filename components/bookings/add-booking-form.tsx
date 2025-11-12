@@ -17,45 +17,6 @@ function AED() {
     return <img className="aed inline-block" alt="AED" />;
 }
 
-const packages = [
-    {
-        id: "PKG-001",
-        yachtName: "Lotus Royale",
-        type: "Dinner Cruise",
-        pricing: {
-            dinner: { child: 249, adult: 299, adult_alc: 349 },
-            top_deck: { child: 299, adult: 349, adult_alc: null },
-            vip: { child: 349, adult: 399, adult_alc: 499 },
-            royal: { child: 499, adult: 799, adult_alc: 999 },
-        },
-        status: "Active"
-    },
-    {
-        id: "PKG-002",
-        yachtName: "Majesty Yacht",
-        type: "Brunch Cruise",
-        pricing: {
-            dinner: { child: 199, adult: 249, adult_alc: 299 },
-            top_deck: { child: 249, adult: 299, adult_alc: null },
-            vip: { child: 299, adult: 349, adult_alc: 449 },
-            royal: { child: 399, adult: 599, adult_alc: 799 },
-        },
-        status: "Active"
-    },
-    {
-        id: "PKG-003",
-        yachtName: "Serenity Cruiser",
-        type: "Sightseeing",
-        pricing: {
-            dinner: { child: 149, adult: 199, adult_alc: null },
-            top_deck: { child: 199, adult: 249, adult_alc: null },
-            vip: { child: 249, adult: 299, adult_alc: 399 },
-            royal: { child: null, adult: null, adult_alc: null },
-        },
-        status: "Inactive"
-    }
-];
-
 interface Agent {
   id: number;
   name: string;
@@ -76,9 +37,28 @@ const initialQuantities = {
     royal_adult_alc: 0,
 };
 
+interface YachtPackage {
+    id: string;
+    yacht_name: string;
+    type: string;
+    dinner_child_price: number | null;
+    dinner_adult_price: number | null;
+    dinner_adult_alc_price: number | null;
+    top_deck_child_price: number | null;
+    top_deck_adult_price: number | null;
+    vip_child_price: number | null;
+    vip_adult_price: number | null;
+    vip_adult_alc_price: number | null;
+    royal_child_price: number | null;
+    royal_adult_price: number | null;
+    royal_adult_alc_price: number | null;
+    status: string;
+}
+
 export function AddBookingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedPackage, setSelectedPackage] = useState<any>(null);
+    const [packages, setPackages] = useState<YachtPackage[]>([]);
+    const [selectedPackage, setSelectedPackage] = useState<YachtPackage | null>(null);
     const [quantities, setQuantities] = useState(initialQuantities);
     const [totalAmount, setTotalAmount] = useState(0);
     const [discount, setDiscount] = useState(0);
@@ -99,20 +79,31 @@ export function AddBookingForm() {
     const [notes, setNotes] = useState('');
 
     useEffect(() => {
-        async function fetchAgents() {
+        async function fetchData() {
             try {
-                const res = await fetch('/api/agents/list');
-                if (res.ok) {
-                    const data = await res.json();
-                    setAgents(data);
+                const [agentsRes, packagesRes] = await Promise.all([
+                    fetch('/api/agents/list'),
+                    fetch('/api/yachts/list')
+                ]);
+
+                if (agentsRes.ok) {
+                    const agentsData = await agentsRes.json();
+                    setAgents(agentsData);
                 } else {
                     console.error("Failed to fetch agents");
                 }
+
+                if (packagesRes.ok) {
+                    const packagesData = await packagesRes.json();
+                    setPackages(packagesData);
+                } else {
+                    console.error("Failed to fetch yacht packages");
+                }
             } catch (error) {
-                console.error("Error fetching agents:", error);
+                console.error("Error fetching data:", error);
             }
         }
-        fetchAgents();
+        fetchData();
     }, []);
 
     const handleAgentChange = (agentId: string) => {
@@ -124,29 +115,29 @@ export function AddBookingForm() {
     };
 
     const handleQuantityChange = (name: keyof typeof initialQuantities, value: string) => {
-        setQuantities(prev => ({ ...prev, [name]: Number(value) || 0 }));
+        setQuantities(prev => ({ ...prev, [name]: Math.max(0, Number(value)) || 0 }));
     };
     
     const calculateTotal = useCallback(() => {
         if (!selectedPackage) return 0;
         
         let total = 0;
-        const p = selectedPackage.pricing;
+        const p = selectedPackage;
 
-        total += (quantities.dinner_child * (p.dinner.child || 0));
-        total += (quantities.dinner_adult * (p.dinner.adult || 0));
-        total += (quantities.dinner_adult_alc * (p.dinner.adult_alc || 0));
+        total += (quantities.dinner_child * (p.dinner_child_price || 0));
+        total += (quantities.dinner_adult * (p.dinner_adult_price || 0));
+        total += (quantities.dinner_adult_alc * (p.dinner_adult_alc_price || 0));
         
-        total += (quantities.top_deck_child * (p.top_deck.child || 0));
-        total += (quantities.top_deck_adult * (p.top_deck.adult || 0));
+        total += (quantities.top_deck_child * (p.top_deck_child_price || 0));
+        total += (quantities.top_deck_adult * (p.top_deck_adult_price || 0));
 
-        total += (quantities.vip_child * (p.vip.child || 0));
-        total += (quantities.vip_adult * (p.vip.adult || 0));
-        total += (quantities.vip_adult_alc * (p.vip.adult_alc || 0));
+        total += (quantities.vip_child * (p.vip_child_price || 0));
+        total += (quantities.vip_adult * (p.vip_adult_price || 0));
+        total += (quantities.vip_adult_alc * (p.vip_adult_alc_price || 0));
 
-        total += (quantities.royal_child * (p.royal.child || 0));
-        total += (quantities.royal_adult * (p.royal.adult || 0));
-        total += (quantities.royal_adult_alc * (p.royal.adult_alc || 0));
+        total += (quantities.royal_child * (p.royal_child_price || 0));
+        total += (quantities.royal_adult * (p.royal_adult_price || 0));
+        total += (quantities.royal_adult_alc * (p.royal_adult_alc_price || 0));
         
         return total;
     }, [selectedPackage, quantities]);
@@ -164,15 +155,17 @@ export function AddBookingForm() {
         } else {
             setCommission(0);
         }
+        
+        const newBalance = newNetAmount - paid;
+        setBalance(Math.max(0, newBalance));
 
-        setBalance(newNetAmount - paid);
 
     }, [quantities, selectedPackage, discount, paid, calculateTotal]);
 
 
     const handlePackageChange = (packageId: string) => {
         const pkg = packages.find(p => p.id === packageId);
-        setSelectedPackage(pkg);
+        setSelectedPackage(pkg || null);
         setQuantities(initialQuantities); // Reset quantities when package changes
     };
 
@@ -239,6 +232,8 @@ export function AddBookingForm() {
             setIsSubmitting(false);
         }
     };
+    
+    const getPrice = (price: number | null) => price ?? 'N/A';
 
     return (
         <>
@@ -274,7 +269,7 @@ export function AddBookingForm() {
                                         <SelectContent>
                                             {packages.filter(p => p.status === 'Active').map(pkg => (
                                                 <SelectItem key={pkg.id} value={pkg.id}>
-                                                    {pkg.yachtName} - {pkg.type}
+                                                    {pkg.yacht_name} - {pkg.type}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -285,14 +280,14 @@ export function AddBookingForm() {
                             {selectedPackage && (
                                 <Card className="bg-gray-50 dark:bg-gray-800/50">
                                     <CardHeader>
-                                        <CardTitle className="text-lg">{selectedPackage.yachtName} - {selectedPackage.type}</CardTitle>
+                                        <CardTitle className="text-lg">{selectedPackage.yacht_name} - {selectedPackage.type}</CardTitle>
                                         <CardDescription>Review the pricing details for the selected package.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-2 text-sm">
-                                        <p><strong>Dinner:</strong> Child: <AED/>{selectedPackage.pricing.dinner.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.dinner.adult ?? 'N/A'}, Adult+Alc: <AED/>{selectedPackage.pricing.dinner.adult_alc ?? 'N/A'}</p>
-                                        <p><strong>Top Deck:</strong> Child: <AED/>{selectedPackage.pricing.top_deck.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.top_deck.adult ?? 'N/A'}</p>
-                                        <p><strong>VIP:</strong> Child: <AED/>{selectedPackage.pricing.vip.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.vip.adult ?? 'N/A'}, VIP+Alc: <AED/>{selectedPackage.pricing.vip.adult_alc ?? 'N/A'}</p>
-                                        <p><strong>Royal:</strong> Child: <AED/>{selectedPackage.pricing.royal.child ?? 'N/A'}, Adult: <AED/>{selectedPackage.pricing.royal.adult ?? 'N/A'}, Royal+Alc: <AED/>{selectedPackage.pricing.royal.adult_alc ?? 'N/A'}</p>
+                                        <p><strong>Dinner:</strong> Child: <AED/>{getPrice(selectedPackage.dinner_child_price)}, Adult: <AED/>{getPrice(selectedPackage.dinner_adult_price)}, Adult+Alc: <AED/>{getPrice(selectedPackage.dinner_adult_alc_price)}</p>
+                                        <p><strong>Top Deck:</strong> Child: <AED/>{getPrice(selectedPackage.top_deck_child_price)}, Adult: <AED/>{getPrice(selectedPackage.top_deck_adult_price)}</p>
+                                        <p><strong>VIP:</strong> Child: <AED/>{getPrice(selectedPackage.vip_child_price)}, Adult: <AED/>{getPrice(selectedPackage.vip_adult_price)}, VIP+Alc: <AED/>{getPrice(selectedPackage.vip_adult_alc_price)}</p>
+                                        <p><strong>Royal:</strong> Child: <AED/>{getPrice(selectedPackage.royal_child_price)}, Adult: <AED/>{getPrice(selectedPackage.royal_adult_price)}, Royal+Alc: <AED/>{getPrice(selectedPackage.royal_adult_alc_price)}</p>
                                     </CardContent>
                                 </Card>
                             )}
@@ -335,47 +330,47 @@ export function AddBookingForm() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_child">Dinner Child</Label>
-                                        <Input id="dinner_child" type="number" placeholder="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.child === null} />
+                                        <Input id="dinner_child" type="number" placeholder="0" min="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_child_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_adult">Dinner Adult</Label>
-                                        <Input id="dinner_adult" type="number" placeholder="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.adult === null} />
+                                        <Input id="dinner_adult" type="number" placeholder="0" min="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_adult_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="dinner_adult_alc">Dinner Adult (Alc)</Label>
-                                        <Input id="dinner_adult_alc" type="number" placeholder="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.dinner.adult_alc === null} />
+                                        <Input id="dinner_adult_alc" type="number" placeholder="0" min="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_adult_alc_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="top_deck_child">Top Deck Child</Label>
-                                        <Input id="top_deck_child" type="number" placeholder="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.top_deck.child === null} />
+                                        <Input id="top_deck_child" type="number" placeholder="0" min="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} disabled={!selectedPackage || selectedPackage.top_deck_child_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="top_deck_adult">Top Deck Adult</Label>
-                                        <Input id="top_deck_adult" type="number" placeholder="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.top_deck.adult === null} />
+                                        <Input id="top_deck_adult" type="number" placeholder="0" min="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.top_deck_adult_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_child">VIP Child</Label>
-                                        <Input id="vip_child" type="number" placeholder="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.child === null} />
+                                        <Input id="vip_child" type="number" placeholder="0" min="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_child_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_adult">VIP Adult</Label>
-                                        <Input id="vip_adult" type="number" placeholder="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.adult === null} />
+                                        <Input id="vip_adult" type="number" placeholder="0" min="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_adult_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="vip_adult_alc">VIP Adult (Alc)</Label>
-                                        <Input id="vip_adult_alc" type="number" placeholder="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.vip.adult_alc === null} />
+                                        <Input id="vip_adult_alc" type="number" placeholder="0" min="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_adult_alc_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_child">Royal Child</Label>
-                                        <Input id="royal_child" type="number" placeholder="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.child === null} />
+                                        <Input id="royal_child" type="number" placeholder="0" min="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_child_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_adult">Royal Adult</Label>
-                                        <Input id="royal_adult" type="number" placeholder="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.adult === null} />
+                                        <Input id="royal_adult" type="number" placeholder="0" min="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_adult_price === null} />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="royal_adult_alc">Royal Adult (Alc)</Label>
-                                        <Input id="royal_adult_alc" type="number" placeholder="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.pricing.royal.adult_alc === null} />
+                                        <Input id="royal_adult_alc" type="number" placeholder="0" min="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_adult_alc_price === null} />
                                     </div>
                                 </div>
                             </div>
@@ -472,7 +467,3 @@ export function AddBookingForm() {
         </>
     );
 }
-
-    
-
-    
