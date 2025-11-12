@@ -15,7 +15,11 @@ interface Agent {
   [key: string]: string;
 }
 
-export function ImportAgents() {
+interface ImportAgentsProps {
+  onImportSuccess: () => void;
+}
+
+export function ImportAgents({ onImportSuccess }: ImportAgentsProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -45,7 +49,7 @@ export function ImportAgents() {
                     obj[header] = values[index] || "";
                     return obj;
                 }, {} as Agent);
-            }).filter(agent => agent.email && agent.email.trim() !== "" && agent.email.includes('@')); // Filter out rows with no valid email
+            }).filter(agent => Object.values(agent).some(val => val.trim() !== ''));
             
             setAgents(dataRows);
         }
@@ -123,6 +127,7 @@ export function ImportAgents() {
         description: `${result.importedCount} agents from ${file.name} have been added.`,
       });
       resetState();
+      onImportSuccess(); // Refresh the agent list
 
     } catch (error) {
        const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
@@ -137,7 +142,7 @@ export function ImportAgents() {
   };
   
   const createSampleCSV = () => {
-    const header = "id,name,address,email,phone_number,trn_number,customer_type_id,customer_type\n";
+    const header = "id,name,address,email,phone_no,trn_number,customer_type_id,Customer type name\n";
     const row1 = "1,TMC Agency,123 Main St,tmc@example.com,123-456-7890,123456789,1,Corporate\n";
     const row2 = "2,Global Travel,456 Oak Ave,global@example.com,987-654-3210,987654321,2,Retail\n";
     const csvContent = header + row1 + row2;

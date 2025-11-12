@@ -42,18 +42,20 @@ export async function POST(request: NextRequest) {
       agent.name,
       agent.address,
       agent.email,
-      agent.phone_number,
+      agent.phone_no, // Changed from phone_number to phone_no
       agent.trn_number,
       parseInt(agent.customer_type_id) || null,
-      agent.customer_type,
+      agent['Customer type name'], // Accessing field with space
       'active' // Default status
     ]);
 
-    await connection.query(sql, [values]);
+    const [result] = await connection.query(sql, [values]);
 
     await connection.end();
+    
+    const insertResult = result as any;
 
-    return NextResponse.json({ message: 'Agents imported successfully', importedCount: agents.length }, { status: 201 });
+    return NextResponse.json({ message: 'Agents imported successfully', importedCount: insertResult.affectedRows }, { status: 200 });
 
   } catch (error) {
     console.error('Error importing agents:', error);

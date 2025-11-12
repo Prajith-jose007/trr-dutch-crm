@@ -2,7 +2,7 @@
 "use client";
 
 import type { Metadata } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Layout from "@/components/dutchcrm/layout";
 import { ImportAgents } from "@/components/agent/import-agents";
@@ -25,6 +25,14 @@ export default function AgentPage() {
   const [agents, setAgents] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
 
+  const fetchAgents = useCallback(() => {
+    setDataLoading(true);
+    getAgents()
+      .then(setAgents)
+      .catch(console.error)
+      .finally(() => setDataLoading(false));
+  }, []);
+
   useEffect(() => {
     if (!loading) {
       if (!user) {
@@ -35,13 +43,10 @@ export default function AgentPage() {
       if (!allowedRoles.includes(user.role)) {
         router.push("/");
       } else {
-        getAgents()
-          .then(setAgents)
-          .catch(console.error)
-          .finally(() => setDataLoading(false));
+        fetchAgents();
       }
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, fetchAgents]);
 
   if (loading || !user || !["superadmin", "admin"].includes(user.role)) {
     return (
@@ -69,7 +74,7 @@ export default function AgentPage() {
             <AgentList initialAgents={agents} loading={dataLoading} />
         </TabsContent>
         <TabsContent value="import">
-            <ImportAgents />
+            <ImportAgents onImportSuccess={fetchAgents} />
         </TabsContent>
       </Tabs>
     </Layout>
