@@ -21,14 +21,12 @@ function AED() {
 interface Agent {
     id: number;
     name: string;
+    agency_code: string;
     address: string;
     email: string;
-    phone: string;
+    phone_number: string;
     trn_number: string;
-    customer_type_id: number;
-    customer_discount: number;
     status: string;
-    date_of_creation: string;
 }
 
 export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], loading: boolean }) {
@@ -110,15 +108,13 @@ export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], 
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>ID</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
+                <TableHead>Agency Code</TableHead>
                 <TableHead>Address</TableHead>
-                <TableHead>TRN Number</TableHead>
-                <TableHead>Discount</TableHead>
+                <TableHead>Phone No</TableHead>
+                <TableHead>Email</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Created On</TableHead>
+                <TableHead>TRN Number</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -126,30 +122,26 @@ export function AgentList({ initialAgents, loading }: { initialAgents: Agent[], 
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell><Skeleton className="h-4 w-10" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-40" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-48" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-40" /></TableCell>
                     <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-20" /></TableCell>
                     <TableCell className="text-right"><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
                   </TableRow>
                 ))
               ) : (
                 filteredAgents.map((agent) => (
                   <TableRow key={agent.id}>
-                    <TableCell className="font-medium">{agent.id}</TableCell>
                     <TableCell>{agent.name}</TableCell>
-                    <TableCell>{agent.email}</TableCell>
-                    <TableCell>{agent.phone}</TableCell>
+                    <TableCell>{agent.agency_code}</TableCell>
                     <TableCell className="max-w-xs truncate">{agent.address}</TableCell>
-                    <TableCell>{agent.trn_number}</TableCell>
-                    <TableCell>{agent.customer_discount}%</TableCell>
+                    <TableCell>{agent.phone_number}</TableCell>
+                    <TableCell>{agent.email}</TableCell>
                     <TableCell><Badge className={getStatusColor(agent.status)}>{agent.status}</Badge></TableCell>
-                    <TableCell>{new Date(agent.date_of_creation).toLocaleDateString()}</TableCell>
+                    <TableCell>{agent.trn_number}</TableCell>
                     <TableCell className="text-right">
                        <DropdownMenu>
                         <DropdownMenuTrigger asChild>
