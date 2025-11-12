@@ -21,7 +21,7 @@ export function ImportAgents() {
   const [dragActive, setDragActive] = useState(false);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
-  const { toast: showToast } = useToast();
+  const { toast } = useToast();
 
 
   const resetState = () => {
@@ -60,7 +60,7 @@ export function ImportAgents() {
         setFile(selectedFile);
         parseCSV(selectedFile);
       } else {
-        showToast({
+        toast({
           title: "Invalid file type",
           description: "Please upload a CSV file.",
           variant: "destructive",
@@ -89,7 +89,7 @@ export function ImportAgents() {
       setFile(droppedFile);
       parseCSV(droppedFile);
     } else {
-      showToast({
+      toast({
         title: "Invalid file type",
         description: "Please upload a CSV file.",
         variant: "destructive",
@@ -112,14 +112,13 @@ export function ImportAgents() {
         body: JSON.stringify({ agents }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to import agents');
-      }
-
       const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to import agents');
+      }
       
-      showToast({
+      toast({
         title: "Import Successful",
         description: `${result.importedCount} agents from ${file.name} have been added.`,
       });
@@ -127,7 +126,7 @@ export function ImportAgents() {
 
     } catch (error) {
        const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-      showToast({
+      toast({
         title: "Import Failed",
         description: errorMessage,
         variant: "destructive",
