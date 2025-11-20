@@ -6,12 +6,16 @@ import TopNav from "./top-nav"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { ThemeCustomizer } from "../theme-customizer"
+import { useAuth } from "@/app/context/auth-context"
+import { useRouter } from "next/navigation"
 
 interface LayoutProps {
   children: ReactNode
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [menuState, setMenuState] = useState<"full" | "collapsed" | "hidden">("full")
@@ -21,6 +25,13 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     setMounted(true)
   }, [])
+  
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, loading, router]);
+
 
   // Listen for menu state changes and hover state
   useEffect(() => {
@@ -47,8 +58,13 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearInterval(interval)
   }, [])
 
-  if (!mounted) {
-    return null
+  if (loading || !user) {
+    // Render a loading state or nothing while redirecting or until auth is confirmed
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   // Calculate margin based on menu state and hover - only for desktop

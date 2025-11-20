@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 name,email,phone_number,status
 John Doe,john.doe@example.com,123-456-7890,Active
 Jane Smith,jane.smith@example.com,987-654-3210,Active
 Peter Jones,peter.jones@example.com,555-123-4567,Inactive
 Aminoff,aminoff@example.com,555-987-6543,Active
+=======
+FirstName,LastName,Email,PhoneNumber,Status
+John,Doe,john.doe@example.com,123-456-7890,active
+Jane,Smith,jane.smith@example.com,987-654-3210,active
+Peter,Jones,peter.jones@example.com,555-123-4567,active
+Amina,Khan,amina.khan@example.com,555-987-6543,inactive
+>>>>>>> refs/remotes/origin/main

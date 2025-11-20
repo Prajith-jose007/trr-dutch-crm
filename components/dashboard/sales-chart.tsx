@@ -11,6 +11,7 @@ import {
   BarElement,
 } from "chart.js"
 import { Line, Bar } from "react-chartjs-2"
+import { useState, useEffect } from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement)
 
@@ -139,6 +140,17 @@ const mobileChartOptions = {
 }
 
 export function SalesChart() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-3 sm:p-6 border border-gray-200 dark:border-[#1F1F23] w-full min-w-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
@@ -150,13 +162,24 @@ export function SalesChart() {
         </select>
       </div>
       <div className="h-64 sm:h-80 w-full">
-        <Line data={salesData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />
+        <Line data={salesData} options={isMobile ? mobileChartOptions : chartOptions} />
       </div>
     </div>
   )
 }
 
 export function RevenueChart() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-3 sm:p-6 border border-gray-200 dark:border-[#1F1F23] w-full min-w-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
@@ -164,7 +187,7 @@ export function RevenueChart() {
         <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">This week</span>
       </div>
       <div className="h-48 sm:h-64 w-full">
-        <Bar data={revenueData} options={window.innerWidth < 640 ? mobileChartOptions : chartOptions} />
+        <Bar data={revenueData} options={isMobile ? mobileChartOptions : chartOptions} />
       </div>
     </div>
   )

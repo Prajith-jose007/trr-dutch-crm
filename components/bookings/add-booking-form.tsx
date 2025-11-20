@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 "use client";
 
@@ -420,3 +421,474 @@ export function AddBookingForm() {
     );
 }
 
+=======
+
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Ship, Calendar, User, Phone, Wallet, Ticket, Percent } from "lucide-react";
+import Link from "next/link";
+import { useState, useEffect, useCallback } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+
+function AED() {
+    return <img className="aed inline-block" alt="AED" />;
+}
+
+interface Agent {
+  id: number;
+  name: string;
+  customer_discount: number;
+}
+
+const initialQuantities = {
+    dinner_child: 0,
+    dinner_adult: 0,
+    dinner_adult_alc: 0,
+    top_deck_child: 0,
+    top_deck_adult: 0,
+    vip_child: 0,
+    vip_adult: 0,
+    vip_adult_alc: 0,
+    royal_child: 0,
+    royal_adult: 0,
+    royal_adult_alc: 0,
+};
+
+interface YachtPackage {
+    id: string;
+    yacht_name: string;
+    type: string;
+    dinner_child_price: number | null;
+    dinner_adult_price: number | null;
+    dinner_adult_alc_price: number | null;
+    top_deck_child_price: number | null;
+    top_deck_adult_price: number | null;
+    vip_child_price: number | null;
+    vip_adult_price: number | null;
+    vip_adult_alc_price: number | null;
+    royal_child_price: number | null;
+    royal_adult_price: number | null;
+    royal_adult_alc_price: number | null;
+    status: string;
+}
+
+export function AddBookingForm() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [packages, setPackages] = useState<YachtPackage[]>([]);
+    const [selectedPackage, setSelectedPackage] = useState<YachtPackage | null>(null);
+    const [quantities, setQuantities] = useState(initialQuantities);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [netAmount, setNetAmount] = useState(0);
+    const [commission, setCommission] = useState(0);
+    const [paid, setPaid] = useState(0);
+    const [balance, setBalance] = useState(0);
+    const [agents, setAgents] = useState<Agent[]>([]);
+    const { toast } = useToast();
+
+    // Form state
+    const [bookingDate, setBookingDate] = useState('');
+    const [clientName, setClientName] = useState('');
+    const [clientPhone, setClientPhone] = useState('');
+    const [agentName, setAgentName] = useState('');
+    const [paymentMode, setPaymentMode] = useState('');
+    const [ticketRef, setTicketRef] = useState('');
+    const [notes, setNotes] = useState('');
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const [agentsRes, packagesRes] = await Promise.all([
+                    fetch('/api/agents/list'),
+                    fetch('/api/yachts/list')
+                ]);
+
+                if (agentsRes.ok) {
+                    const agentsData = await agentsRes.json();
+                    setAgents(agentsData);
+                } else {
+                    console.error("Failed to fetch agents");
+                }
+
+                if (packagesRes.ok) {
+                    const packagesData = await packagesRes.json();
+                    setPackages(packagesData);
+                } else {
+                    console.error("Failed to fetch yacht packages");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const handleAgentChange = (agentId: string) => {
+        const selectedAgent = agents.find(agent => agent.id.toString() === agentId);
+        if (selectedAgent) {
+            setAgentName(selectedAgent.name);
+            setDiscount(selectedAgent.customer_discount || 0);
+        }
+    };
+
+    const handleQuantityChange = (name: keyof typeof initialQuantities, value: string) => {
+        setQuantities(prev => ({ ...prev, [name]: Math.max(0, Number(value)) || 0 }));
+    };
+    
+    const calculateTotal = useCallback(() => {
+        if (!selectedPackage) return 0;
+        
+        let total = 0;
+        const p = selectedPackage;
+
+        total += (quantities.dinner_child * (p.dinner_child_price || 0));
+        total += (quantities.dinner_adult * (p.dinner_adult_price || 0));
+        total += (quantities.dinner_adult_alc * (p.dinner_adult_alc_price || 0));
+        
+        total += (quantities.top_deck_child * (p.top_deck_child_price || 0));
+        total += (quantities.top_deck_adult * (p.top_deck_adult_price || 0));
+
+        total += (quantities.vip_child * (p.vip_child_price || 0));
+        total += (quantities.vip_adult * (p.vip_adult_price || 0));
+        total += (quantities.vip_adult_alc * (p.vip_adult_alc_price || 0));
+
+        total += (quantities.royal_child * (p.royal_child_price || 0));
+        total += (quantities.royal_adult * (p.royal_adult_price || 0));
+        total += (quantities.royal_adult_alc * (p.royal_adult_alc_price || 0));
+        
+        return total;
+    }, [selectedPackage, quantities]);
+
+    useEffect(() => {
+        const newTotal = calculateTotal();
+        setTotalAmount(newTotal);
+
+        const discountAmount = newTotal * (discount / 100);
+        const newNetAmount = newTotal - discountAmount;
+        setNetAmount(newNetAmount);
+
+        if (discount > 0) {
+            setCommission(newNetAmount * 0.10); // 10% commission on net amount
+        } else {
+            setCommission(0);
+        }
+        
+        const newBalance = newNetAmount - paid;
+        setBalance(Math.max(0, newBalance));
+
+
+    }, [quantities, selectedPackage, discount, paid, calculateTotal]);
+
+
+    const handlePackageChange = (packageId: string) => {
+        const pkg = packages.find(p => p.id === packageId);
+        setSelectedPackage(pkg || null);
+        setQuantities(initialQuantities); // Reset quantities when package changes
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const currentBalance = netAmount - paid;
+        let paymentStatus;
+        if (paid <= 0) {
+            paymentStatus = 'unpaid';
+        } else if (currentBalance <= 0) {
+            paymentStatus = 'paid';
+        } else {
+            paymentStatus = 'partial';
+        }
+
+        const bookingData = {
+            bookingDate,
+            clientName,
+            clientPhone,
+            agentName,
+            yachtPackage: selectedPackage?.id,
+            paymentMode,
+            ticketRef,
+            totalAmount,
+            discount,
+            netAmount,
+            commission,
+            paid,
+            balance: currentBalance,
+            notes,
+            quantities,
+            paymentStatus,
+        };
+
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create booking');
+            }
+
+            toast({
+                title: "Success",
+                description: "Booking created successfully.",
+            });
+            // Optionally reset form here or redirect
+            // window.location.href = '/shared/bookings';
+
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Could not create booking. Please try again.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+    
+    const getPrice = (price: number | null) => price ?? 'N/A';
+
+    return (
+        <>
+            <Toaster />
+            <div className="space-y-6">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Add New Booking</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-1">
+                        Create a new booking entry and link it to a yacht package.
+                    </p>
+                </div>
+                <Card>
+                    <form onSubmit={handleSubmit}>
+                        <CardHeader>
+                            <CardTitle>Booking Information</CardTitle>
+                            <CardDescription>Fill in the details for the new booking.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="booking-date">Booking Date</Label>
+                                    <div className="relative">
+                                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="booking-date" type="date" className="pl-10" value={bookingDate} onChange={e => setBookingDate(e.target.value)} required />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="yacht-package">Yacht Package</Label>
+                                    <Select onValueChange={handlePackageChange} required>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a package" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {packages.filter(p => p.status === 'Active').map(pkg => (
+                                                <SelectItem key={pkg.id} value={pkg.id}>
+                                                    {pkg.yacht_name} - {pkg.type}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            
+                            {selectedPackage && (
+                                <Card className="bg-gray-50 dark:bg-gray-800/50">
+                                    <CardHeader>
+                                        <CardTitle className="text-lg">{selectedPackage.yacht_name} - {selectedPackage.type}</CardTitle>
+                                        <CardDescription>Review the pricing details for the selected package.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-2 text-sm">
+                                        <p><strong>Dinner:</strong> Child: <AED/>{getPrice(selectedPackage.dinner_child_price)}, Adult: <AED/>{getPrice(selectedPackage.dinner_adult_price)}, Adult+Alc: <AED/>{getPrice(selectedPackage.dinner_adult_alc_price)}</p>
+                                        <p><strong>Top Deck:</strong> Child: <AED/>{getPrice(selectedPackage.top_deck_child_price)}, Adult: <AED/>{getPrice(selectedPackage.top_deck_adult_price)}</p>
+                                        <p><strong>VIP:</strong> Child: <AED/>{getPrice(selectedPackage.vip_child_price)}, Adult: <AED/>{getPrice(selectedPackage.vip_adult_price)}, VIP+Alc: <AED/>{getPrice(selectedPackage.vip_adult_alc_price)}</p>
+                                        <p><strong>Royal:</strong> Child: <AED/>{getPrice(selectedPackage.royal_child_price)}, Adult: <AED/>{getPrice(selectedPackage.royal_adult_price)}, Royal+Alc: <AED/>{getPrice(selectedPackage.royal_adult_alc_price)}</p>
+                                    </CardContent>
+                                </Card>
+                            )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="client-name">Client Name</Label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="client-name" placeholder="e.g., John Doe" className="pl-10" value={clientName} onChange={e => setClientName(e.target.value)} required />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="client-phone">Client Phone</Label>
+                                    <div className="relative">
+                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="client-phone" placeholder="e.g., +971 50 123 4567" className="pl-10" value={clientPhone} onChange={e => setClientPhone(e.target.value)} required />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="agent-name">Agent Name</Label>
+                                    <Select onValueChange={handleAgentChange} required>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select an agent" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {agents.map(agent => (
+                                                <SelectItem key={agent.id} value={agent.id.toString()}>
+                                                    {agent.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            {/* Quantities */}
+                            <div className="space-y-4 rounded-lg border p-4">
+                                <h3 className="font-medium text-gray-900 dark:text-white">Quantities</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="dinner_child">Dinner Child</Label>
+                                        <Input id="dinner_child" type="number" placeholder="0" min="0" value={quantities.dinner_child} onChange={(e) => handleQuantityChange('dinner_child', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_child_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="dinner_adult">Dinner Adult</Label>
+                                        <Input id="dinner_adult" type="number" placeholder="0" min="0" value={quantities.dinner_adult} onChange={(e) => handleQuantityChange('dinner_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_adult_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="dinner_adult_alc">Dinner Adult (Alc)</Label>
+                                        <Input id="dinner_adult_alc" type="number" placeholder="0" min="0" value={quantities.dinner_adult_alc} onChange={(e) => handleQuantityChange('dinner_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.dinner_adult_alc_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="top_deck_child">Top Deck Child</Label>
+                                        <Input id="top_deck_child" type="number" placeholder="0" min="0" value={quantities.top_deck_child} onChange={(e) => handleQuantityChange('top_deck_child', e.target.value)} disabled={!selectedPackage || selectedPackage.top_deck_child_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="top_deck_adult">Top Deck Adult</Label>
+                                        <Input id="top_deck_adult" type="number" placeholder="0" min="0" value={quantities.top_deck_adult} onChange={(e) => handleQuantityChange('top_deck_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.top_deck_adult_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="vip_child">VIP Child</Label>
+                                        <Input id="vip_child" type="number" placeholder="0" min="0" value={quantities.vip_child} onChange={(e) => handleQuantityChange('vip_child', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_child_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="vip_adult">VIP Adult</Label>
+                                        <Input id="vip_adult" type="number" placeholder="0" min="0" value={quantities.vip_adult} onChange={(e) => handleQuantityChange('vip_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_adult_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="vip_adult_alc">VIP Adult (Alc)</Label>
+                                        <Input id="vip_adult_alc" type="number" placeholder="0" min="0" value={quantities.vip_adult_alc} onChange={(e) => handleQuantityChange('vip_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.vip_adult_alc_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="royal_child">Royal Child</Label>
+                                        <Input id="royal_child" type="number" placeholder="0" min="0" value={quantities.royal_child} onChange={(e) => handleQuantityChange('royal_child', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_child_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="royal_adult">Royal Adult</Label>
+                                        <Input id="royal_adult" type="number" placeholder="0" min="0" value={quantities.royal_adult} onChange={(e) => handleQuantityChange('royal_adult', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_adult_price === null} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="royal_adult_alc">Royal Adult (Alc)</Label>
+                                        <Input id="royal_adult_alc" type="number" placeholder="0" min="0" value={quantities.royal_adult_alc} onChange={(e) => handleQuantityChange('royal_adult_alc', e.target.value)} disabled={!selectedPackage || selectedPackage.royal_adult_alc_price === null} />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="payment-mode">Payment Mode</Label>
+                                    <Select onValueChange={setPaymentMode} required>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select payment mode" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="credit-card">Credit Card</SelectItem>
+                                            <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
+                                            <SelectItem value="cash">Cash</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="ticket-ref">Ticket REF No</Label>
+                                    <div className="relative">
+                                        <Ticket className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="ticket-ref" placeholder="e.g., REF-12345" className="pl-10" value={ticketRef} onChange={e => setTicketRef(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="total-amount">Total Amount</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="total-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={totalAmount.toFixed(2)} readOnly />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="discount">Discount (%)</Label>
+                                    <div className="relative">
+                                        <Percent className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="discount" type="number" placeholder="From agent" className="pl-10 bg-gray-100 dark:bg-gray-800" value={discount} readOnly />
+                                    </div>
+                                </div>
+                            </div>
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="net-amount">Net Amount</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="net-amount" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={netAmount.toFixed(2)} readOnly />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="commission">Commission</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="commission" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={commission.toFixed(2)} readOnly />
+                                    </div>
+                                </div>
+                            </div>
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="paid">Paid</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="paid" type="number" placeholder="Enter amount paid" className="pl-10" value={paid} onChange={(e) => setPaid(Number(e.target.value))} />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="balance">Balance</Label>
+                                    <div className="relative">
+                                        <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Input id="balance" type="number" placeholder="Calculated automatically" className="pl-10 bg-gray-100 dark:bg-gray-800" value={balance.toFixed(2)} readOnly />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="notes">Notes</Label>
+                                <Textarea id="notes" placeholder="Any special requests or notes for this booking." value={notes} onChange={e => setNotes(e.target.value)} />
+                            </div>
+                        </CardContent>
+                        <div className="flex justify-end gap-2 p-6 pt-0">
+                            <Button variant="outline" asChild>
+                            <Link href="/shared/bookings">Cancel</Link>
+                            </Button>
+                            <Button type="submit" disabled={isSubmitting || !selectedPackage}>
+                                {isSubmitting ? "Creating..." : "Create Booking"}
+                            </Button>
+                        </div>
+                    </form>
+                </Card>
+            </div>
+        </>
+    );
+}
+>>>>>>> refs/remotes/origin/main

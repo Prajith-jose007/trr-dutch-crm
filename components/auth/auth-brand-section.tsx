@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export function AuthBrandSection() {
   const backgroundPattern =
     "data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"
@@ -95,3 +96,20 @@ export function AuthBrandSection() {
     </>
   )
 }
+=======
+import Image from "next/image";
+
+export function AuthBrandSection() {
+  return (
+    <>
+      <Image
+        src="/banner.JPG"
+        alt="Login Banner"
+        fill
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
+    </>
+  )
+}
+>>>>>>> refs/remotes/origin/main

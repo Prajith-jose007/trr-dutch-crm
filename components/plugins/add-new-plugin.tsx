@@ -32,8 +32,8 @@ const mockStorePlugins: StorePlugin[] = [
     id: "ecommerce-pro",
     name: "E-commerce Pro",
     description:
-      "Giải pháp thương mại điện tử hoàn chỉnh với quản lý sản phẩm, đơn hàng, thanh toán và báo cáo chi tiết.",
-    shortDescription: "Giải pháp e-commerce hoàn chỉnh",
+      "A complete e-commerce solution with product management, orders, payments, and detailed reporting.",
+    shortDescription: "Complete e-commerce solution",
     version: "3.2.1",
     author: "Commerce Team",
     category: "E-commerce",
@@ -49,8 +49,8 @@ const mockStorePlugins: StorePlugin[] = [
     id: "social-login",
     name: "Social Login",
     description:
-      "Cho phép người dùng đăng nhập bằng tài khoản mạng xã hội như Facebook, Google, Twitter với cài đặt đơn giản.",
-    shortDescription: "Đăng nhập bằng mạng xã hội",
+      "Allow users to log in with social media accounts like Facebook, Google, and Twitter with simple setup.",
+    shortDescription: "Login with social media",
     version: "2.1.0",
     author: "Social Dev",
     category: "Authentication",
@@ -65,8 +65,8 @@ const mockStorePlugins: StorePlugin[] = [
   {
     id: "page-builder",
     name: "Visual Page Builder",
-    description: "Trình tạo trang kéo thả trực quan với hàng trăm template và element có sẵn, không cần code.",
-    shortDescription: "Trình tạo trang kéo thả",
+    description: "Visual drag-and-drop page builder with hundreds of templates and elements, no code required.",
+    shortDescription: "Drag-and-drop page builder",
     version: "4.0.2",
     author: "Builder Pro",
     category: "Page Builder",
@@ -81,8 +81,8 @@ const mockStorePlugins: StorePlugin[] = [
   {
     id: "multilingual",
     name: "Multilingual Support",
-    description: "Hỗ trợ đa ngôn ngữ hoàn chỉnh với quản lý dịch thuật, tự động phát hiện ngôn ngữ và SEO đa ngôn ngữ.",
-    shortDescription: "Hỗ trợ đa ngôn ngữ",
+    description: "Complete multilingual support with translation management, auto-detection, and multilingual SEO.",
+    shortDescription: "Multilingual support",
     version: "1.9.3",
     author: "Language Team",
     category: "Localization",
@@ -97,8 +97,8 @@ const mockStorePlugins: StorePlugin[] = [
   {
     id: "cache-optimizer",
     name: "Cache Optimizer",
-    description: "Tối ưu hóa tốc độ website với cache thông minh, nén file và CDN tích hợp.",
-    shortDescription: "Tối ưu hóa cache và tốc độ",
+    description: "Optimize website speed with smart caching, file compression, and integrated CDN.",
+    shortDescription: "Optimize cache and speed",
     version: "2.5.1",
     author: "Speed Team",
     category: "Performance",
@@ -169,7 +169,7 @@ export function AddNewPlugin() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
-              placeholder="Tìm kiếm plugins trong store..."
+              placeholder="Search plugins in the store..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-9"
@@ -184,14 +184,14 @@ export function AddNewPlugin() {
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
-                  {category === "all" ? "Tất cả danh mục" : category}
+                  {category === "all" ? "All Categories" : category}
                 </option>
               ))}
             </select>
 
             <Button variant="outline" size="sm" className="h-9 text-xs bg-transparent">
               <Filter className="h-4 w-4 mr-1" />
-              Bộ lọc
+              Filter
             </Button>
           </div>
         </div>
@@ -201,7 +201,7 @@ export function AddNewPlugin() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Crown className="h-4 w-4 text-yellow-500" />
-              <h2 className="text-lg font-semibold">Plugins nổi bật</h2>
+              <h2 className="text-lg font-semibold">Featured Plugins</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
@@ -217,7 +217,7 @@ export function AddNewPlugin() {
                         className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 text-xs px-2 py-0"
                       >
                         <Crown className="h-3 w-3 mr-1" />
-                        Nổi bật
+                        Featured
                       </Badge>
                       {plugin.isPremium && (
                         <Badge variant="outline" className="text-xs px-2 py-0">
@@ -249,7 +249,7 @@ export function AddNewPlugin() {
                     <div className="flex items-center justify-between">
                       <div className="text-sm font-semibold">
                         {plugin.price === 0 ? (
-                          <span className="text-green-600 dark:text-green-400">Miễn phí</span>
+                          <span className="text-green-600 dark:text-green-400">Free</span>
                         ) : (
                           <span>${plugin.price}</span>
                         )}
@@ -257,10 +257,10 @@ export function AddNewPlugin() {
 
                       <div className="flex gap-1.5">
                         <Button size="sm" variant="outline" className="h-7 text-xs px-2 bg-transparent">
-                          Chi tiết
+                          Details
                         </Button>
                         <Button size="sm" className="h-7 text-xs px-2">
-                          {plugin.price === 0 ? "Cài đặt" : "Mua"}
+                          {plugin.price === 0 ? "Install" : "Buy"}
                         </Button>
                       </div>
                     </div>
@@ -273,7 +273,7 @@ export function AddNewPlugin() {
 
         {/* All Plugins */}
         <div>
-          <h2 className="text-lg font-semibold mb-3">Tất cả plugins</h2>
+          <h2 className="text-lg font-semibold mb-3">All Plugins</h2>
 
           <div className="grid gap-2">
             {filteredPlugins.map((plugin) => (
@@ -308,17 +308,17 @@ export function AddNewPlugin() {
                         <div className="text-right">
                           <div className="text-sm font-semibold mb-1">
                             {plugin.price === 0 ? (
-                              <span className="text-green-600 dark:text-green-400">Miễn phí</span>
+                              <span className="text-green-600 dark:text-green-400">Free</span>
                             ) : (
                               <span>${plugin.price}</span>
                             )}
                           </div>
                           <div className="flex gap-1.5">
                             <Button size="sm" variant="outline" className="h-7 text-xs px-2 bg-transparent">
-                              Chi tiết
+                              Details
                             </Button>
                             <Button size="sm" className="h-7 text-xs px-2">
-                              {plugin.price === 0 ? "Cài đặt" : "Mua"}
+                              {plugin.price === 0 ? "Install" : "Buy"}
                             </Button>
                           </div>
                         </div>
@@ -353,7 +353,7 @@ export function AddNewPlugin() {
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Upload Plugin</CardTitle>
             <CardDescription className="text-sm">
-              Tải lên file plugin (.zip) từ máy tính của bạn hoặc cài đặt từ URL
+              Upload a plugin (.zip) from your computer or install from a URL.
             </CardDescription>
           </CardHeader>
 
@@ -369,20 +369,20 @@ export function AddNewPlugin() {
               onDrop={handleDrop}
             >
               <Upload className="h-8 w-8 text-gray-400 mx-auto mb-3" />
-              <h3 className="text-sm font-medium mb-1">Kéo thả file plugin vào đây</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Hoặc click để chọn file từ máy tính</p>
+              <h3 className="text-sm font-medium mb-1">Drag and drop a plugin file here</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">or click to select a file from your computer</p>
               <Button variant="outline" size="sm" className="h-8 text-xs bg-transparent">
-                Chọn file .zip
+                Choose a .zip file
               </Button>
             </div>
 
             {/* URL Install */}
             <div className="space-y-2">
-              <h3 className="text-sm font-medium">Cài đặt từ URL</h3>
+              <h3 className="text-sm font-medium">Install from URL</h3>
               <div className="flex gap-2">
                 <Input placeholder="https://example.com/plugin.zip" className="flex-1 h-9 text-xs" />
                 <Button size="sm" className="h-9 text-xs">
-                  Cài đặt
+                  Install
                 </Button>
               </div>
             </div>
@@ -392,10 +392,9 @@ export function AddNewPlugin() {
               <div className="flex gap-2">
                 <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1 text-xs">Lưu ý bảo mật</h4>
+                  <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1 text-xs">Security Note</h4>
                   <p className="text-xs text-yellow-700 dark:text-yellow-300">
-                    Chỉ cài đặt plugins từ nguồn tin cậy. Plugins có thể chứa mã độc hại và ảnh hưởng đến bảo mật
-                    website của bạn.
+                    Only install plugins from trusted sources. Plugins may contain malicious code and affect your website's security.
                   </p>
                 </div>
               </div>
@@ -406,7 +405,7 @@ export function AddNewPlugin() {
         {/* Installation Guide */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Hướng dẫn cài đặt</CardTitle>
+            <CardTitle className="text-lg">Installation Guide</CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -416,9 +415,9 @@ export function AddNewPlugin() {
                   1
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1 text-xs">Tải xuống plugin</h4>
+                  <h4 className="font-medium mb-1 text-xs">Download the plugin</h4>
                   <p className="text-gray-600 dark:text-gray-400 text-xs">
-                    Tải file plugin (.zip) từ trang chủ của nhà phát triển
+                    Download the plugin (.zip) file from the developer's homepage.
                   </p>
                 </div>
               </div>
@@ -428,9 +427,9 @@ export function AddNewPlugin() {
                   2
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1 text-xs">Upload file</h4>
+                  <h4 className="font-medium mb-1 text-xs">Upload the file</h4>
                   <p className="text-gray-600 dark:text-gray-400 text-xs">
-                    Sử dụng form upload ở trên để tải lên file plugin
+                    Use the upload form above to upload the plugin file.
                   </p>
                 </div>
               </div>
@@ -440,9 +439,9 @@ export function AddNewPlugin() {
                   3
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1 text-xs">Kích hoạt plugin</h4>
+                  <h4 className="font-medium mb-1 text-xs">Activate the plugin</h4>
                   <p className="text-gray-600 dark:text-gray-400 text-xs">
-                    Sau khi cài đặt thành công, vào tab "Plugins đã cài" để kích hoạt
+                    After successful installation, go to the "Installed Plugins" tab to activate it.
                   </p>
                 </div>
               </div>

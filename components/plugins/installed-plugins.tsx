@@ -28,7 +28,7 @@ const mockPlugins: Plugin[] = [
   {
     id: "seo-optimizer",
     name: "SEO Optimizer Pro",
-    description: "Tối ưu hóa SEO toàn diện cho website với các công cụ phân tích từ khóa và meta tags tự động.",
+    description: "Comprehensive SEO optimization for the website with keyword analysis and automatic meta tags.",
     version: "2.1.4",
     author: "SEO Tools Team",
     category: "SEO",
@@ -42,7 +42,7 @@ const mockPlugins: Plugin[] = [
   {
     id: "contact-form",
     name: "Advanced Contact Forms",
-    description: "Tạo và quản lý các form liên hệ với nhiều tùy chọn tùy chỉnh và tích hợp email marketing.",
+    description: "Create and manage contact forms with multiple customization options and email marketing integration.",
     version: "1.8.2",
     author: "Form Builder Inc",
     category: "Forms",
@@ -55,7 +55,7 @@ const mockPlugins: Plugin[] = [
   {
     id: "backup-manager",
     name: "Backup Manager",
-    description: "Sao lưu tự động dữ liệu website và cơ sở dữ liệu với lịch trình linh hoạt.",
+    description: "Automatic backup of website data and database with a flexible schedule.",
     version: "3.0.1",
     author: "Backup Solutions",
     category: "Backup",
@@ -68,7 +68,7 @@ const mockPlugins: Plugin[] = [
   {
     id: "analytics-dashboard",
     name: "Analytics Dashboard",
-    description: "Bảng điều khiển phân tích chi tiết với biểu đồ và báo cáo thời gian thực.",
+    description: "Detailed analytics dashboard with real-time charts and reports.",
     version: "1.5.0",
     author: "Analytics Pro",
     category: "Analytics",
@@ -81,7 +81,7 @@ const mockPlugins: Plugin[] = [
   {
     id: "security-shield",
     name: "Security Shield",
-    description: "Bảo vệ website khỏi các cuộc tấn công với firewall và quét malware tự động.",
+    description: "Protect your website from attacks with a firewall and automatic malware scanning.",
     version: "2.3.1",
     author: "Security Team",
     category: "Security",
@@ -129,7 +129,7 @@ export function InstalledPlugins() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
-            placeholder="Tìm kiếm plugins..."
+            placeholder="Search plugins..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 h-9"
@@ -140,7 +140,7 @@ export function InstalledPlugins() {
           {updateCount > 0 && (
             <Button variant="outline" size="sm" className="h-9 bg-transparent">
               <RefreshCw className="h-4 w-4 mr-2" />
-              Cập nhật tất cả ({updateCount})
+              Update All ({updateCount})
             </Button>
           )}
         </div>
@@ -150,13 +150,13 @@ export function InstalledPlugins() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="h-9">
           <TabsTrigger value="all" className="text-xs">
-            Tất cả ({plugins.length})
+            All ({plugins.length})
           </TabsTrigger>
           <TabsTrigger value="active" className="text-xs">
-            Kích hoạt ({activeCount})
+            Active ({activeCount})
           </TabsTrigger>
           <TabsTrigger value="inactive" className="text-xs">
-            Vô hiệu ({inactiveCount})
+            Inactive ({inactiveCount})
           </TabsTrigger>
         </TabsList>
 
@@ -170,12 +170,12 @@ export function InstalledPlugins() {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-medium text-sm">{plugin.name}</h3>
                         <Badge variant={plugin.isActive ? "default" : "secondary"} className="text-xs px-2 py-0">
-                          {plugin.isActive ? "Kích hoạt" : "Vô hiệu"}
+                          {plugin.isActive ? "Active" : "Inactive"}
                         </Badge>
                         {plugin.hasUpdate && (
                           <Badge variant="destructive" className="text-xs px-2 py-0">
                             <RefreshCw className="h-3 w-3 mr-1" />
-                            Cập nhật
+                            Update
                           </Badge>
                         )}
                       </div>
@@ -200,23 +200,23 @@ export function InstalledPlugins() {
                         {plugin.hasUpdate && (
                           <Button size="sm" variant="default" className="h-7 text-xs px-2">
                             <Download className="h-3 w-3 mr-1" />
-                            Cập nhật
+                            Update
                           </Button>
                         )}
 
                         <Button size="sm" variant="outline" className="h-7 text-xs px-2 bg-transparent">
                           <Settings className="h-3 w-3 mr-1" />
-                          Cài đặt
+                          Settings
                         </Button>
 
                         <Button size="sm" variant="outline" className="h-7 text-xs px-2 bg-transparent">
                           <Info className="h-3 w-3 mr-1" />
-                          Chi tiết
+                          Details
                         </Button>
 
                         <Button size="sm" variant="destructive" className="h-7 text-xs px-2 ml-auto">
                           <Trash2 className="h-3 w-3 mr-1" />
-                          Xóa
+                          Delete
                         </Button>
                       </div>
                     </div>
@@ -237,11 +237,11 @@ export function InstalledPlugins() {
               <Card>
                 <CardContent className="text-center py-8">
                   <AlertCircle className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">Không tìm thấy plugin nào</h3>
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">No plugins found</h3>
                   <p className="text-xs text-gray-600 dark:text-gray-400">
                     {searchTerm
-                      ? `Không có plugin nào khớp với "${searchTerm}"`
-                      : "Chưa có plugin nào trong danh mục này"}
+                      ? `No plugins matched your search for "${searchTerm}"`
+                      : "There are no plugins in this category"}
                   </p>
                 </CardContent>
               </Card>
